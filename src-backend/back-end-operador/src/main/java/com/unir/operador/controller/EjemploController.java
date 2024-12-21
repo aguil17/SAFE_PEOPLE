@@ -18,12 +18,13 @@ import java.util.Map;
 
 
 @RestController
+@RequestMapping("/categories")
 //@RequiredArgsConstructor
 @Slf4j
 @Tag(name = "Ejemplo Controller", description = "Microservicio")
 public class EjemploController {
 
-    @GetMapping("/categories")
+    @GetMapping
     @Operation(
             operationId = "categories-get",
             description = "Operacion de lectura para devolver las categorias",
