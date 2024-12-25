@@ -16,6 +16,9 @@ import java.util.List;
 import jakarta.persistence.*;
 
 
+import jakarta.persistence.Entity;
+import lombok.*;
+
 @Data
 @Getter
 @Setter
@@ -23,8 +26,7 @@ import jakarta.persistence.*;
 @Entity
 @AllArgsConstructor
 @Builder
-@Table(name = "incidente")
-public class Incidente {
+public class Ubicacion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,34 +34,24 @@ public class Incidente {
     @Column
     private Integer id;
 
-    @Column(name = "tipoIncidente")
-    @NotNull(message = "El tipo incidente no puede ser nulo")
-    private Integer tipoIncidente;
+    private String nombreCiudad;
 
-    @Column(name = "descripcion")
-    @NotNull(message = "descripción no puede ser nula")
+    private  String nombreDistrito;
+
     private String descripcion;
 
-    @Column(name = "fecha")
-    @NotNull(message = "fecha no puede ser nula")
-    private LocalDate fecha;
+    private String referencia;
 
-    @Column(name = "hora")
-    @NotNull(message = "hora no puede ser nula")
-    private LocalTime hora;
+    private String latitud;
 
-    @Column(name = "foto")
-    private String foto;
+    private String longitud;
 
     @Column(name = "fechaCreacion")
     @NotNull(message = "fechaCreacion no puede ser nula")
     private LocalDate fechaCreacion;
 
-    @Column(name = "idLocation")
-    @NotNull(message = "Location no puede ser nulo")
-    private Integer idLocation;
 
-    public Incidente () {
+    public Ubicacion () {
 
     }
 }
