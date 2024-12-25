@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateAccidenteRequest {
+public class CreateIncidenteRequest {
 
     @NotNull(message = "La descripción no puede ser nula")
     @NotEmpty(message = "La descripción no puede estar vacía")

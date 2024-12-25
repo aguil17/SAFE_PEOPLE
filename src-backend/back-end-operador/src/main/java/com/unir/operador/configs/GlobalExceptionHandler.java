@@ -1,6 +1,6 @@
 package com.unir.operador.configs;
 
-import com.unir.operador.model.response.CreateAccidenteResponse;
+import com.unir.operador.model.response.CreateIncidenteResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -13,8 +13,8 @@ public class GlobalExceptionHandler {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<CreateAccidenteResponse> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        CreateAccidenteResponse result = new CreateAccidenteResponse();
+    public ResponseEntity<CreateIncidenteResponse> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        CreateIncidenteResponse result = new CreateIncidenteResponse();
         result.setError(true);
         result.setCode("400");
         ex.getBindingResult().getAllErrors().forEach((error) -> result.setMessage(error.getDefaultMessage()));

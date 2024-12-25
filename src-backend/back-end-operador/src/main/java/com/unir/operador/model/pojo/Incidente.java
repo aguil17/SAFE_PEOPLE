@@ -21,8 +21,8 @@ import jakarta.persistence.*;
 @Entity
 @AllArgsConstructor
 @Builder
-@Table(name = "accidente")
-public class Accidente {
+@Table(name = "incidente")
+public class Incidente {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,7 +34,7 @@ public class Accidente {
     @NotNull(message = "name cannot be null")
     private String name;
 
-    public Accidente() {
+    public Incidente () {
 
     }
 }

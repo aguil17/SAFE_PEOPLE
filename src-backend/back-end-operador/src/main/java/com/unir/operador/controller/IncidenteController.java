@@ -1,7 +1,7 @@
 package com.unir.operador.controller;
 
-import com.unir.operador.model.request.CreateAccidenteRequest;
-import com.unir.operador.model.response.CreateAccidenteResponse;
+import com.unir.operador.model.request.CreateIncidenteRequest;
+import com.unir.operador.model.response.CreateIncidenteResponse;
 import com.unir.operador.service.AccidenteService;
 import com.unir.operador.util.ResponseMessage;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -20,12 +20,12 @@ import io.swagger.v3.oas.annotations.Operation;
 @RequestMapping("/accidente")
 //@RequiredArgsConstructor
 @Slf4j
-@Tag(name = "Accidente Controller", description = "Gestión del Accidente")
-public class AccidenteController {
+@Tag(name = "Incidente Controller", description = "Gestión del Incidente")
+public class IncidenteController {
 
     private final AccidenteService accidenteService;
 
-    public AccidenteController(AccidenteService accidenteService) {
+    public IncidenteController(AccidenteService accidenteService) {
         this.accidenteService = accidenteService;
     }
 
@@ -41,22 +41,22 @@ public class AccidenteController {
             responseCode = "404",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = Void.class)),
             description = ResponseMessage.EJEMPLO_NOT_FOUND)
-    public ResponseEntity<CreateAccidenteResponse> getCategorys() {
+    public ResponseEntity<CreateIncidenteResponse> getCategorys() {
 
-        var response = new CreateAccidenteResponse();
+        var response = new CreateIncidenteResponse();
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @PostMapping
     @Operation(
-            operationId = "accidente-post",
-            description = "Operación de registro de accidente",
-            summary = "Se registra un accidente en la base de datos.")
+            operationId = "incidente-post",
+            description = "Operación de registro de incidente",
+            summary = "Se registra un accidente de tránsito, incendio o robo.")
     @ApiResponse(
             responseCode = "201",
-            content = @Content(mediaType = "application/json", schema = @Schema(implementation = CreateAccidenteResponse.class)))
-    public ResponseEntity<CreateAccidenteResponse> crearAccidente(@Valid @RequestBody CreateAccidenteRequest request)
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = CreateIncidenteResponse.class)))
+    public ResponseEntity<CreateIncidenteResponse> crearIncidente(@Valid @RequestBody CreateIncidenteRequest request)
     {
         var serviceResult = accidenteService.crearAccidente(request);
 
