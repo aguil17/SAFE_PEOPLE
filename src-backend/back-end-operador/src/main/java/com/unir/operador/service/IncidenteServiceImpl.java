@@ -37,7 +37,7 @@ public class IncidenteServiceImpl implements IncidenteService {
         }
 
         Incidente accidente = Incidente.builder()
-                .tipoIncidente(request.getTipoIncidente())
+                .incident_type(request.getTipoIncidente())
                 .descripcion(request.getDescripcion())
                 .fecha(request.getFecha())
                 .hora(request.getHora())

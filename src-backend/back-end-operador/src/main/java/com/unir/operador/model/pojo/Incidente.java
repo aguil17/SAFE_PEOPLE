@@ -10,8 +10,6 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Date;
-import java.util.List;
 
 import jakarta.persistence.*;
 
@@ -32,9 +30,9 @@ public class Incidente {
     @Column
     private Integer id;
 
-    @Column(name = "tipoIncidente")
+    @Column(name = "incident_type")
     @NotNull(message = "El tipo incidente no puede ser nulo")
-    private Integer tipoIncidente;
+    private Integer incident_type;
 
     @Column(name = "descripcion")
     @NotNull(message = "descripción no puede ser nula")
