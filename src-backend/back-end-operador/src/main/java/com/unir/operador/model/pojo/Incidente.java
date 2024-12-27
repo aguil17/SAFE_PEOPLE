@@ -38,24 +38,24 @@ public class Incidente {
     @NotNull(message = "descripción no puede ser nula")
     private String descripcion;
 
-    @Column(name = "fecha")
+    @Column(name = "date")
     @NotNull(message = "fecha no puede ser nula")
-    private LocalDate fecha;
+    private LocalDate date;
 
-    @Column(name = "hora")
+    @Column(name = "time")
     @NotNull(message = "hora no puede ser nula")
-    private LocalTime hora;
+    private LocalTime time;
 
-    @Column(name = "foto")
-    private String foto;
+    @Column(name = "photo")
+    private String photo;
 
-    @Column(name = "fechaCreacion")
+    @Column(name = "creation_date")
     @NotNull(message = "fechaCreacion no puede ser nula")
-    private LocalDate fechaCreacion;
+    private LocalDate creation_date;
 
-    @Column(name = "idLocation")
+    @Column(name = "id_location")
     @NotNull(message = "Location no puede ser nulo")
-    private Integer idLocation;
+    private Integer id_location;
 
     public Incidente () {
 

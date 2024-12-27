@@ -39,10 +39,10 @@ public class IncidenteServiceImpl implements IncidenteService {
         Incidente accidente = Incidente.builder()
                 .incident_type(request.getTipoIncidente())
                 .descripcion(request.getDescripcion())
-                .fecha(request.getFecha())
-                .hora(request.getHora())
-                .foto(request.getFoto())
-                .idLocation(request.getIdLocation()).build();
+                .date(request.getFecha())
+                .time(request.getHora())
+                .photo(request.getFoto())
+                .id_location(request.getIdLocation()).build();
 
         incidenteRepository.save(accidente);
         result.setError(false);

@@ -34,21 +34,33 @@ public class Ubicacion {
     @Column
     private Integer id;
 
-    private String nombreCiudad;
+    @Column(name = "city_name")
+    @NotNull(message = "nombre de ciudad no puede ser nula")
+    private String city_name;
 
-    private  String nombreDistrito;
+    @Column(name = "district_name")
+    @NotNull(message = "nombre de distrito no puede ser nulo")
+    private  String district_name;
 
+    @Column(name = "descripcion")
+    @NotNull(message = "descripcion no puede ser nulo")
     private String descripcion;
 
-    private String referencia;
+    @Column(name = "reference")
+    @NotNull(message = "referencia no puede ser nula")
+    private String reference;
 
-    private String latitud;
+    @Column(name = "latitude")
+    @NotNull(message = "latitud no puede ser nula")
+    private String latitude;
 
-    private String longitud;
+    @Column(name = "longitude")
+    @NotNull(message = "longitud no puede ser nula")
+    private String longitude;
 
-    @Column(name = "fechaCreacion")
+    @Column(name = "creation_date")
     @NotNull(message = "fechaCreacion no puede ser nula")
-    private LocalDate fechaCreacion;
+    private LocalDate creation_date;
 
 
     public Ubicacion () {
