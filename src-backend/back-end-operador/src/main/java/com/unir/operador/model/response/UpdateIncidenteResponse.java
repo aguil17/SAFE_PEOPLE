@@ -1,6 +1,6 @@
 package com.unir.operador.model.response;
 
-import com.unir.operador.model.pojo.incident;
+import com.unir.operador.model.pojo.Incidente;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,6 +12,6 @@ public class UpdateIncidenteResponse
 {
     private boolean error;
     private String code;
-    private incident data;
+    private Incidente data;
     private String message;
 }
