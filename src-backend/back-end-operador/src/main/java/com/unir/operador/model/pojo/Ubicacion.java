@@ -26,6 +26,7 @@ import lombok.*;
 @Entity
 @AllArgsConstructor
 @Builder
+@Table(name = "location")
 public class Ubicacion {
 
     @Id
