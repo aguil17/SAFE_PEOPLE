@@ -1,6 +1,7 @@
 package com.unir.operador.service;
 import com.unir.operador.data.IIncidenteRepository;
 import com.unir.operador.data.IUbicacionRepository;
+import com.unir.operador.facade.IncidentesFacade;
 import com.unir.operador.model.request.CreateIncidenteRequest;
 import com.unir.operador.model.request.UpdateIncidenteRequest;
 import com.unir.operador.model.response.CreateIncidenteResponse;
@@ -24,8 +25,9 @@ public class IncidenteServiceImpl implements IncidenteService {
 
     @Autowired
     private IUbicacionRepository ubicacionRepository;
-    @Autowired
-    private ResourceLoader resourceLoader;
+
+
+    private IncidentesFacade incidentesFacade;
 
     public CreateIncidenteResponse crearIncidente(CreateIncidenteRequest request)
     {
@@ -41,8 +43,6 @@ public class IncidenteServiceImpl implements IncidenteService {
             return result;
         }
 
-
-
         Incidente accidente = Incidente.builder()
                 .incident_type(Integer.parseInt(request.getTipoIncidente()))
                 .descripcion(request.getDescripcion())
@@ -52,6 +52,9 @@ public class IncidenteServiceImpl implements IncidenteService {
                 .id_location(Integer.parseInt(request.getIdUbicacion())).build();
 
         incidenteRepository.save(accidente);
+
+        incidentesFacade.RegistrarIncidente(request);
+
         result.setError(false);
         result.setData(accidente);
         result.setCode("201");
