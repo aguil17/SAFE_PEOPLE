@@ -17,6 +17,7 @@ public class CreateIncidenteRequest {
 
     @NotNull(message = "El tipo incidente no puede ser nulo")
     @NotEmpty(message = "El tipo incidente no puede ser vacío")
+    @Pattern(regexp = "\\d+", message = "El tipo incidente debe contener solo números")
     private String TipoIncidente;
 
     @NotNull(message = "La descripción no puede ser nula")
