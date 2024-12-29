@@ -11,6 +11,8 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 import com.unir.operador.model.pojo.*;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +31,7 @@ public class IncidenteServiceImpl implements IncidenteService {
     {
         var result = new CreateIncidenteResponse();
 
-        var ubicacion = ubicacionRepository.findById(request.getIdLocation());
+        var ubicacion = ubicacionRepository.findById(Integer.parseInt(request.getIdLocation()));
 
         if (ubicacion.isPresent())
         {
@@ -40,12 +42,12 @@ public class IncidenteServiceImpl implements IncidenteService {
         }
 
         Incidente accidente = Incidente.builder()
-                .incident_type(request.getTipoIncidente())
+                .incident_type(Integer.parseInt(request.getTipoIncidente()))
                 .descripcion(request.getDescripcion())
-                .date(request.getFecha())
-                .time(request.getHora())
+                .date(LocalDate.parse(request.getFecha()))
+                .time(LocalTime.parse(request.getHora()))
                 .photo(request.getFoto())
-                .id_location(request.getIdLocation()).build();
+                .id_location(Integer.parseInt(request.getIdLocation())).build();
 
         incidenteRepository.save(accidente);
         result.setError(false);

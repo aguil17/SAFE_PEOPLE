@@ -15,21 +15,21 @@ import java.time.LocalTime;
 public class CreateIncidenteRequest {
 
     @NotNull(message = "El tipo incidente no puede ser nulo")
-    private Integer TipoIncidente;
+    private String TipoIncidente;
 
     @NotNull(message = "La descripción no puede ser nula")
     @NotEmpty(message = "La descripción no puede estar vacía")
     private String Descripcion;
 
     @NotNull(message = "La fecha no puede ser nula")
-    private LocalDate Fecha;
+    private String Fecha;
 
     @NotNull(message = "La fecha no puede ser nula")
-    private LocalTime Hora;
+    private String Hora;
 
 
     private String Foto;
 
     @NotNull(message = "La idLocation no puede ser nula")
-    private Integer idLocation;
+    private String idLocation;
 }
