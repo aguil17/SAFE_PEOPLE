@@ -1,5 +1,6 @@
 package com.unir.operador.service;
 import com.unir.operador.data.IIncidenteRepository;
+import com.unir.operador.data.IMaterialRepository;
 import com.unir.operador.data.IUbicacionRepository;
 import com.unir.operador.facade.IncidentesFacade;
 import com.unir.operador.model.request.CreateIncidenteRequest;
@@ -8,7 +9,6 @@ import com.unir.operador.model.response.CreateIncidenteResponse;
 import com.unir.operador.model.response.DeleteIncidenteResponse;
 import com.unir.operador.model.response.UpdateIncidenteResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 import com.unir.operador.model.pojo.*;
 
@@ -26,6 +26,8 @@ public class IncidenteServiceImpl implements IncidenteService {
     @Autowired
     private IUbicacionRepository ubicacionRepository;
 
+    @Autowired
+    private IMaterialRepository materialRepository;
 
     private IncidentesFacade incidentesFacade;
 
