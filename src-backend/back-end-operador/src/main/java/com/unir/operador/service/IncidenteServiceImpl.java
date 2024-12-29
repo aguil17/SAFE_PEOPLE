@@ -11,6 +11,9 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 import com.unir.operador.model.pojo.*;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class IncidenteServiceImpl implements IncidenteService {
 
@@ -26,9 +29,9 @@ public class IncidenteServiceImpl implements IncidenteService {
     {
         var result = new CreateIncidenteResponse();
 
-        var ubicacion = ubicacionRepository.getById(request.getIdLocation());
+        var ubicacion = ubicacionRepository.findById(request.getIdLocation());
 
-        if (ubicacion == null)
+        if (ubicacion.isPresent())
         {
             result.setError(true);
             result.setMessage("La ubicación indicada no existe");
@@ -71,9 +74,9 @@ public class IncidenteServiceImpl implements IncidenteService {
     public DeleteIncidenteResponse eliminarIncidente(String incidenteId)
     {
         var result = new DeleteIncidenteResponse();
-        var incidente = incidenteRepository.getById(Integer.parseInt(incidenteId));
+        var incidente = incidenteRepository.findById(Integer.parseInt(incidenteId));
 
-        if (incidente == null)
+        if (incidente.isEmpty())
         {
             result.setError(true);
             result.setCode("404");
@@ -84,7 +87,7 @@ public class IncidenteServiceImpl implements IncidenteService {
         ubicacionRepository.deleteById(Integer.parseInt(incidenteId));
 
         result.setError(false);
-        result.setData(incidente);
+        result.setData(incidente.get());
         result.setCode("200");
         return result;
     }
