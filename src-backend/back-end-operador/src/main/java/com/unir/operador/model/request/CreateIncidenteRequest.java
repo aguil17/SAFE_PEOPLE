@@ -7,9 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -38,4 +35,15 @@ public class CreateIncidenteRequest {
     @NotEmpty(message = "La ubicación no puede ser vacía")
     @Pattern(regexp = "\\d+", message = "La ubicación debe contener solo números")
     private String idUbicacion;
+
+    @NotNull(message = "Lista de materiales no puede ser nula")
+    @NotEmpty(message = "Lista de materiales no puede ser vacía")
+    private CreateIncidenteMaterialRequest[] materiales;
+
+    private CreateIncidenteInformanteRequest[] informantes;
+
+    @NotNull(message = "Ubicación no puede ser nula")
+    private CreateLocationRequest Ubicacion;
+
+    private CreateIncidenteHeridoRequest[] Heridos;
 }
