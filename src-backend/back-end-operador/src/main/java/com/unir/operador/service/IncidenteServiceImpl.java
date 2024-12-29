@@ -31,9 +31,9 @@ public class IncidenteServiceImpl implements IncidenteService {
     {
         var result = new CreateIncidenteResponse();
 
-        var ubicacion = ubicacionRepository.findById(Integer.parseInt(request.getIdLocation()));
+        var ubicacion = ubicacionRepository.findById(Integer.parseInt(request.getIdUbicacion()));
 
-        if (ubicacion.isPresent())
+        if (ubicacion.isEmpty())
         {
             result.setError(true);
             result.setMessage("La ubicación indicada no existe");
@@ -41,13 +41,15 @@ public class IncidenteServiceImpl implements IncidenteService {
             return result;
         }
 
+
+
         Incidente accidente = Incidente.builder()
                 .incident_type(Integer.parseInt(request.getTipoIncidente()))
                 .descripcion(request.getDescripcion())
                 .date(LocalDate.parse(request.getFecha()))
                 .time(LocalTime.parse(request.getHora()))
                 .photo(request.getFoto())
-                .id_location(Integer.parseInt(request.getIdLocation())).build();
+                .id_location(Integer.parseInt(request.getIdUbicacion())).build();
 
         incidenteRepository.save(accidente);
         result.setError(false);

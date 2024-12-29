@@ -11,8 +11,8 @@ public class OpenAPIConfig {
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("Nombre de tu API")
+                        .title("Operador")
                         .version("1.0")
-                        .description("Descripción de tu API"));
+                        .description("Contiene las operaciones de Crud para la web progresiva Safe People"));
     }
 }
