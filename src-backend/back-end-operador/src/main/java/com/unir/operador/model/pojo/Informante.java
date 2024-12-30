@@ -19,6 +19,8 @@ public class Informante {
     @Column
     private Integer id;
 
+    private String name;
+
     public Informante() {
 
     }

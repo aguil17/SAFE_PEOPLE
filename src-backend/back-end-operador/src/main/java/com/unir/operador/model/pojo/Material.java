@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Data
 @Getter
 @Setter
@@ -21,9 +23,23 @@ public class Material {
     private Integer id;
 
     @Column(name = "material_type")
+    @NotNull(message = "material_type no puede ser nula")
     private String material_type;
 
+    @Column(name = "description")
+    @NotNull(message = "description no puede ser nula")
+    private String description;
 
+    @Column(name = "quantity")
+    @NotNull(message = "quantity no puede ser nula")
+    private Integer quantity;
+
+    @Column(name = "material_condition")
+    private String material_condition;
+
+    @Column(name = "creation_date")
+    @NotNull(message = "fechaCreacion no puede ser nula")
+    private LocalDate creation_date;
 
     public Material() {
 

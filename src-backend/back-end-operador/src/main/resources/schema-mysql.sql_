@@ -1,3 +1,31 @@
+    drop table if exists material;
+
+    create table material
+    (
+        id int AUTO_INCREMENT primary key,
+        material_type varchar(100) not null,
+        quantity integer not null,
+        material_condition varchar(100) not null,
+        creation_date DATETIME not null
+    );
+
+    drop table if exists wounded;
+
+    create table wounded
+    {
+        id int AUTO_INCREMENT primary key,
+        quantity integer,
+        name varchar(100),
+        last_name varchar(100),
+        wounded_type varchar(100),
+        age integer,
+        gender varchar(100),
+        health_status varchar(100),
+        vital_status varchar(100),
+        creation_date DATETIME not null,
+        type_enjury varchar(100),
+        description_enjury varchar(100)
+    };
 
     drop table if exists informant;
 
