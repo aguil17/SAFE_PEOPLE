@@ -1,8 +1,8 @@
 
-CREATE DATABASE IF NOT EXISTS safepeople;
+CREATE DATABASE IF NOT EXISTS safepeople_operador;
 
--- Usar la base de datos safepeople
-USE safepeople;
+-- Usar la base de datos safepeople_operador
+USE safepeople_operador;
 
 /* TABLA PERSON */
 CREATE TABLE IF NOT EXISTS person (
