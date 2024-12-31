@@ -15,10 +15,12 @@ import lombok.*;
 public class IncidenteInformante {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonProperty
-    @Column
-    private Integer id;
+    @Column(name = "id_incident")
+    private Integer id_incident;
+
+    @Column(name = "id_informat")
+    private Integer id_informat;
 
     public IncidenteInformante() {
 
