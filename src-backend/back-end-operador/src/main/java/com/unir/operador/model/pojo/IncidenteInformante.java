@@ -11,14 +11,15 @@ import lombok.*;
 @Entity
 @AllArgsConstructor
 @Builder
+@IdClass(IncidenteInformantePK.class)
 @Table(name = "incident_informant")
 public class IncidenteInformante {
 
     @Id
-    @JsonProperty
     @Column(name = "id_incident")
     private Integer id_incident;
 
+    @Id
     @Column(name = "id_informat")
     private Integer id_informat;
 

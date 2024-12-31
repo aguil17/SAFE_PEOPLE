@@ -2,7 +2,9 @@ package com.unir.operador.model.request;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 
+@Data
 public class CreateIncidenteMaterialRequest {
 
     @NotNull(message = "El tipo de material no puede ser nulo")

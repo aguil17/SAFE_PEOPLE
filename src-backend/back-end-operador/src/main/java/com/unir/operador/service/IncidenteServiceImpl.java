@@ -1,7 +1,5 @@
 package com.unir.operador.service;
-import com.unir.operador.data.IIncidenteRepository;
-import com.unir.operador.data.IMaterialRepository;
-import com.unir.operador.data.IUbicacionRepository;
+import com.unir.operador.data.*;
 import com.unir.operador.facade.IncidentesFacade;
 import com.unir.operador.model.request.CreateIncidenteRequest;
 import com.unir.operador.model.request.UpdateIncidenteRequest;
@@ -29,23 +27,22 @@ public class IncidenteServiceImpl implements IncidenteService {
     @Autowired
     private IMaterialRepository materialRepository;
 
+    @Autowired
+    private IInformanteRepository informanteRepository;
+
+    @Autowired
+    private IIncidenteInformanteRepository incidenteInformanteRepository;
+
+    @Autowired
+    private IHeridoRepository heridoRepository;
+
     private IncidentesFacade incidentesFacade;
 
     public CreateIncidenteResponse crearIncidente(CreateIncidenteRequest request)
     {
         var result = new CreateIncidenteResponse();
 
-        var ubicacion = ubicacionRepository.findById(Integer.parseInt(request.getIdUbicacion()));
-
-        if (ubicacion.isEmpty())
-        {
-            result.setError(true);
-            result.setMessage("La ubicación indicada no existe");
-            result.setCode("404");
-            return result;
-        }
-
-        Incidente accidente = Incidente.builder()
+        Incidente incidente = Incidente.builder()
                 .incident_type(Integer.parseInt(request.getTipoIncidente()))
                 .descripcion(request.getDescripcion())
                 .date(LocalDate.parse(request.getFecha()))
@@ -53,12 +50,39 @@ public class IncidenteServiceImpl implements IncidenteService {
                 .photo(request.getFoto())
                 .id_location(Integer.parseInt(request.getIdUbicacion())).build();
 
-        incidenteRepository.save(accidente);
+        var requestUbicacion = request.getUbicacion();
+
+        Ubicacion ubicacion = Ubicacion.builder().city_name(requestUbicacion.getNombreCiudad())
+                .descripcion(requestUbicacion.getDescripcion())
+                .district_name(requestUbicacion.getNombreDistrito())
+                .reference(requestUbicacion.getReferencia())
+                .latitude(requestUbicacion.getLatitud())
+                .longitude(requestUbicacion.getLongitud())
+                .build();
+
+        ubicacionRepository.save(ubicacion);
+
+        incidenteRepository.save(incidente);
 
         incidentesFacade.RegistrarIncidente(request);
 
+        for (var material : request.getMateriales())
+        {
+            var materialEntity = Material.builder()
+                    .material_type(material.getTipoMaterial())
+                    .description(material.getDescripcion())
+                    .quantity(Integer.parseInt(material.getCantidad()))
+                    .material_condition(material.getCondicionMaterial()).build();
+            materialRepository.save(materialEntity);
+        }
+
+        for (var herido : request.getHeridos())
+        {
+
+        }
+
         result.setError(false);
-        result.setData(accidente);
+        result.setData(incidente);
         result.setCode("201");
         return result;
     }
