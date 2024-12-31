@@ -10,7 +10,7 @@ spring:
         dialect: org.hibernate.dialect.MySQLDialect
         format_sql: true
   datasource:
-    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/safepeople
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/safepeople_operador
     username: ${DB_USER:root}
     password: ${DB_PASS:Ll@n0s2025}  #cambiar clave
 
