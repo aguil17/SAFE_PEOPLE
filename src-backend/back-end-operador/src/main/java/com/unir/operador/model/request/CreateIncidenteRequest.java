@@ -31,11 +31,6 @@ public class CreateIncidenteRequest {
 
     private String Foto;
 
-    @NotNull(message = "La ubicación no puede ser nula")
-    @NotEmpty(message = "La ubicación no puede ser vacía")
-    @Pattern(regexp = "\\d+", message = "La ubicación debe contener solo números")
-    private String idUbicacion;
-
     @NotNull(message = "Lista de materiales no puede ser nula")
     @NotEmpty(message = "Lista de materiales no puede ser vacía")
     private CreateIncidenteMaterialRequest[] materiales;

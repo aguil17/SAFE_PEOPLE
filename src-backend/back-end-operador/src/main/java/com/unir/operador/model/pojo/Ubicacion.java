@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
@@ -61,8 +62,7 @@ public class Ubicacion {
 
     @Column(name = "creation_date")
     @NotNull(message = "fechaCreacion no puede ser nula")
-    private LocalDate creation_date;
-
+    private Timestamp creation_date;
 
     public Ubicacion () {
 

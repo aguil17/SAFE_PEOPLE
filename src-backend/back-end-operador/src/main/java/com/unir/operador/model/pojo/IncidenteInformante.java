@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.sql.Timestamp;
+
 @Data
 @Getter
 @Setter
@@ -22,6 +24,9 @@ public class IncidenteInformante {
     @Id
     @Column(name = "id_informat")
     private Integer id_informat;
+
+    @Column(name = "assignment_date")
+    private Timestamp assignment_date;
 
     public IncidenteInformante() {
 

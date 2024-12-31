@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 
 @Data
@@ -39,7 +40,10 @@ public class Material {
 
     @Column(name = "creation_date")
     @NotNull(message = "fechaCreacion no puede ser nula")
-    private LocalDate creation_date;
+    private Timestamp creation_date;
+
+    @Column(name = "id_incident")
+    private Integer id_incident;
 
     public Material() {
 

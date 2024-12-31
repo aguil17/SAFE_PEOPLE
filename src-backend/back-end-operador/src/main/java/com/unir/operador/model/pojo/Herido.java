@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 
 @Data
@@ -49,13 +50,16 @@ public class Herido {
 
     @Column(name = "creation_date")
     @NotNull(message = "fechaCreacion no puede ser nula")
-    private LocalDate creation_date;
+    private Timestamp creation_date;
 
     @Column(name = "type_enjury")
     private String type_enjury;
 
     @Column(name = "description_enjury")
     private String description_enjury;
+
+    @Column(name = "id_incident")
+    private Integer id_incident;
 
     public Herido() {
 
