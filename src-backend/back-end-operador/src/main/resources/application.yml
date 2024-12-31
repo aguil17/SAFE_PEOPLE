@@ -6,13 +6,13 @@ spring:
     database: MYSQL
     show-sql: true
     properties:
-      hibernate:
+     hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
         format_sql: true
   datasource:
-    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/safepeople_operador?createDatabaseIfNotExist=true
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/safepeople
     username: ${DB_USER:root}
-    password: ${DB_PASS:Server01$}
+    password: ${DB_PASS:Ll@n0s2025}  #cambiar clave
 
   batch:
     jdbc:
