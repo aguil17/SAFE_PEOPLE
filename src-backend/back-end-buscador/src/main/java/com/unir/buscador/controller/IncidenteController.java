@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 //@RequiredArgsConstructor
 @RequestMapping("/categories")
 @Slf4j
-@Tag(name = "Ejemplo Controller", description = "Microservicio")
-public class EjemploController {
+@Tag(name = "Incidente Controller", description = "Microservicio")
+public class IncidenteController {
 
     @GetMapping()
     @Operation(
