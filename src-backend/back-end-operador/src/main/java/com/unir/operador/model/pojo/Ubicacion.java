@@ -44,9 +44,9 @@ public class Ubicacion {
     @NotNull(message = "nombre de distrito no puede ser nulo")
     private  String district_name;
 
-    @Column(name = "descripcion")
+    @Column(name = "description")
     @NotNull(message = "descripcion no puede ser nulo")
-    private String descripcion;
+    private String description;
 
     @Column(name = "reference")
     @NotNull(message = "referencia no puede ser nula")

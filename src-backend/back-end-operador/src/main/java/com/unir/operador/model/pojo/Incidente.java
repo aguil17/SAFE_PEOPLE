@@ -35,9 +35,9 @@ public class Incidente {
     @NotNull(message = "El tipo incidente no puede ser nulo")
     private Integer incident_type;
 
-    @Column(name = "descripcion")
+    @Column(name = "description")
     @NotNull(message = "descripción no puede ser nula")
-    private String descripcion;
+    private String description;
 
     @Column(name = "date")
     @NotNull(message = "fecha no puede ser nula")

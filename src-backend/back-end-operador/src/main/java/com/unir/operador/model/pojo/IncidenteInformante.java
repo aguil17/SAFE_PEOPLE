@@ -22,8 +22,8 @@ public class IncidenteInformante {
     private Integer id_incident;
 
     @Id
-    @Column(name = "id_informat")
-    private Integer id_informat;
+    @Column(name = "id_informant")
+    private Integer id_informant;
 
     @Column(name = "assignment_date")
     private Timestamp assignment_date;

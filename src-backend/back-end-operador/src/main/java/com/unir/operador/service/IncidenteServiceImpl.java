@@ -38,6 +38,7 @@ public class IncidenteServiceImpl implements IncidenteService {
     @Autowired
     private IHeridoRepository heridoRepository;
 
+    @Autowired
     private IncidentesFacade incidentesFacade;
 
     public CreateIncidenteResponse crearIncidente(CreateIncidenteRequest request)
@@ -49,7 +50,7 @@ public class IncidenteServiceImpl implements IncidenteService {
         var requestUbicacion = request.getUbicacion();
 
         Ubicacion ubicacion = Ubicacion.builder().city_name(requestUbicacion.getNombreCiudad())
-                .descripcion(requestUbicacion.getDescripcion())
+                .description(requestUbicacion.getDescripcion())
                 .district_name(requestUbicacion.getNombreDistrito())
                 .reference(requestUbicacion.getReferencia())
                 .latitude(requestUbicacion.getLatitud())
@@ -61,7 +62,7 @@ public class IncidenteServiceImpl implements IncidenteService {
 
         Incidente incidente = Incidente.builder()
                 .incident_type(Integer.parseInt(request.getTipoIncidente()))
-                .descripcion(request.getDescripcion())
+                .description(request.getDescripcion())
                 .date(LocalDate.parse(request.getFecha()))
                 .time(LocalTime.parse(request.getHora()))
                 .photo(request.getFoto())
@@ -128,7 +129,7 @@ public class IncidenteServiceImpl implements IncidenteService {
 
                 var incidenteInformante = IncidenteInformante.builder()
                         .id_incident(incidenteSaved.getId())
-                        .id_informat(informanteSaved.getId())
+                        .id_informant(informanteSaved.getId())
                         .assignment_date(fechaActual)
                         .build();
 

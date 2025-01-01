@@ -7,5 +7,5 @@ import java.io.Serializable;
 @Data
 public class IncidenteInformantePK implements Serializable {
     private Integer id_incident;
-    private Integer id_informat;
+    private Integer id_informant;
 }
