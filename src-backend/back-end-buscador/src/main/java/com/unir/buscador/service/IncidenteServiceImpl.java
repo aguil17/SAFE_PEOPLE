@@ -1,4 +1,14 @@
 package com.unir.buscador.service;
 
-public class IncidenteServiceImpl {
+import com.unir.buscador.data.IIncidenteRepository;
+import com.unir.buscador.model.response.GetIncidenteResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class IncidenteServiceImpl implements IIncidenteService {
+
+    public GetIncidenteResponse getIncidentes() {
+        return null;
+    }
 }

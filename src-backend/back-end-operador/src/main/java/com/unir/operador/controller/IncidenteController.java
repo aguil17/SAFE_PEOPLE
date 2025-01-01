@@ -20,7 +20,7 @@ import io.swagger.v3.oas.annotations.Operation;
 
 
 @RestController
-@RequestMapping("/accidente")
+@RequestMapping("/incidente")
 //@RequiredArgsConstructor
 @Slf4j
 @Tag(name = "Incidente Controller", description = "Gestión del Incidente")

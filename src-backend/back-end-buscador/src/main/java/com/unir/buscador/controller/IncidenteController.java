@@ -1,5 +1,7 @@
 package com.unir.buscador.controller;
 
+import com.unir.buscador.model.response.GetIncidenteResponse;
+import com.unir.buscador.service.IIncidenteService;
 import com.unir.buscador.util.ResponseMessage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -15,26 +17,32 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 //@RequiredArgsConstructor
-@RequestMapping("/categories")
+@RequestMapping("/incidente")
 @Slf4j
-@Tag(name = "Incidente Controller", description = "Microservicio")
+@Tag(name = "Incidente Controller", description = "Información sobre los incidentes registrados")
 public class IncidenteController {
+
+    private final IIncidenteService incidenteService;
+
+    public IncidenteController(IIncidenteService incidenteService) {
+        this.incidenteService = incidenteService;
+    }
 
     @GetMapping()
     @Operation(
-            operationId = "categories-get",
-            description = "Operacion de lectura para devolver las categorias",
-            summary = "Se devuelve una lista de las categorias almacenadas en la base de datos.")
+            operationId = "incidente-get",
+            description = "Operación de lectura para devolver los incidentes",
+            summary = "Se devuelve una lista de los incidentes almacenados.")
     @ApiResponse(
             responseCode = "200",
-            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Void.class)))
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = GetIncidenteResponse.class)))
     @ApiResponse(
             responseCode = "404",
-            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Void.class)),
-            description = ResponseMessage.EJEMPLO_NOT_FOUND)
-    public ResponseEntity<Integer> getCategorys() {
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = GetIncidenteResponse.class)),
+            description = ResponseMessage.INCIDENTES_NOT_FOUND)
+    public ResponseEntity<GetIncidenteResponse> getIncidentes() {
 
-        Integer response = 1;
+        var response = incidenteService.getIncidentes();
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
