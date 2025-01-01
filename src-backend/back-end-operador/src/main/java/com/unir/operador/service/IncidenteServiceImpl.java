@@ -117,15 +117,27 @@ public class IncidenteServiceImpl implements IncidenteService {
         {
             for (var informante : request.getInformantes())
             {
-                var informanteEntidad = Informante.builder()
-                        .name(informante.getNombre())
-                        .last_name(informante.getApellidos())
-                        .cellphone(informante.getCelular())
-                        .email(informante.getCorreoElectronico())
-                        .creation_date(fechaActual)
-                        .build();
 
-                var informanteSaved = informanteRepository.save(informanteEntidad);
+                var informanteEntity = informanteRepository.findByEmail(informante.getCorreoElectronico());
+
+                Informante informanteSaved = null;
+
+                if (informanteEntity.isEmpty())
+                {
+                    var informanteEntidad = Informante.builder()
+                            .name(informante.getNombre())
+                            .last_name(informante.getApellidos())
+                            .cellphone(informante.getCelular())
+                            .email(informante.getCorreoElectronico())
+                            .creation_date(fechaActual)
+                            .build();
+
+                    informanteSaved = informanteRepository.save(informanteEntidad);
+                }
+                else
+                {
+                    informanteSaved = informanteEntity.get();
+                }
 
                 var incidenteInformante = IncidenteInformante.builder()
                         .id_incident(incidenteSaved.getId())
@@ -138,7 +150,7 @@ public class IncidenteServiceImpl implements IncidenteService {
         }
 
         result.setError(false);
-        result.setData(incidente);
+        result.setData(incidenteSaved);
         result.setCode("201");
         return result;
     }
