@@ -60,8 +60,10 @@ public class IncidenteServiceImpl implements IncidenteService {
 
         var ubicacionSaved = ubicacionRepository.save(ubicacion);
 
+        IncidentType incidentType = IncidentType.valueOf(request.getTipoIncidente());
+
         Incidente incidente = Incidente.builder()
-                .incident_type(Integer.parseInt(request.getTipoIncidente()))
+                .incident_type(incidentType)
                 .description(request.getDescripcion())
                 .date(LocalDate.parse(request.getFecha()))
                 .time(LocalTime.parse(request.getHora()))
@@ -94,15 +96,21 @@ public class IncidenteServiceImpl implements IncidenteService {
         {
             for (var herido : request.getHeridos())
             {
+                GeneroType genero = GeneroType.valueOf(herido.getGenero());
+
+                EstadoSaludType estadoSalud = EstadoSaludType.valueOf(herido.getEstadoSalud());
+
+                EstadoVital estadoVital = EstadoVital.valueOf(herido.getEstadoVital());
+
                 var heridoEntity = Herido.builder()
                         .quantity(Integer.parseInt(herido.getCantidad()))
                         .name(herido.getNombre())
                         .last_name(herido.getApellidos())
                         .wounded_type(herido.getTipoHerido())
                         .age(Integer.parseInt(herido.getEdad()))
-                        .gender(herido.getGenero())
-                        .health_status(herido.getEstadoSalud())
-                        .vital_status(herido.getEstadoVital())
+                        .gender(genero)
+                        .health_status(estadoSalud)
+                        .vital_status(estadoVital)
                         .type_enjury(herido.getTipoHerida())
                         .creation_date(fechaActual)
                         .description_enjury(herido.getDescripcionHerida())
@@ -175,7 +183,7 @@ public class IncidenteServiceImpl implements IncidenteService {
     public DeleteIncidenteResponse eliminarIncidente(String incidenteId)
     {
         var result = new DeleteIncidenteResponse();
-        var incidente = incidenteRepository.findById(Integer.parseInt(incidenteId));
+        var incidente = incidenteRepository.findByIdAndDeleteAtIsNull(Integer.parseInt(incidenteId));
 
         if (incidente.isEmpty())
         {
@@ -185,10 +193,15 @@ public class IncidenteServiceImpl implements IncidenteService {
             return result;
         }
 
-        ubicacionRepository.deleteById(Integer.parseInt(incidenteId));
+        var fechaActual = Timestamp.from(Instant.now());
+
+        var incidenteToDelete = incidente.get();
+        incidenteToDelete.setDeleteAt(fechaActual);
+
+        incidenteRepository.save(incidenteToDelete);
 
         result.setError(false);
-        result.setData(incidente.get());
+        result.setData(incidenteToDelete);
         result.setCode("200");
         return result;
     }

@@ -31,9 +31,10 @@ public class Incidente {
     @Column
     private Integer id;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "incident_type")
     @NotNull(message = "El tipo incidente no puede ser nulo")
-    private Integer incident_type;
+    private IncidentType incident_type;
 
     @Column(name = "description")
     @NotNull(message = "descripción no puede ser nula")
@@ -49,6 +50,12 @@ public class Incidente {
 
     @Column(name = "photo")
     private String photo;
+
+    @Column(name = "id_user")
+    private Integer id_user;
+
+    @Column(name = "deleteAt")
+    private Timestamp deleteAt;
 
     @Column(name = "creation_date")
     @NotNull(message = "fechaCreacion no puede ser nula")

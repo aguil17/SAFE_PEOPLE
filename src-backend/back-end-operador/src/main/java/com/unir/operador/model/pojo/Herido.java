@@ -39,14 +39,17 @@ public class Herido {
     @Column(name = "age")
     private Integer age;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "gender")
-    private String gender;
+    private GeneroType gender;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "health_status")
-    private String health_status;
+    private EstadoSaludType health_status;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "vital_status")
-    private String vital_status;
+    private EstadoVital vital_status;
 
     @Column(name = "creation_date")
     @NotNull(message = "fechaCreacion no puede ser nula")

@@ -1,5 +1,8 @@
 package com.unir.operador.model.request;
 
+import com.unir.operador.model.pojo.IncidentType;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -13,8 +16,7 @@ import lombok.NoArgsConstructor;
 public class CreateIncidenteRequest {
 
     @NotNull(message = "El tipo incidente no puede ser nulo")
-    @NotEmpty(message = "El tipo incidente no puede ser vacío")
-    @Pattern(regexp = "\\d+", message = "El tipo incidente debe contener solo números")
+    @NotEmpty(message = "El tipo incidente no puede estar vacío")
     private String TipoIncidente;
 
     @NotNull(message = "La descripción no puede ser nula")
