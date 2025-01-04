@@ -69,6 +69,7 @@ public class IncidenteServiceImpl implements IncidenteService {
                 .time(LocalTime.parse(request.getHora()))
                 .photo(request.getFoto())
                 .creation_date(fechaActual)
+                .deleteAt(null)
                 .id_location(ubicacionSaved.getId()).build();
 
 

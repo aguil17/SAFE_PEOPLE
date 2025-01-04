@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS incident (
                                         time TIME NOT NULL,
                                         photo VARCHAR(255) NOT NULL,
                                         id_user INT,
-                                        deleteAt TIMESTAMP NULL DEFAULT NULL,
+                                        delete_at TIMESTAMP NULL DEFAULT NULL,
                                         creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                                         id_location INT UNIQUE,
                                         FOREIGN KEY (id_location) REFERENCES location(id),
