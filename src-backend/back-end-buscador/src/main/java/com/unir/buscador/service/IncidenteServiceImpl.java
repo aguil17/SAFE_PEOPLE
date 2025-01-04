@@ -8,7 +8,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class IncidenteServiceImpl implements IIncidenteService {
 
+    @Autowired
+    private IIncidenteRepository incidenteRepository;
+
     public GetIncidenteResponse getIncidentes() {
-        return null;
+
+
+        return new GetIncidenteResponse();
     }
 }
+

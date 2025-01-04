@@ -1,5 +1,6 @@
 package com.unir.buscador.controller;
 
+import com.unir.buscador.model.request.CreateIncidenteRequest;
 import com.unir.buscador.model.response.GetIncidenteResponse;
 import com.unir.buscador.service.IIncidenteService;
 import com.unir.buscador.util.ResponseMessage;
@@ -42,8 +43,13 @@ public class IncidenteController {
             description = ResponseMessage.INCIDENTES_NOT_FOUND)
     public ResponseEntity<GetIncidenteResponse> getIncidentes() {
 
-        var response = incidenteService.getIncidentes();
+        var serviceResult = incidenteService.getIncidentes();
 
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+        if (serviceResult.isError() && serviceResult.getCode() == "404")
+        {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(serviceResult);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(serviceResult);
     }
 }
