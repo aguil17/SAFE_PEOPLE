@@ -1,10 +1,10 @@
 package com.unir.buscador.service;
 
+import com.unir.buscador.data.IIncidenteInformanteRepository;
 import com.unir.buscador.data.IIncidenteRepository;
-import com.unir.buscador.model.pojo.GenderType;
-import com.unir.buscador.model.pojo.IncidentType;
-import com.unir.buscador.model.pojo.Incidente;
-import com.unir.buscador.model.pojo.RoleType;
+import com.unir.buscador.data.IInformanteRepository;
+import com.unir.buscador.data.IMaterialRepository;
+import com.unir.buscador.model.pojo.*;
 import com.unir.buscador.model.request.CreateIncidenteRequest;
 import com.unir.buscador.model.response.CreateIncidenteResponse;
 import com.unir.buscador.model.response.GetIncidenteResponse;
@@ -26,6 +26,15 @@ public class IncidenteServiceImpl implements IIncidenteService {
 
     @Autowired
     private IIncidenteRepository incidenteRepository;
+
+    @Autowired
+    private IInformanteRepository informanteRepository;
+
+    @Autowired
+    private IIncidenteInformanteRepository incidenteInformanteRepository;
+
+    @Autowired
+    private IMaterialRepository materialRepository;
 
     public List<Incidente> buscarPorRangoDeFechas(LocalDate fechaInicio, LocalDate fechaFin) {
         return incidenteRepository.findAll((root, query, criteriaBuilder) -> {
@@ -108,7 +117,56 @@ public class IncidenteServiceImpl implements IIncidenteService {
                 .gender(genderType)
                 .build();
 
-        incidenteRepository.save(incidente);
+        var incidenteSaved = incidenteRepository.save(incidente);
+
+        if (request.getInformantes() != null) {
+            for(var informante : request.getInformantes())
+            {
+                var informanteEntity = informanteRepository.findByEmail(informante.getCorreoElectronico());
+
+                Informante informanteSaved = null;
+
+                if (informanteEntity.isEmpty())
+                {
+                    var informanteEntidad = Informante.builder()
+                            .name(informante.getNombre())
+                            .last_name(informante.getApellidos())
+                            .cellphone(informante.getCelular())
+                            .email(informante.getCorreoElectronico())
+                            .creation_date(fechaActual)
+                            .build();
+
+                    informanteSaved = informanteRepository.save(informanteEntidad);
+                }
+                else
+                {
+                    informanteSaved = informanteEntity.get();
+                }
+
+                var incidenteInformante = IncidenteInformante.builder()
+                        .id_incident(incidenteSaved.getId())
+                        .id_informant(informanteSaved.getId())
+                        .assignment_date(fechaActual)
+                        .build();
+
+                incidenteInformanteRepository.save(incidenteInformante);
+            }
+        }
+
+        if (request.getMateriales() != null) {
+            for(var material : request.getMateriales())
+            {
+                var materialEntity = Material.builder()
+                        .material_type(material.getTipoMaterial())
+                        .description(material.getDescripcion())
+                        .quantity(Integer.parseInt(material.getCantidad()))
+                        .material_condition(material.getCondicionMaterial())
+                        .creation_date(fechaActual)
+                        .id_incident(incidenteSaved.getId()).build();
+
+                materialRepository.save(materialEntity);
+            }
+        }
 
         result.setCode("200");
         result.setMessage("OK");

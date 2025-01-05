@@ -100,4 +100,10 @@ public class CreateIncidenteRequest {
     @Enumerated(EnumType.STRING)
     @Column(name = "gender")
     private String gender;
+
+    @NotNull(message = "Lista de materiales no puede ser nula")
+    @NotEmpty(message = "Lista de materiales no puede ser vacía")
+    private CreateIncidenteMaterialRequest[] materiales;
+
+    private CreateIncidenteInformanteRequest[] informantes;
 }
