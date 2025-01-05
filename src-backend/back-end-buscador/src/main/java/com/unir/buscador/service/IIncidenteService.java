@@ -6,7 +6,7 @@ import com.unir.buscador.model.response.GetIncidenteResponse;
 
 public interface IIncidenteService {
 
-    public GetIncidenteResponse getIncidentes();
+    public GetIncidenteResponse getIncidentes(String fechaCreacionInicial,String fechaCreacionFinal);
 
     CreateIncidenteResponse createIncidente(CreateIncidenteRequest request);
 }

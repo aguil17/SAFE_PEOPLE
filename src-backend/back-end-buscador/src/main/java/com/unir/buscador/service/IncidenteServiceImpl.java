@@ -8,14 +8,18 @@ import com.unir.buscador.model.pojo.RoleType;
 import com.unir.buscador.model.request.CreateIncidenteRequest;
 import com.unir.buscador.model.response.CreateIncidenteResponse;
 import com.unir.buscador.model.response.GetIncidenteResponse;
+import jakarta.persistence.criteria.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 
 @Service
 public class IncidenteServiceImpl implements IIncidenteService {
@@ -23,11 +27,27 @@ public class IncidenteServiceImpl implements IIncidenteService {
     @Autowired
     private IIncidenteRepository incidenteRepository;
 
-    public GetIncidenteResponse getIncidentes() {
+    public List<Incidente> buscarPorRangoDeFechas(LocalDate fechaInicio, LocalDate fechaFin) {
+        return incidenteRepository.findAll((root, query, criteriaBuilder) -> {
+            // Convertir LocalDate a Timestamp
+            Timestamp timestampInicio = Timestamp.valueOf(fechaInicio.atStartOfDay());
+            Timestamp timestampFin = Timestamp.valueOf(fechaFin.atTime(23, 59, 59));
+
+            // Aplicar los predicados
+            Predicate fechaInicioPredicate = criteriaBuilder.greaterThanOrEqualTo(root.get("creation_date"), timestampInicio);
+            Predicate fechaFinPredicate = criteriaBuilder.lessThanOrEqualTo(root.get("creation_date"), timestampFin);
+            return criteriaBuilder.and(fechaInicioPredicate, fechaFinPredicate);
+        });
+    }
+
+    public GetIncidenteResponse getIncidentes(String fechaCreacionInicial,String fechaCreacionFinal) {
 
         var result = new GetIncidenteResponse();
 
-        var resultado = incidenteRepository.findAll();
+        var fechaInicio = LocalDate.parse(fechaCreacionInicial);
+        var fechaFin = LocalDate.parse(fechaCreacionFinal);
+
+        var resultado = buscarPorRangoDeFechas(fechaInicio,fechaFin);
 
         if (resultado.isEmpty()) {
             result.setError(true);

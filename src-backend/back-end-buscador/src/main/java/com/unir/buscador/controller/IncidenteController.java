@@ -6,6 +6,7 @@ import com.unir.buscador.model.response.GetIncidenteResponse;
 import com.unir.buscador.service.IIncidenteService;
 import com.unir.buscador.util.ResponseMessage;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -29,7 +30,7 @@ public class IncidenteController {
         this.incidenteService = incidenteService;
     }
 
-    @GetMapping()
+    @GetMapping("/fechaCreacionInicial/{fechaCreacionInicial}/fechaCreacionFinal/{fechaCreacionFinal}")
     @Operation(
             operationId = "incidente-get",
             description = "Operación de lectura para devolver los incidentes",
@@ -41,9 +42,15 @@ public class IncidenteController {
             responseCode = "404",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = GetIncidenteResponse.class)),
             description = ResponseMessage.INCIDENTES_NOT_FOUND)
-    public ResponseEntity<GetIncidenteResponse> getIncidentes() {
+    public ResponseEntity<GetIncidenteResponse> getIncidentes(
+            @Parameter(name = "fechaCreacionInicial",
+                       description = "fecha de creación inicial", example = "2025-01-01", required = true)
+            @PathVariable String fechaCreacionInicial,
+            @Parameter(name = "fechaCreacionFinal",
+                       description = "fecha de creación final", example = "2025-01-01", required = true)
+            @PathVariable String fechaCreacionFinal) {
 
-        var serviceResult = incidenteService.getIncidentes();
+        var serviceResult = incidenteService.getIncidentes(fechaCreacionInicial,fechaCreacionFinal);
 
         if (serviceResult.isError() && serviceResult.getCode() == "404")
         {
