@@ -1,6 +1,7 @@
 package com.unir.buscador.controller;
 
 import com.unir.buscador.model.request.CreateIncidenteRequest;
+import com.unir.buscador.model.response.CreateIncidenteResponse;
 import com.unir.buscador.model.response.GetIncidenteResponse;
 import com.unir.buscador.service.IIncidenteService;
 import com.unir.buscador.util.ResponseMessage;
@@ -9,12 +10,11 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 //@RequiredArgsConstructor
@@ -52,4 +52,20 @@ public class IncidenteController {
 
         return ResponseEntity.status(HttpStatus.OK).body(serviceResult);
     }
+
+    @PostMapping()
+    @Operation(
+            operationId = "incidente-post",
+            description = "Creación de incidente",
+            summary = "Creación de incidente.")
+    @ApiResponse(
+            responseCode = "201",
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = CreateIncidenteResponse.class)))
+    public ResponseEntity<CreateIncidenteResponse> createIncidente(@Valid @RequestBody CreateIncidenteRequest request)
+    {
+        var createIncidenteResponse = incidenteService.createIncidente(request);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(createIncidenteResponse);
+    }
 }
+

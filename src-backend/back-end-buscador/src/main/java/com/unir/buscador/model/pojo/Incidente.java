@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -71,13 +72,14 @@ public class Incidente {
     @NotNull(message = "referencia no puede ser nula")
     private String reference;
 
-    @Column(name = "latitude")
-    @NotNull(message = "latitud no puede ser nula")
-    private String latitude;
 
-    @Column(name = "longitude")
-    @NotNull(message = "longitud no puede ser nula")
-    private String longitude;
+    @Column(name = "latitude",precision = 9, scale = 6)
+    @NotNull(message = "latitude no puede ser nula")
+    private BigDecimal latitude;
+
+    @Column(name = "longitude",precision = 9, scale = 6)
+    @NotNull(message = "longitude no puede ser nula")
+    private BigDecimal longitude;
 
     @Column(name = "id_user")
     private int id_user;
