@@ -13,8 +13,16 @@ public class IncidenteServiceImpl implements IIncidenteService {
 
     public GetIncidenteResponse getIncidentes() {
 
+        var result = new GetIncidenteResponse();
 
-        return new GetIncidenteResponse();
+        var resultado = incidenteRepository.findAll();
+
+        if (resultado.isEmpty()) {
+            result.setError(true);
+            result.setMessage("No hay incidentes respecto a los criterios elegidos");
+            result.setCode("404");
+        }
+
+        return result;
     }
 }
-
