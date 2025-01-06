@@ -1,9 +1,6 @@
 package com.unir.buscador.service;
 
-import com.unir.buscador.data.IIncidenteInformanteRepository;
-import com.unir.buscador.data.IIncidenteRepository;
-import com.unir.buscador.data.IInformanteRepository;
-import com.unir.buscador.data.IMaterialRepository;
+import com.unir.buscador.data.*;
 import com.unir.buscador.model.pojo.*;
 import com.unir.buscador.model.request.CreateIncidenteRequest;
 import com.unir.buscador.model.response.CreateIncidenteResponse;
@@ -35,6 +32,9 @@ public class IncidenteServiceImpl implements IIncidenteService {
 
     @Autowired
     private IMaterialRepository materialRepository;
+
+    @Autowired
+    private IHeridoRepository heridoRepository;
 
     public List<Incidente> buscarPorRangoDeFechas(LocalDate fechaInicio, LocalDate fechaFin) {
         return incidenteRepository.findAll((root, query, criteriaBuilder) -> {
@@ -165,6 +165,35 @@ public class IncidenteServiceImpl implements IIncidenteService {
                         .id_incident(incidenteSaved.getId()).build();
 
                 materialRepository.save(materialEntity);
+            }
+        }
+
+        if (request.getHeridos() != null)
+        {
+            for (var herido : request.getHeridos())
+            {
+                GenderType genero = GenderType.valueOf(herido.getGenero());
+
+                EstadoSaludType estadoSalud = EstadoSaludType.valueOf(herido.getEstadoSalud());
+
+                EstadoVital estadoVital = EstadoVital.valueOf(herido.getEstadoVital());
+
+                var heridoEntity = Herido.builder()
+                        .quantity(Integer.parseInt(herido.getCantidad()))
+                        .name(herido.getNombre())
+                        .last_name(herido.getApellidos())
+                        .wounded_type(herido.getTipoHerido())
+                        .age(Integer.parseInt(herido.getEdad()))
+                        .gender(genero)
+                        .health_status(estadoSalud)
+                        .vital_status(estadoVital)
+                        .type_enjury(herido.getTipoHerida())
+                        .creation_date(fechaActual)
+                        .description_enjury(herido.getDescripcionHerida())
+                        .id_incident(incidenteSaved.getId())
+                        .build();
+
+                heridoRepository.save(heridoEntity);
             }
         }
 

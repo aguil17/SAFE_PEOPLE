@@ -32,3 +32,14 @@ CREATE TABLE IF NOT EXISTS incident (
     birthdate DATE,
     gender ENUM('male','female','undefined')
     );
+
+CREATE TABLE IF NOT EXISTS material (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    material_type VARCHAR(50) NOT NULL, -- TIPOS DE MATERIAL LO DEFINE EL FRONTEND
+    description VARCHAR(500) NOT NULL,
+    quantity INT UNSIGNED NOT NULL DEFAULT 0,
+    material_condition ENUM('new', 'used', 'damaged') NOT NULL DEFAULT 'damaged',
+    creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    id_incident INT,
+    FOREIGN KEY (id_incident) REFERENCES incident(id)
+    );

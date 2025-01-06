@@ -106,4 +106,6 @@ public class CreateIncidenteRequest {
     private CreateIncidenteMaterialRequest[] materiales;
 
     private CreateIncidenteInformanteRequest[] informantes;
+
+    private CreateIncidenteHeridoRequest[] Heridos;
 }
