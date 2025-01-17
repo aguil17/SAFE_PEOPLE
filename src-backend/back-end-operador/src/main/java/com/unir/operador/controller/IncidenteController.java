@@ -75,29 +75,7 @@ public class IncidenteController {
         return ResponseEntity.status(HttpStatus.CREATED).body(serviceResult);
     }
 
-    @PutMapping("/{incidenteId}")
-    @Operation(
-            operationId = "incidente-put",
-            description = "Operación de actualización de incidente",
-            summary = "Se actualiza un accidente de tránsito, incendio o robo.")
-    @ApiResponse(
-            responseCode = "200",
-            content = @Content(mediaType = "application/json", schema = @Schema(implementation = UpdateIncidenteResponse.class)))
-    @ApiResponse(
-            responseCode = "404",
-            content = @Content(mediaType = "application/json", schema = @Schema(implementation = UpdateIncidenteResponse.class)))
-    public ResponseEntity<UpdateIncidenteResponse> actualizarIncidente(
-            @PathVariable String incidenteId, @Valid @RequestBody UpdateIncidenteRequest request)
-    {
-        var serviceResult = accidenteService.actualizarIncidente(incidenteId,request);
 
-        if (serviceResult.isError() && serviceResult.getCode() == "404")
-        {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(serviceResult);
-        }
-
-        return ResponseEntity.status(HttpStatus.OK).body(serviceResult);
-    }
 
     @DeleteMapping("/{incidenteId}")
     @Operation(
