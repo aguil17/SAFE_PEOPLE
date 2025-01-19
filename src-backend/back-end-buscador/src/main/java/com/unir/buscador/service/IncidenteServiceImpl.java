@@ -199,6 +199,7 @@ public class IncidenteServiceImpl implements IIncidenteService {
 
         result.setCode("200");
         result.setMessage("OK");
+        result.setData(incidenteSaved);
         result.setError(false);
 
         return result;
