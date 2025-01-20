@@ -43,3 +43,43 @@ CREATE TABLE IF NOT EXISTS material (
     id_incident INT,
     FOREIGN KEY (id_incident) REFERENCES incident(id)
     );
+
+/* TABLA WOUNDED */
+CREATE TABLE IF NOT EXISTS wounded (
+                                       id INT AUTO_INCREMENT PRIMARY KEY,
+                                       quantity INT UNSIGNED NOT NULL DEFAULT 0,
+                                       name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    wounded_type VARCHAR(100) NOT NULL, -- TIPO DE HERIDA
+    age INT UNSIGNED NOT NULL, -- EDAD DEL HERIDO
+    gender ENUM('male','female','undefined') NOT NULL,
+    health_status ENUM('stable','serious_stable','serious_unstable','extremely_serious') NOT NULL, -- ESTABLE, GRAVE ESTABLE, INESTBALE, EXTREMADAMENTE GRAVE
+    vital_status ENUM('alive', 'deceased') NOT NULL, -- CONDICION VIVO O MUERTO.
+    type_enjury  VARCHAR(100) NOT NULL, -- TIPO DE LESION, FRACTURA, CONTUSION ETC.
+    description_enjury VARCHAR(500) NOT NULL,
+    creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    id_incident INT,
+    FOREIGN KEY (id_incident) REFERENCES incident(id)
+    );
+
+/* TABLA INFORMANT */
+CREATE TABLE IF NOT EXISTS informant (
+                                         id INT AUTO_INCREMENT PRIMARY KEY,
+                                         name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    cellphone VARCHAR(15) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+
+/* TABLA INCIDENT_INFORMANT */
+CREATE TABLE IF NOT EXISTS incident_informant (
+                                                  id_informant INT,  -- ID del informante
+                                                  id_incident INT,   -- ID del incidente
+                                                  assignment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  -- Fecha de asignación
+                                                  PRIMARY KEY (id_informant, id_incident),  -- Clave primaria compuesta
+    FOREIGN KEY (id_informant) REFERENCES informant(id),
+    FOREIGN KEY (id_incident) REFERENCES incident(id)
+    );
+
+
