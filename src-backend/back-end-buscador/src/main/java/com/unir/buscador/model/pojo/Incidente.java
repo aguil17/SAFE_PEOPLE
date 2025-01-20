@@ -1,5 +1,6 @@
 package com.unir.buscador.model.pojo;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -9,6 +10,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 @Data
 @Getter
@@ -121,6 +123,10 @@ public class Incidente {
     @Enumerated(EnumType.STRING)
     @Column(name = "gender")
     private GenderType gender;
+
+    @OneToMany(mappedBy = "incidente", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<Herido> heridos;
 
     public Incidente() {
 

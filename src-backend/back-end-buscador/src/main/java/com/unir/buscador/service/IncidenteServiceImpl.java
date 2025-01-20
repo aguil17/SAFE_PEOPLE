@@ -8,6 +8,7 @@ import com.unir.buscador.model.response.GetIncidenteResponse;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import jakarta.persistence.criteria.JoinType;
 
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -41,6 +42,9 @@ public class IncidenteServiceImpl implements IIncidenteService {
             // Convertir LocalDate a Timestamp
             Timestamp timestampInicio = Timestamp.valueOf(fechaInicio.atStartOfDay());
             Timestamp timestampFin = Timestamp.valueOf(fechaFin.atTime(23, 59, 59));
+
+
+            root.fetch("heridos", JoinType.LEFT);
 
             // Aplicar los predicados
             Predicate fechaInicioPredicate = criteriaBuilder.greaterThanOrEqualTo(root.get("creation_date"), timestampInicio);
@@ -190,7 +194,7 @@ public class IncidenteServiceImpl implements IIncidenteService {
                         .type_enjury(herido.getTipoHerida())
                         .creation_date(fechaActual)
                         .description_enjury(herido.getDescripcionHerida())
-                        .id_incident(incidenteSaved.getId())
+                        .incidente(incidenteSaved)
                         .build();
 
                 heridoRepository.save(heridoEntity);
