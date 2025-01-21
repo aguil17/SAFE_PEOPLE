@@ -1,5 +1,6 @@
 package com.unir.buscador.model.pojo;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -41,8 +42,11 @@ public class Material {
     @NotNull(message = "fechaCreacion no puede ser nula")
     private Timestamp creation_date;
 
-    @Column(name = "id_incident")
-    private Integer id_incident;
+
+    @ManyToOne
+    @JoinColumn(name = "id_incident")
+    @JsonBackReference
+    private Incidente incidente;
 
     public Material() {
 

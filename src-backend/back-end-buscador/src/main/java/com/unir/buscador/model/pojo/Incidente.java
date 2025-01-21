@@ -128,6 +128,10 @@ public class Incidente {
     @JsonManagedReference
     private List<Herido> heridos;
 
+    @OneToMany(mappedBy = "incidente", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<Material> materiales;
+
     public Incidente() {
 
     }

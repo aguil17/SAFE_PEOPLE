@@ -166,7 +166,7 @@ public class IncidenteServiceImpl implements IIncidenteService {
                         .quantity(Integer.parseInt(material.getCantidad()))
                         .material_condition(material.getCondicionMaterial())
                         .creation_date(fechaActual)
-                        .id_incident(incidenteSaved.getId()).build();
+                        .incidente(incidenteSaved).build();
 
                 materialRepository.save(materialEntity);
             }
