@@ -11,11 +11,9 @@ import org.springframework.stereotype.Service;
 import jakarta.persistence.criteria.JoinType;
 
 import java.math.BigDecimal;
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -45,6 +43,10 @@ public class IncidenteServiceImpl implements IIncidenteService {
 
 
             root.fetch("heridos", JoinType.LEFT);
+
+            root.fetch("materiales", JoinType.LEFT);
+
+            root.fetch("incidenteInformantes", JoinType.LEFT);
 
             // Aplicar los predicados
             Predicate fechaInicioPredicate = criteriaBuilder.greaterThanOrEqualTo(root.get("creation_date"), timestampInicio);
@@ -124,33 +126,16 @@ public class IncidenteServiceImpl implements IIncidenteService {
         var incidenteSaved = incidenteRepository.save(incidente);
 
         if (request.getInformantes() != null) {
-            for(var informante : request.getInformantes())
+            for (var informante : request.getInformantes())
             {
-                var informanteEntity = informanteRepository.findByEmail(informante.getCorreoElectronico());
-
-                Informante informanteSaved = null;
-
-                if (informanteEntity.isEmpty())
-                {
-                    var informanteEntidad = Informante.builder()
-                            .name(informante.getNombre())
-                            .last_name(informante.getApellidos())
-                            .cellphone(informante.getCelular())
-                            .email(informante.getCorreoElectronico())
-                            .creation_date(fechaActual)
-                            .build();
-
-                    informanteSaved = informanteRepository.save(informanteEntidad);
-                }
-                else
-                {
-                    informanteSaved = informanteEntity.get();
-                }
-
                 var incidenteInformante = IncidenteInformante.builder()
-                        .id_incident(incidenteSaved.getId())
-                        .id_informant(informanteSaved.getId())
+                        .name(informante.getNombre())
+                        .last_name(informante.getApellidos())
+                        .cellphone(informante.getCelular())
+                        .email(informante.getCorreoElectronico())
+                        .incidente(incidenteSaved)
                         .assignment_date(fechaActual)
+                        .creation_date(fechaActual)
                         .build();
 
                 incidenteInformanteRepository.save(incidenteInformante);

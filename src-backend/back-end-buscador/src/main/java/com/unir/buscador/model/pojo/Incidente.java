@@ -1,5 +1,7 @@
 package com.unir.buscador.model.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
@@ -11,6 +13,8 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 @Data
 @Getter
@@ -124,13 +128,23 @@ public class Incidente {
     @Column(name = "gender")
     private GenderType gender;
 
-    @OneToMany(mappedBy = "incidente", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "incidente", fetch = FetchType.LAZY)
     @JsonManagedReference
-    private List<Herido> heridos;
 
-    @OneToMany(mappedBy = "incidente", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Herido> heridos;
+
+    @OneToMany(mappedBy = "incidente", fetch = FetchType.LAZY)
     @JsonManagedReference
-    private List<Material> materiales;
+    private Set<Material> materiales;
+
+    @OneToMany(mappedBy = "incidente", fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private Set<IncidenteInformante> incidenteInformantes;
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);  // Solo utilizar el campo único
+    }
 
     public Incidente() {
 

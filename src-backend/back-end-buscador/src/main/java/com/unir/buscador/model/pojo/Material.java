@@ -42,7 +42,6 @@ public class Material {
     @NotNull(message = "fechaCreacion no puede ser nula")
     private Timestamp creation_date;
 
-
     @ManyToOne
     @JoinColumn(name = "id_incident")
     @JsonBackReference

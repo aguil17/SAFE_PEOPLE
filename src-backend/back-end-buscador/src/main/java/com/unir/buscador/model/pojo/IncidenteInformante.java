@@ -1,6 +1,9 @@
 package com.unir.buscador.model.pojo;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.sql.Timestamp;
@@ -12,20 +15,38 @@ import java.sql.Timestamp;
 @Entity
 @AllArgsConstructor
 @Builder
-@IdClass(IncidenteInformantePK.class)
 @Table(name = "incident_informant")
 public class IncidenteInformante {
 
     @Id
-    @Column(name = "id_incident")
-    private Integer id_incident;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty
+    @Column
+    private Integer id;
 
-    @Id
-    @Column(name = "id_informant")
-    private Integer id_informant;
+    @Column(name = "name")
+    @NotNull(message = "name no puede ser nulo")
+    private String name;
+
+    @Column(name = "last_name")
+    private String last_name;
+
+    @Column(name = "cellphone")
+    private String cellphone;
+
+    @Column(name = "email")
+    private String email;
+
+    @ManyToOne
+    @JoinColumn(name = "id_incident")
+    @JsonBackReference
+    private Incidente incidente;
 
     @Column(name = "assignment_date")
     private Timestamp assignment_date;
+
+    @Column(name = "creation_date")
+    private Timestamp creation_date;
 
     public IncidenteInformante() {
 

@@ -62,24 +62,17 @@ CREATE TABLE IF NOT EXISTS wounded (
     FOREIGN KEY (id_incident) REFERENCES incident(id)
     );
 
-/* TABLA INFORMANT */
-CREATE TABLE IF NOT EXISTS informant (
+/* TABLA INCIDENT_INFORMANT */
+CREATE TABLE IF NOT EXISTS incident_informant (
                                          id INT AUTO_INCREMENT PRIMARY KEY,
                                          name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
     cellphone VARCHAR(15) NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
-    creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    );
-
-/* TABLA INCIDENT_INFORMANT */
-CREATE TABLE IF NOT EXISTS incident_informant (
-                                                  id_informant INT,  -- ID del informante
-                                                  id_incident INT,   -- ID del incidente
-                                                  assignment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  -- Fecha de asignación
-                                                  PRIMARY KEY (id_informant, id_incident),  -- Clave primaria compuesta
-    FOREIGN KEY (id_informant) REFERENCES informant(id),
-    FOREIGN KEY (id_incident) REFERENCES incident(id)
+    email VARCHAR(100) NOT NULL,
+    id_incident INT,   -- ID del incidente
+    assignment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_incident) references incident(id)
     );
 
 
