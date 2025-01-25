@@ -25,7 +25,7 @@ public class CreateIncidenteRequest {
 
     @NotNull(message = "La descripción del incident no puede ser nula")
     @NotEmpty(message = "La descripción no puede estar vacía")
-    private String description_incident;
+    private String Description_incident;
 
     @NotNull(message = "La fecha no puede ser nula")
     @NotEmpty(message = "La fecha no puede ser vacía")
@@ -37,7 +37,7 @@ public class CreateIncidenteRequest {
 
     private String Foto;
 
-    private Integer idLocation;
+    private Integer IdLocation;
 
     @NotNull(message = "Nombre de ciudad no puede ser nula")
     @NotEmpty(message = "Nombre de ciudad no puede ser vacía")
@@ -61,51 +61,37 @@ public class CreateIncidenteRequest {
     @NotEmpty(message = "Longitud no puede ser vacío")
     private String Longitud;
 
-    @Column(name = "id_user")
-    private int id_user;
+    private int Id_user;
 
-    @Column(name = "username")
-    private String username;
+    private String Username;
 
-    @Column(name = "password_user")
-    private String password_user;
+    private String Password_user;
 
-    @Column(name = "role")
-    private String role;
+    private String Role;
 
-    @Column(name = "id_person")
-    private int id_person;
+    private int Id_person;
 
-    @Column(name = "person_name")
-    private String person_name;
+    private String Person_name;
 
-    @Column(name = "person_last_name")
-    private String person_last_name;
+    private String Person_last_name;
 
-    @Column(name = "dni")
-    private String dni;
+    private String Dni;
 
-    @Column(name = "email")
-    private String email;
+    private String Email;
 
-    @Column(name = "cellphone")
-    private String cellphone;
+    private String Cellphone;
 
-    @Column(name = "password_person")
-    private String password_person;
+    private String Password_person;
 
-    @Column(name = "birthdate")
-    private String birthdate;
+    private String Birthdate;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "gender")
-    private String gender;
+    private String Gender;
 
     @NotNull(message = "Lista de materiales no puede ser nula")
     @NotEmpty(message = "Lista de materiales no puede ser vacía")
-    private CreateIncidenteMaterialRequest[] materiales;
+    private CreateIncidenteMaterialRequest[] Materiales;
 
-    private CreateIncidenteInformanteRequest[] informantes;
+    private CreateIncidenteInformanteRequest[] Informantes;
 
     private CreateIncidenteHeridoRequest[] Heridos;
 }

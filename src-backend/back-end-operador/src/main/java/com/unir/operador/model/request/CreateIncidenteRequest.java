@@ -35,9 +35,9 @@ public class CreateIncidenteRequest {
 
     @NotNull(message = "Lista de materiales no puede ser nula")
     @NotEmpty(message = "Lista de materiales no puede ser vacía")
-    private CreateIncidenteMaterialRequest[] materiales;
+    private CreateIncidenteMaterialRequest[] Materiales;
 
-    private CreateIncidenteInformanteRequest[] informantes;
+    private CreateIncidenteInformanteRequest[] Informantes;
 
     @NotNull(message = "Ubicación no puede ser nula")
     private CreateLocationRequest Ubicacion;

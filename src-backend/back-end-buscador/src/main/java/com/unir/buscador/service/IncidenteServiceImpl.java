@@ -86,9 +86,17 @@ public class IncidenteServiceImpl implements IIncidenteService {
 
         IncidentType incidentType = IncidentType.valueOf(request.getTipoIncidente());
 
-        RoleType roleType = RoleType.valueOf(request.getRole());
+        RoleType roleType = null;
+        if (request.getRole() != null)
+        {
+            roleType = RoleType.valueOf(request.getRole());
+        }
 
-        GenderType genderType = GenderType.valueOf(request.getGender());
+        GenderType genderType = null;
+        if (request.getGender() != null)
+        {
+            genderType = GenderType.valueOf(request.getGender());
+        }
 
         BigDecimal latitude = new BigDecimal(request.getLatitud());
         BigDecimal longitude = new BigDecimal(request.getLongitud());
