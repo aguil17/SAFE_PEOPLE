@@ -14,7 +14,7 @@ spring:
   datasource:
     url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/safepeople_operador
     username: ${DB_USER:root}
-    password: ${DB_PASS:Ll@n0s2025}  #cambiar clave
+    password: ${DB_PASS:Server01$}  #cambiar clave
 
   batch:
     jdbc:
@@ -27,7 +27,7 @@ spring:
 ## Classic Eureka configuration
 eureka:
   instance:
-    preferIpAddress: false
+    preferIpAddress: true
     non-secure-port-enabled: true
     secure-port-enabled: false
     non-secure-port: ${server.port}
@@ -37,11 +37,13 @@ eureka:
   client:
     registerWithEureka: true
     fetchRegistry: true
+    hostname: ms-operador
     serviceUrl:
       defaultZone: ${EUREKA_URL:http://localhost:8761/eureka}
 
 ## Buscador
 incidentesBuscador:
   urlRegistro: http://ms-buscador/incidente
+##urlRegistro: http://localhost:8080/incidente
 
 
