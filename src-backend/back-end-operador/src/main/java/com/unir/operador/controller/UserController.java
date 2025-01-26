@@ -33,7 +33,7 @@ public class UserController {
     @PostMapping
     @Operation(
             operationId = "user-post",
-            description = "Operación de registro de user",
+            description = "Operación de registro de user.",
             summary = "Operación de registro de user.")
     @ApiResponse(
             responseCode = "201",
