@@ -10,6 +10,7 @@ jobs:
   build:
     name: Build and analyze
     runs-on: ubuntu-latest
+    working-directory: ./src-backend/back-end-operador
     
     steps:
       - uses: actions/checkout@v4
