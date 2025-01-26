@@ -12,7 +12,6 @@ CREATE TABLE IF NOT EXISTS person (
                                       dni char(8) NOT NULL,
                                       email VARCHAR(100) UNIQUE NOT NULL,
                                       cellphone VARCHAR(15) NOT NULL,
-                                      password VARCHAR(255) NOT NULL,
                                       birthdate DATE NOT NULL,
                                       gender ENUM('male','female','undefined') NOT NULL,
                                       creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

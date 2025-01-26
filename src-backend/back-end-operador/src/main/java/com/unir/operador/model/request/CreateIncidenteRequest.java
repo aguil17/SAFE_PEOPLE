@@ -43,4 +43,7 @@ public class CreateIncidenteRequest {
     private CreateLocationRequest Ubicacion;
 
     private CreateIncidenteHeridoRequest[] Heridos;
+
+    private String IdUsuario;
 }
+

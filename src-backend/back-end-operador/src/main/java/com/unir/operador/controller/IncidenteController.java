@@ -32,24 +32,6 @@ public class IncidenteController {
         this.accidenteService = accidenteService;
     }
 
-    @GetMapping
-    @Operation(
-            operationId = "categories-get",
-            description = "Operacion de lectura para devolver las categorias",
-            summary = "Se devuelve una lista de las categorias almacenadas en la base de datos.")
-    @ApiResponse(
-            responseCode = "200",
-            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Void.class)))
-    @ApiResponse(
-            responseCode = "404",
-            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Void.class)),
-            description = ResponseMessage.EJEMPLO_NOT_FOUND)
-    public ResponseEntity<CreateIncidenteResponse> getCategorys() {
-
-        var response = new CreateIncidenteResponse();
-
-        return ResponseEntity.status(HttpStatus.OK).body(response);
-    }
 
     @PostMapping
     @Operation(

@@ -64,6 +64,12 @@ public class IncidenteServiceImpl implements IncidenteService {
 
         IncidentType incidentType = IncidentType.valueOf(request.getTipoIncidente());
 
+        Integer idUsuario = null;
+        if (request.getIdUsuario() != null)
+        {
+            idUsuario = Integer.parseInt(request.getIdUsuario());
+        }
+
         Incidente incidente = Incidente.builder()
                 .incident_type(incidentType)
                 .description(request.getDescripcion())
@@ -72,6 +78,7 @@ public class IncidenteServiceImpl implements IncidenteService {
                 .photo(request.getFoto())
                 .creation_date(fechaActual)
                 .deleteAt(null)
+                .id_user(idUsuario)
                 .id_location(ubicacionSaved.getId()).build();
 
 
