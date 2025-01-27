@@ -54,8 +54,8 @@ jobs:
       - name: Build and analyze
         working-directory: ./src-backend/back-end-operador
         env:
-          SONAR_TOKEN: admin  # Default username for local SonarQube
-          SONAR_HOST_URL: http://localhost:9000
+            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+            SONAR_HOST_URL: http://localhost:9000
         run: |
           mvn -B verify -DskipTests \
           org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
