@@ -55,7 +55,7 @@ jobs:
         working-directory: ./src-backend/back-end-operador
         env:
             SONAR_TOKEN: sqa_31cb2234705cfbef6a0afd7247fbc4f235f9e560
-            SONAR_HOST_URL: https://3888-2800-200-e230-1de8-c59-33a4-5e37-2437.ngrok-free.app
+            SONAR_HOST_URL: https://b71d-2800-200-e230-1de8-c59-33a4-5e37-2437.ngrok-free.app
         run: |
           mvn -B verify -DskipTests \
           org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
