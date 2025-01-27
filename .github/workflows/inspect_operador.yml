@@ -1,0 +1,63 @@
+name: Build and Analyze
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build and Analyze with Local SonarQube
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout the code
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+
+      # 2. Set up JDK
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: 21
+          distribution: 'zulu'
+
+      # 3. Cache SonarQube packages
+      - name: Cache SonarQube packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
+      # 4. Cache Maven packages
+      - name: Cache Maven packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+
+      # 5. Start SonarQube server
+      - name: Start SonarQube with Docker
+        run: |
+          docker pull sonarqube:community
+          docker run -d --name sonarqube -p 9000:9000 sonarqube:community
+          sleep 60  # Wait for SonarQube to fully start
+
+      # 6. List files in the working directory
+      - name: List files in the working directory
+        run: ls -la ./src-backend/back-end-operador
+
+      # 7. Build and analyze
+      - name: Build and analyze
+        working-directory: ./src-backend/back-end-operador
+        env:
+            SONAR_TOKEN: sqa_31cb2234705cfbef6a0afd7247fbc4f235f9e560
+            SONAR_HOST_URL: https://3888-2800-200-e230-1de8-c59-33a4-5e37-2437.ngrok-free.app
+        run: |
+          mvn -B verify -DskipTests \
+          org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+          -Dsonar.projectKey=SafePeople \
+          -Dsonar.projectName='SafePeople'
