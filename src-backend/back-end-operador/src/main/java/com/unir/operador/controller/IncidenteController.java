@@ -36,7 +36,7 @@ public class IncidenteController {
     @PostMapping
     @Operation(
             operationId = "incidente-post",
-            description = "Operación de registro de incidente.",
+            description = "Operación de registro de incidente",
             summary = "Se registra un accidente de tránsito, incendio o robo.")
     @ApiResponse(
             responseCode = "201",
