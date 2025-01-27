@@ -1,6 +1,6 @@
 package com.unir.operador.configs;
 
-import com.unir.operador.model.request.CreateIncidenteRequest;
+
 import com.unir.operador.model.response.CreateIncidenteResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

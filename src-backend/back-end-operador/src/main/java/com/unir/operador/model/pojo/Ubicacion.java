@@ -9,16 +9,9 @@ import lombok.*;
 
 
 import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.Date;
-import java.util.List;
 
 import jakarta.persistence.*;
 
-
-import jakarta.persistence.Entity;
-import lombok.*;
 
 @Data
 @Getter

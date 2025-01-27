@@ -1,6 +1,6 @@
 package com.unir.operador.model.response;
 
-import com.unir.operador.model.pojo.Incidente;
+
 import com.unir.operador.model.pojo.Persona;
 import com.unir.operador.model.pojo.Usuario;
 import lombok.AllArgsConstructor;

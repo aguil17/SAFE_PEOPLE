@@ -1,6 +1,6 @@
 package com.unir.operador.model.pojo;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.*;
 import lombok.*;
 

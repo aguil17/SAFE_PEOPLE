@@ -3,7 +3,7 @@ package com.unir.operador.model.request;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import org.hibernate.query.sql.internal.ParameterRecognizerImpl;
+
 
 @Data
 public class CreateIncidenteInformanteRequest {
