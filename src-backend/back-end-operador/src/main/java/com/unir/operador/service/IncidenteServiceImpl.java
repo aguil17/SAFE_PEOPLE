@@ -4,7 +4,6 @@ import com.unir.operador.facade.IncidentesFacade;
 import com.unir.operador.model.request.*;
 import com.unir.operador.model.response.CreateIncidenteResponse;
 import com.unir.operador.model.response.DeleteIncidenteResponse;
-import com.unir.operador.model.response.UpdateIncidenteResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.unir.operador.model.pojo.*;
@@ -252,23 +251,6 @@ public class IncidenteServiceImpl implements IncidenteService {
         result.setData(incidenteSaved);
         result.setCode("201");
         return result;
-    }
-
-    public UpdateIncidenteResponse actualizarIncidente(String incidenteId,UpdateIncidenteRequest request)
-    {
-        var result = new UpdateIncidenteResponse();
-
-        var incidente = incidenteRepository.getById(Integer.parseInt(incidenteId));
-
-        if (incidente == null)
-        {
-            result.setError(true);
-            result.setCode("404");
-            result.setMessage("El incidente no existe");
-            return result;
-        }
-
-        return new UpdateIncidenteResponse();
     }
 
     public DeleteIncidenteResponse eliminarIncidente(String incidenteId)
