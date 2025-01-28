@@ -35,10 +35,6 @@ public class Persona {
     @NotNull(message = "email no puede ser nulo")
     private String email;
 
-    @Column(name = "dni")
-    @NotNull(message = "dni no puede ser nulo")
-    private String dni;
-
     @Column(name = "cellphone")
     @NotNull(message = "cellphone no puede ser nulo")
     private String cellphone;
@@ -51,6 +47,10 @@ public class Persona {
     @Column(name = "gender")
     @NotNull(message = "gender no puede ser nulo")
     private GeneroType gender;
+
+    @Column(name = "dni")
+    @NotNull(message = "dni no puede ser nulo")
+    private String dni;
 
     @Column(name = "creation_date")
     private Timestamp creation_date;
