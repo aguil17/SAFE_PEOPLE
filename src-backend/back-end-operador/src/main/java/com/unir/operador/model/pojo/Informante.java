@@ -30,10 +30,6 @@ public class Informante {
     @NotNull(message = "last_name no puede ser nulo")
     private String last_name;
 
-    @Column(name = "cellphone")
-    @NotNull(message = "cellphone no puede ser nulo")
-    private String cellphone;
-
     @Column(name = "email")
     @NotNull(message = "email no puede ser nulo")
     private String email;
@@ -41,6 +37,10 @@ public class Informante {
     @Column(name = "creation_date")
     @NotNull(message = "fechaCreacion no puede ser nula")
     private Timestamp creation_date;
+
+    @Column(name = "cellphone")
+    @NotNull(message = "cellphone no puede ser nulo")
+    private String cellphone;
 
     public Informante() {
 
