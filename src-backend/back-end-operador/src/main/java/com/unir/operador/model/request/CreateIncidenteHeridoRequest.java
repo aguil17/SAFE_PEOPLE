@@ -17,15 +17,17 @@ public class CreateIncidenteHeridoRequest {
 
     private String TipoHerido;
 
+    private String Genero;
+
     private String Edad;
 
-    private String Genero;
 
     private String EstadoSalud;
 
     private String EstadoVital;
 
+    private String DescripcionHerida;
+
     private String TipoHerida;
 
-    private String DescripcionHerida;
 }
