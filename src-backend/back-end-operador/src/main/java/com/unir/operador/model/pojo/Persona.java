@@ -31,13 +31,13 @@ public class Persona {
     @NotNull(message = "last_name no puede ser nulo")
     private String last_name;
 
-    @Column(name = "dni")
-    @NotNull(message = "dni no puede ser nulo")
-    private String dni;
-
     @Column(name = "email")
     @NotNull(message = "email no puede ser nulo")
     private String email;
+
+    @Column(name = "dni")
+    @NotNull(message = "dni no puede ser nulo")
+    private String dni;
 
     @Column(name = "cellphone")
     @NotNull(message = "cellphone no puede ser nulo")
