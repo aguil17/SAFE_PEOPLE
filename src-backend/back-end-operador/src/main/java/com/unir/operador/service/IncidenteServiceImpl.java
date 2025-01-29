@@ -110,7 +110,7 @@ public class IncidenteServiceImpl implements IncidenteService {
                 var heridoEntity = Herido.builder()
                         .quantity(Integer.parseInt(herido.getCantidad()))
                         .name(herido.getNombre())
-                        .LastName(herido.getApellidos())
+                        .lastName(herido.getApellidos())
                         .wounded_type(herido.getTipoHerido())
                         .age(Integer.parseInt(herido.getEdad()))
                         .gender(genero)
