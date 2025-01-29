@@ -34,7 +34,7 @@ public class Incidente {
     @Enumerated(EnumType.STRING)
     @Column(name = "incident_type")
     @NotNull(message = "El tipo incidente no puede ser nulo")
-    private IncidentType incident_type;
+    private IncidentType IncidentType;
 
     @Column(name = "description")
     @NotNull(message = "descripción no puede ser nula")

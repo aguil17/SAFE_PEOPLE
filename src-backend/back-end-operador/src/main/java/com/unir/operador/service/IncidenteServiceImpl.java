@@ -68,7 +68,7 @@ public class IncidenteServiceImpl implements IncidenteService {
         }
 
         Incidente incidente = Incidente.builder()
-                .incident_type(incidentType)
+                .IncidentType(incidentType)
                 .description(request.getDescripcion())
                 .date(LocalDate.parse(request.getFecha()))
                 .time(LocalTime.parse(request.getHora()))
@@ -110,7 +110,7 @@ public class IncidenteServiceImpl implements IncidenteService {
                 var heridoEntity = Herido.builder()
                         .quantity(Integer.parseInt(herido.getCantidad()))
                         .name(herido.getNombre())
-                        .last_name(herido.getApellidos())
+                        .LastName(herido.getApellidos())
                         .wounded_type(herido.getTipoHerido())
                         .age(Integer.parseInt(herido.getEdad()))
                         .gender(genero)

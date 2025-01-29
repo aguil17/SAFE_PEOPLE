@@ -30,7 +30,7 @@ public class Herido {
     private String name;
 
     @Column(name = "last_name")
-    private String last_name;
+    private String LastName;
 
     @Column(name = "wounded_type")
     private String wounded_type;
