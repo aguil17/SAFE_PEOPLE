@@ -33,7 +33,7 @@ public class Herido {
     private String lastName;
 
     @Column(name = "wounded_type")
-    private String wounded_type;
+    private String woundedType;
 
     @Column(name = "age")
     private Integer age;
@@ -44,24 +44,24 @@ public class Herido {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "health_status")
-    private EstadoSaludType health_status;
+    private EstadoSaludType healthStatus;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "vital_status")
-    private EstadoVital vital_status;
+    private EstadoVital vitalStatus;
 
     @Column(name = "creation_date")
     @NotNull(message = "fechaCreacion no puede ser nula")
-    private Timestamp creation_date;
+    private Timestamp creationDate;
 
     @Column(name = "type_enjury")
-    private String type_enjury;
+    private String typeEnjury;
 
     @Column(name = "description_enjury")
-    private String description_enjury;
+    private String descriptionEnjury;
 
     @Column(name = "id_incident")
-    private Integer id_incident;
+    private Integer idIncident;
 
     public Herido() {
 

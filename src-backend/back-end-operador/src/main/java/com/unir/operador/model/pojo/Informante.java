@@ -28,7 +28,7 @@ public class Informante {
 
     @Column(name = "last_name")
     @NotNull(message = "last_name no puede ser nulo")
-    private String last_name;
+    private String lastName;
 
     @Column(name = "email")
     @NotNull(message = "email no puede ser nulo")
@@ -36,7 +36,7 @@ public class Informante {
 
     @Column(name = "creation_date")
     @NotNull(message = "fechaCreacion no puede ser nula")
-    private Timestamp creation_date;
+    private Timestamp creationDate;
 
     @Column(name = "cellphone")
     @NotNull(message = "cellphone no puede ser nulo")

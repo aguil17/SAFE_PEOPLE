@@ -62,8 +62,8 @@ public class IncidenteServiceTests {
 
         var ubicacionResponse = new Ubicacion();
         ubicacionResponse.setDescription("Fuego en av. principal");
-        ubicacionResponse.setCity_name("Lima");
-        ubicacionResponse.setDistrict_name("Lima");
+        ubicacionResponse.setCityName("Lima");
+        ubicacionResponse.setDistrictName("Lima");
         ubicacionResponse.setReference("Esquina Avenida Pardo y Aliaga");
         ubicacionResponse.setLatitude("-12.046374");
         ubicacionResponse.setLongitude("-77.042793");

@@ -19,14 +19,14 @@ public class IncidenteInformante {
 
     @Id
     @Column(name = "id_incident")
-    private Integer id_incident;
+    private Integer idIncident;
 
     @Id
     @Column(name = "id_informant")
-    private Integer id_informant;
+    private Integer idInformant;
 
     @Column(name = "assignment_date")
-    private Timestamp assignment_date;
+    private Timestamp assignmentDate;
 
     public IncidenteInformante() {
 

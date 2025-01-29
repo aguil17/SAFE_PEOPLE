@@ -37,13 +37,13 @@ public class Usuario {
     private RoleType role;
 
     @Column(name = "id_person")
-    private int id_person;
+    private int idPerson;
 
     @Column(name = "creation_date")
-    private Timestamp creation_date;
+    private Timestamp creationDate;
 
     @Column(name = "update_date")
-    private Timestamp update_date;
+    private Timestamp updateDate;
 
     public Usuario() {
 

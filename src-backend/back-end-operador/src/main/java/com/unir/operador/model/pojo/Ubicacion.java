@@ -31,11 +31,11 @@ public class Ubicacion {
 
     @Column(name = "city_name")
     @NotNull(message = "nombre de ciudad no puede ser nula")
-    private String city_name;
+    private String cityName;
 
     @Column(name = "district_name")
     @NotNull(message = "nombre de distrito no puede ser nulo")
-    private  String district_name;
+    private  String districtName;
 
     @Column(name = "description")
     @NotNull(message = "descripcion no puede ser nulo")
@@ -55,7 +55,7 @@ public class Ubicacion {
 
     @Column(name = "creation_date")
     @NotNull(message = "fechaCreacion no puede ser nula")
-    private Timestamp creation_date;
+    private Timestamp creationDate;
 
     public Ubicacion () {
 

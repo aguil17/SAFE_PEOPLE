@@ -29,7 +29,7 @@ public class Persona {
 
     @Column(name = "last_name")
     @NotNull(message = "last_name no puede ser nulo")
-    private String last_name;
+    private String lastName;
 
     @Column(name = "email")
     @NotNull(message = "email no puede ser nulo")
@@ -53,10 +53,10 @@ public class Persona {
     private String dni;
 
     @Column(name = "creation_date")
-    private Timestamp creation_date;
+    private Timestamp creationDate;
 
     @Column(name = "update_date")
-    private Timestamp update_date;
+    private Timestamp updateDate;
 
     public Persona() {
 

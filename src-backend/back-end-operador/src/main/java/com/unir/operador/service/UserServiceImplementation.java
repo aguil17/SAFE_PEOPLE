@@ -44,13 +44,13 @@ public class UserServiceImplementation implements UserService {
 
         var persona = Persona.builder()
                 .name(request.getNombre())
-                .last_name(request.getApellidos())
+                .lastName(request.getApellidos())
                 .dni(request.getDni())
                 .email(request.getCorreo())
                 .cellphone(request.getCelular())
                 .birthdate(request.getCumpleanios())
                 .gender(genero)
-                .creation_date(fechaActual)
+                .creationDate(fechaActual)
                 .build();
 
         var personaEntity = personaRepository.save(persona);
@@ -61,8 +61,8 @@ public class UserServiceImplementation implements UserService {
                 .username(request.getNombreUsuario())
                 .password(request.getPassword())
                 .role(role)
-                .id_person(personaEntity.getId())
-                .creation_date(fechaActual).build();
+                .idPerson(personaEntity.getId())
+                .creationDate(fechaActual).build();
 
         usuarioRepository.save(usuario);
 

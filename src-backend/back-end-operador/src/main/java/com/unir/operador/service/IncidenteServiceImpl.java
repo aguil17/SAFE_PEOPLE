@@ -48,13 +48,13 @@ public class IncidenteServiceImpl implements IncidenteService {
         var requestUbicacion = request.getUbicacion();
 
         Ubicacion ubicacion = Ubicacion.builder()
-                .city_name(requestUbicacion.getNombreCiudad())
+                .cityName(requestUbicacion.getNombreCiudad())
                 .description(requestUbicacion.getDescripcion())
-                .district_name(requestUbicacion.getNombreDistrito())
+                .districtName(requestUbicacion.getNombreDistrito())
                 .reference(requestUbicacion.getReferencia())
                 .latitude(requestUbicacion.getLatitud())
                 .longitude(requestUbicacion.getLongitud())
-                .creation_date(fechaActual)
+                .creationDate(fechaActual)
                 .build();
 
         var ubicacionSaved = ubicacionRepository.save(ubicacion);
@@ -68,15 +68,15 @@ public class IncidenteServiceImpl implements IncidenteService {
         }
 
         Incidente incidente = Incidente.builder()
-                .IncidentType(incidentType)
+                .incidentType(incidentType)
                 .description(request.getDescripcion())
                 .date(LocalDate.parse(request.getFecha()))
                 .time(LocalTime.parse(request.getHora()))
                 .photo(request.getFoto())
-                .creation_date(fechaActual)
+                .creationDate(fechaActual)
                 .deleteAt(null)
-                .id_user(idUsuario)
-                .id_location(ubicacionSaved.getId()).build();
+                .idUser(idUsuario)
+                .idLocation(ubicacionSaved.getId()).build();
 
 
         var incidenteSaved = incidenteRepository.save(incidente);
@@ -86,12 +86,12 @@ public class IncidenteServiceImpl implements IncidenteService {
             for (var material : request.getMateriales())
             {
                 var materialEntity = Material.builder()
-                        .material_type(material.getTipoMaterial())
+                        .materialType(material.getTipoMaterial())
                         .description(material.getDescripcion())
                         .quantity(Integer.parseInt(material.getCantidad()))
-                        .material_condition(material.getCondicionMaterial())
-                        .creation_date(fechaActual)
-                        .id_incident(incidenteSaved.getId()).build();
+                        .materialCondition(material.getCondicionMaterial())
+                        .creationDate(fechaActual)
+                        .idIncident(incidenteSaved.getId()).build();
 
                 materialRepository.save(materialEntity);
             }
@@ -111,15 +111,15 @@ public class IncidenteServiceImpl implements IncidenteService {
                         .quantity(Integer.parseInt(herido.getCantidad()))
                         .name(herido.getNombre())
                         .lastName(herido.getApellidos())
-                        .wounded_type(herido.getTipoHerido())
+                        .woundedType(herido.getTipoHerido())
                         .age(Integer.parseInt(herido.getEdad()))
                         .gender(genero)
-                        .health_status(estadoSalud)
-                        .vital_status(estadoVital)
-                        .type_enjury(herido.getTipoHerida())
-                        .creation_date(fechaActual)
-                        .description_enjury(herido.getDescripcionHerida())
-                        .id_incident(incidenteSaved.getId())
+                        .healthStatus(estadoSalud)
+                        .vitalStatus(estadoVital)
+                        .typeEnjury(herido.getTipoHerida())
+                        .creationDate(fechaActual)
+                        .descriptionEnjury(herido.getDescripcionHerida())
+                        .idIncident(incidenteSaved.getId())
                         .build();
 
                 heridoRepository.save(heridoEntity);
@@ -139,10 +139,10 @@ public class IncidenteServiceImpl implements IncidenteService {
                 {
                     var informanteEntidad = Informante.builder()
                             .name(informante.getNombre())
-                            .last_name(informante.getApellidos())
+                            .lastName(informante.getApellidos())
                             .cellphone(informante.getCelular())
                             .email(informante.getCorreoElectronico())
-                            .creation_date(fechaActual)
+                            .creationDate(fechaActual)
                             .build();
 
                     informanteSaved = informanteRepository.save(informanteEntidad);
@@ -153,9 +153,9 @@ public class IncidenteServiceImpl implements IncidenteService {
                 }
 
                 var incidenteInformante = IncidenteInformante.builder()
-                        .id_incident(incidenteSaved.getId())
-                        .id_informant(informanteSaved.getId())
-                        .assignment_date(fechaActual)
+                        .idIncident(incidenteSaved.getId())
+                        .idInformant(informanteSaved.getId())
+                        .assignmentDate(fechaActual)
                         .build();
 
                 incidenteInformanteRepository.save(incidenteInformante);
