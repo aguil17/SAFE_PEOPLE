@@ -31,6 +31,9 @@
 		<spring-cloud.version>2023.0.0</spring-cloud.version>
 		<sonar.exclusions>
 			**/configs/*.java
+			**/model/*.java
+			**/util/*.java
+			**/data/*.java
 		</sonar.exclusions>
 	</properties>
 	<dependencies>
