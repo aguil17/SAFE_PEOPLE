@@ -21,7 +21,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class IncidenteServiceTests {
+class IncidenteServiceTests {
 
     @Mock
     private IIncidenteRepository incidenteRepository;
@@ -41,7 +41,7 @@ public class IncidenteServiceTests {
     }
 
     @Test
-    public void testCrearIncidente_success()
+    void testCrearIncidente_success()
     {
         //arrange
         CreateIncidenteRequest request = new CreateIncidenteRequest();
@@ -97,7 +97,7 @@ public class IncidenteServiceTests {
     }
 
     @Test
-    public void testEliminarIncidente_NoExisteIncidente() {
+    void testEliminarIncidente_NoExisteIncidente() {
         //arrange
         when(incidenteRepository.findByIdAndDeleteAtIsNull(1)).thenReturn(Optional.empty());
 
@@ -112,7 +112,7 @@ public class IncidenteServiceTests {
     }
 
     @Test
-    public void testEliminarIncidente_ExisteIncidente() {
+    void testEliminarIncidente_ExisteIncidente() {
         //arrange
         Incidente incidente = new Incidente();
         incidente.setId(1);
