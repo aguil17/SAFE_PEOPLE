@@ -22,21 +22,22 @@ public class Informante {
     @Column
     private Integer id;
 
+    @Column(name = "last_name")
+    @NotNull(message = "last_name no puede ser nulo")
+    private String lastName;
+
     @Column(name = "name")
     @NotNull(message = "name no puede ser nulo")
     private String name;
 
-    @Column(name = "last_name")
-    @NotNull(message = "last_name no puede ser nulo")
-    private String lastName;
+    @Column(name = "creation_date")
+    @NotNull(message = "fechaCreacion no puede ser nula")
+    private Timestamp creationDate;
 
     @Column(name = "email")
     @NotNull(message = "email no puede ser nulo")
     private String email;
 
-    @Column(name = "creation_date")
-    @NotNull(message = "fechaCreacion no puede ser nula")
-    private Timestamp creationDate;
 
     @Column(name = "cellphone")
     @NotNull(message = "cellphone no puede ser nulo")
