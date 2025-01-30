@@ -1,10 +1,10 @@
 package com.unir.operador.configs;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.annotation.Generated;
+import com.unir.operador.util.ExcludeFromCoverage;
 import org.springframework.context.annotation.Bean;
 
-@Generated("BeanConfig")
+@ExcludeFromCoverage
 public class BeanConfig {
 
     @Bean
