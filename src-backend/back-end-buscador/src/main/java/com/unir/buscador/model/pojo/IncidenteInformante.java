@@ -29,7 +29,7 @@ public class IncidenteInformante {
     private String name;
 
     @Column(name = "last_name")
-    private String last_name;
+    private String lastName;
 
     @Column(name = "cellphone")
     private String cellphone;
@@ -43,10 +43,10 @@ public class IncidenteInformante {
     private Incidente incidente;
 
     @Column(name = "assignment_date")
-    private Timestamp assignment_date;
+    private Timestamp assignmentDate;
 
     @Column(name = "creation_date")
-    private Timestamp creation_date;
+    private Timestamp creationDate;
 
     public IncidenteInformante() {
 

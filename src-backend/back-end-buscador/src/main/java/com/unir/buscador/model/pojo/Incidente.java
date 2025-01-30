@@ -35,11 +35,11 @@ public class Incidente {
     @Enumerated(EnumType.STRING)
     @Column(name = "incident_type")
     @NotNull(message = "El tipo incidente no puede ser nulo")
-    private IncidentType incident_type;
+    private IncidentType incidentType;
 
     @Column(name = "description_incident")
     @NotNull(message = "descripción no puede ser nula")
-    private String description_incident;
+    private String descriptionIncident;
 
     @Column(name = "date")
     @NotNull(message = "fecha no puede ser nula")
@@ -57,27 +57,26 @@ public class Incidente {
 
     @Column(name = "creation_date")
     @NotNull(message = "fechaCreacion no puede ser nula")
-    private Timestamp creation_date;
+    private Timestamp creationDate;
 
     @Column(name = "id_location")
-    private int id_location;
+    private int idLocation;
 
     @Column(name = "city_name")
     @NotNull(message = "nombre de ciudad no puede ser nula")
-    private String city_name;
+    private String cityName;
 
     @Column(name = "district_name")
     @NotNull(message = "nombre de distrito no puede ser nulo")
-    private  String district_name;
+    private  String districtName;
 
     @Column(name = "description_location")
     @NotNull(message = "descripcion no puede ser nulo")
-    private String description_location;
+    private String descriptionLocation;
 
     @Column(name = "reference")
     @NotNull(message = "referencia no puede ser nula")
     private String reference;
-
 
     @Column(name = "latitude",precision = 9, scale = 6)
     @NotNull(message = "latitude no puede ser nula")
@@ -88,26 +87,26 @@ public class Incidente {
     private BigDecimal longitude;
 
     @Column(name = "id_user")
-    private int id_user;
+    private int idUser;
 
     @Column(name = "username")
     private String username;
 
     @Column(name = "password_user")
-    private String password_user;
+    private String passwordUser;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
     private RoleType role;
 
     @Column(name = "id_person")
-    private int id_person;
+    private int idPerson;
 
     @Column(name = "person_name")
-    private String person_name;
+    private String personName;
 
     @Column(name = "person_last_name")
-    private String person_last_name;
+    private String personLastName;
 
     @Column(name = "dni")
     private String dni;
@@ -119,7 +118,7 @@ public class Incidente {
     private String cellphone;
 
     @Column(name = "password_person")
-    private String password_person;
+    private String passwordPerson;
 
     @Column(name = "birthdate")
     private LocalDate birthdate;

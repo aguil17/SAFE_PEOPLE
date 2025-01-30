@@ -25,7 +25,7 @@ public class Material {
 
     @Column(name = "material_type")
     @NotNull(message = "material_type no puede ser nula")
-    private String material_type;
+    private String materialType;
 
     @Column(name = "description")
     @NotNull(message = "description no puede ser nula")
@@ -36,11 +36,11 @@ public class Material {
     private Integer quantity;
 
     @Column(name = "material_condition")
-    private String material_condition;
+    private String materialCondition;
 
     @Column(name = "creation_date")
     @NotNull(message = "fechaCreacion no puede ser nula")
-    private Timestamp creation_date;
+    private Timestamp creationDate;
 
     @ManyToOne
     @JoinColumn(name = "id_incident")
