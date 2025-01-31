@@ -55,9 +55,9 @@ jobs:
         working-directory: ./src-backend/back-end-operador
         env:
             SONAR_TOKEN: sqa_31cb2234705cfbef6a0afd7247fbc4f235f9e560
-            SONAR_HOST_URL: https://51a9-179-6-12-86.ngrok-free.app
+            SONAR_HOST_URL: https://530f-179-6-12-86.ngrok-free.app
         run: |
-          mvn -B verify -DskipTests \
+          mvn -B verify \
           org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
           -Dsonar.projectKey=SafePeople \
           -Dsonar.projectName='SafePeople'
