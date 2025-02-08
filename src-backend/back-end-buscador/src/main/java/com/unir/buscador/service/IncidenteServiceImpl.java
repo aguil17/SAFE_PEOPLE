@@ -49,8 +49,8 @@ public class IncidenteServiceImpl implements IIncidenteService {
             root.fetch("incidenteInformantes", JoinType.LEFT);
 
             // Aplicar los predicados
-            Predicate fechaInicioPredicate = criteriaBuilder.greaterThanOrEqualTo(root.get("creation_date"), timestampInicio);
-            Predicate fechaFinPredicate = criteriaBuilder.lessThanOrEqualTo(root.get("creation_date"), timestampFin);
+            Predicate fechaInicioPredicate = criteriaBuilder.greaterThanOrEqualTo(root.get("creationDate"), timestampInicio);
+            Predicate fechaFinPredicate = criteriaBuilder.lessThanOrEqualTo(root.get("creationDate"), timestampFin);
             return criteriaBuilder.and(fechaInicioPredicate, fechaFinPredicate);
         });
     }
