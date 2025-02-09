@@ -42,7 +42,7 @@ public class IncidenteController {
     @ApiResponse(
             responseCode = "404",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = CreateIncidenteResponse.class)),
-            description = ResponseMessage.UBICACION_NOT_FOUND)
+            description = ResponseMessage.USUARIO_NOT_FOUND)
     public ResponseEntity<CreateIncidenteResponse> crearIncidente(@Valid @RequestBody CreateIncidenteRequest request)
     {
         var serviceResult = accidenteService.crearIncidente(request);

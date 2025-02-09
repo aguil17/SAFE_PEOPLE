@@ -4,6 +4,7 @@ import com.unir.operador.facade.IncidentesFacade;
 import com.unir.operador.model.request.*;
 import com.unir.operador.model.response.CreateIncidenteResponse;
 import com.unir.operador.model.response.DeleteIncidenteResponse;
+import com.unir.operador.util.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.unir.operador.model.pojo.*;
@@ -13,6 +14,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.sql.Timestamp;
+import java.util.Optional;
 
 @Service
 public class IncidenteServiceImpl implements IncidenteService {
@@ -38,6 +40,8 @@ public class IncidenteServiceImpl implements IncidenteService {
     @Autowired
     private IncidentesFacade incidentesFacade;
 
+    @Autowired
+    private IUsuarioRepository usuarioRepository;
 
     public CreateIncidenteResponse crearIncidente(CreateIncidenteRequest request)
     {
@@ -65,6 +69,17 @@ public class IncidenteServiceImpl implements IncidenteService {
         if (request.getIdUsuario() != null)
         {
             idUsuario = Integer.parseInt(request.getIdUsuario());
+
+            Optional<Usuario> usuario = usuarioRepository.findById(idUsuario);
+
+            if (usuario.isEmpty())
+            {
+                result.setError(true);
+                result.setCode("404");
+                result.setMessage(ResponseMessage.USUARIO_NOT_FOUND);
+
+                return result;
+            }
         }
 
         Incidente incidente = Incidente.builder()
