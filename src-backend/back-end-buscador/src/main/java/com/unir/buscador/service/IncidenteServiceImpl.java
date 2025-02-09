@@ -82,7 +82,7 @@ public class IncidenteServiceImpl implements IIncidenteService {
     {
         var result = new CreateIncidenteResponse();
 
-        Timestamp fechaActual = Timestamp.from(Instant.now());
+        var fechaActual = Instant.now();
 
         IncidentType incidentType = IncidentType.valueOf(request.getTipoIncidente());
 

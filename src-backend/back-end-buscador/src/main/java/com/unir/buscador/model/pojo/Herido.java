@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-import java.sql.Timestamp;
+import java.time.Instant;
 
 @Data
 @Getter
@@ -53,7 +53,7 @@ public class Herido {
 
     @Column(name = "creation_date")
     @NotNull(message = "fechaCreacion no puede ser nula")
-    private Timestamp creationDate;
+    private Instant creationDate;
 
     @Column(name = "type_enjury")
     private String typeEnjury;

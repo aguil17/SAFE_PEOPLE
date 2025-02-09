@@ -9,7 +9,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -53,11 +53,11 @@ public class Incidente {
     private String photo;
 
     @Column(name = "deleteAt")
-    private Timestamp deleteAt;
+    private Instant deleteAt;
 
     @Column(name = "creation_date")
     @NotNull(message = "fechaCreacion no puede ser nula")
-    private Timestamp creationDate;
+    private Instant creationDate;
 
     @Column(name = "id_location")
     private int idLocation;

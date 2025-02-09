@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-import java.sql.Timestamp;
+import java.time.Instant;
 
 @Data
 @Getter
@@ -43,10 +43,10 @@ public class IncidenteInformante {
     private Incidente incidente;
 
     @Column(name = "assignment_date")
-    private Timestamp assignmentDate;
+    private Instant assignmentDate;
 
     @Column(name = "creation_date")
-    private Timestamp creationDate;
+    private Instant creationDate;
 
     public IncidenteInformante() {
 
