@@ -68,6 +68,7 @@ public class IncidenteServiceImpl implements IIncidenteService {
             result.setError(true);
             result.setMessage("No hay incidentes respecto a los criterios elegidos");
             result.setCode("404");
+            return  result;
         }
 
         result.setIncidentes(resultado);
