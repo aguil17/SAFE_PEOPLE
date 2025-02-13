@@ -5,19 +5,43 @@ import ReportButton from "./ReportButton";
 import IncidentForm from "../Report/IncidentForm";
 import "leaflet/dist/leaflet.css";
 import "./MapComponent.scss";
+import fireIcon from "../../assets/icons/point_fire.png";
+import crashIcon from "../../assets/icons/point_crash.png";
+import thiefIcon from "../../assets/icons/point_thief.png";
+import aloneIcon from "../../assets/icons/point_alone.png";
 
-// 🔹 Icono personalizado para los marcadores
-const customIcon = new Icon({
-  iconUrl: "/marker-icon.png", // Asegúrate de tener este ícono en assets
-  iconSize: [32, 32]
-});
+// 🔹 Íconos personalizados para los marcadores
+const icons = {
+  accident: new Icon({
+    iconUrl: crashIcon,
+    iconSize: [40]
+  }),
+  fire: new Icon({
+    iconUrl: fireIcon,
+    iconSize: [40]
+  }),
+  robbery: new Icon({
+    iconUrl: thiefIcon,
+    iconSize: [40]
+  }),
+  default: new Icon({
+    iconUrl: aloneIcon,
+    iconSize: [40]
+  })
+};
 
 const MapComponent = () => {
   const [selectedIncident, setSelectedIncident] = useState(null);
   const [formOpen, setFormOpen] = useState(false);
   const [incidents, setIncidents] = useState([]);
   const [markerPosition, setMarkerPosition] = useState([4.711, -74.0721]); // 🔹 Ubicación inicial (Bogotá)
-  const [userLocation, setUserLocation] = useState(null); // 📌 Ubicación del usuario
+  const [userLocation, setUserLocation] = useState(null);
+
+  const typeMapping = {
+    Incendio: "fire",
+    Robo: "robbery",
+    Accidente: "accident"
+  };
 
   // 📌 Hook para centrar el mapa en la ubicación del usuario
   const MapCenter = ({ position }) => {
@@ -49,9 +73,29 @@ const MapComponent = () => {
 
   // 📌 Manejar el reporte de incidentes
   const handleReport = (incident) => {
-    setIncidents([...incidents, { ...incident, location: markerPosition }]);
+    const validType = typeMapping[incident.type] || "default";
+  
+    console.log("Incident type received:", incident.type);
+    console.log("Valid type:", validType);
+  
+    setIncidents((prevIncidents) => {
+      const updatedIncidents = [
+        ...prevIncidents,
+        {
+          ...incident,
+          location: markerPosition,
+          type: validType, // 🔹 Asegura que solo use los tipos permitidos
+        }
+      ];
+  
+      console.log("Updated incidents:", updatedIncidents);
+      return updatedIncidents;
+    });
+  
+    setMarkerPosition(userLocation || [4.711, -74.0721]); // 🔹 Reinicia la posición
     setFormOpen(false); // 🔹 Cierra el formulario después de reportar
   };
+   
 
   return (
     <div className="map-container">
@@ -63,12 +107,16 @@ const MapComponent = () => {
 
         {/* 📌 Muestra todos los incidentes reportados */}
         {incidents.map((incident, index) => (
-          <Marker key={index} position={incident.location} icon={customIcon}>
+          <Marker
+            key={index}
+            position={incident.location}
+            icon={icons[incident.type] || icons.default}
+          >
             <Popup>{incident.type}: {incident.description}</Popup>
           </Marker>
         ))}
 
-        {/* 📌 Marcador arrastrable */}
+        {/* 📌 Marcador arrastrable antes de reportar */}
         <Marker
           position={markerPosition}
           draggable={true}
@@ -80,6 +128,7 @@ const MapComponent = () => {
               ]);
             }
           }}
+          icon={icons.default} // 🔹 Ícono de selección antes de reportar
         >
           <Popup>{userLocation ? "Ubicación seleccionada" : "Mueve este marcador"}</Popup>
         </Marker>
