@@ -1,7 +1,7 @@
 .navbar {
   background-color: #041122;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  border-radius: 0px 0px 10px 10px;
+  box-shadow: 0 4px 6px rgb(0 0 0 / 10%);
+  border-radius: 0 0 10px 10px;
 
   .navbar__toolbar {
     display: flex;
@@ -50,7 +50,7 @@
   }
 
   // 🔹 Responsive: Ocultar botones y mostrar hamburguesa en móviles
-  @media (max-width: 768px) {
+  @media (width <= 768px) {
     .navbar__buttons {
       display: none; // Oculta los botones en móviles
     }
@@ -63,7 +63,7 @@
   .navbar__menu-icon {
     display: none; // Ocultar por defecto
 
-    @media (max-width: 768px) {
+    @media (width <= 768px) {
       display: block; // Solo mostrar en móviles
     }
   }
@@ -72,17 +72,5 @@
     width: 250px;
     background-color: #041122;
     color: white !important;
-
-    .MuiListItemText-primary {
-      color: white !important;
-    }
-
-    .css-1ximun7-MuiTypography-root {
-      color: white !important;
-    }
-
-    .MuiTypography-root {
-      color: white !important;
-    }
   }
 }
