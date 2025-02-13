@@ -16,7 +16,7 @@ const theme = createTheme({
       main: "#E6F99D", // Amarillo claro (Notificaciones, alertas)
     },
     background: {
-      default: "#C8E98E", // Verde claro (Fondo de la app)
+      default: "#f2faf7", // Verde claro (Fondo de la app)
       paper: "#ffffff", // Fondo de tarjetas y modales
     },
   },

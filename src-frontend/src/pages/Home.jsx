@@ -1,5 +1,11 @@
+import MapComponent from "../components/Map/MapComponent";
+
 const Home = () => {
-  return <h1>🏠 Bienvenido a SafePeople</h1>;
+  return (
+    <div className="home">
+      <MapComponent />
+    </div>
+  );
 };
 
 export default Home;
