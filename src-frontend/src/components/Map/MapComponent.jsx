@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import { Icon } from "leaflet";
 import ReportButton from "./ReportButton";
-import IncidentForm from "../Report/IncidentForm";
+import IncidentStepper from "../Report/IncidentStepper"; // 🔹 Nuevo Stepper
 import "leaflet/dist/leaflet.css";
 import "./MapComponent.scss";
 import fireIcon from "../../assets/icons/point_fire.png";
@@ -26,7 +26,7 @@ const icons = {
   }),
   default: new Icon({
     iconUrl: aloneIcon,
-    iconSize: [40]
+    iconSize: [50]
   })
 };
 
@@ -74,10 +74,7 @@ const MapComponent = () => {
   // 📌 Manejar el reporte de incidentes
   const handleReport = (incident) => {
     const validType = typeMapping[incident.type] || "default";
-  
-    console.log("Incident type received:", incident.type);
-    console.log("Valid type:", validType);
-  
+
     setIncidents((prevIncidents) => {
       const updatedIncidents = [
         ...prevIncidents,
@@ -87,15 +84,13 @@ const MapComponent = () => {
           type: validType, // 🔹 Asegura que solo use los tipos permitidos
         }
       ];
-  
-      console.log("Updated incidents:", updatedIncidents);
+
       return updatedIncidents;
     });
-  
+
     setMarkerPosition(userLocation || [4.711, -74.0721]); // 🔹 Reinicia la posición
     setFormOpen(false); // 🔹 Cierra el formulario después de reportar
   };
-   
 
   return (
     <div className="map-container">
@@ -137,17 +132,19 @@ const MapComponent = () => {
       {/* 📌 Botón de reporte */}
       <ReportButton
         onSelectIncidentType={(type) => {
+          console.log("Botón de reporte presionado, tipo de incidente:", type);
           setSelectedIncident(type);
           setFormOpen(true);
         }}
       />
 
-      {/* 📌 Formulario flotante */}
-      <IncidentForm
+      {/* 📌 Stepper para reportar incidentes */}
+      <IncidentStepper
         open={formOpen}
         onClose={() => setFormOpen(false)}
         onSubmit={handleReport}
         incidentType={selectedIncident}
+        markerPosition={markerPosition}
       />
     </div>
   );

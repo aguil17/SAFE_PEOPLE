@@ -1,69 +1,104 @@
 .incident-form__modal {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.incident-form {
+  background: #ffffff;
+  padding: 25px;
+  padding: 5px 25px 25px 25px;
+  border-radius: 12px;
+  width: 380px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  animation: fadeIn 0.3s ease-out;
+  border: 2px solid #259073;
+}
+
+.incident-form h2 {
+  margin-bottom: 15px;
+  text-align: left; /* 🔹 Alineado a la izquierda */
+  color: #041122;
+  font-size: 20px;
+}
+
+.incident-form input[type="file"] {
+  display: block;
+  margin-top: 15px; /* 🔹 Espaciado superior para separar del campo anterior */
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #259073;
+  background: #ffffff;
+  color: #041122;
+  width: 100%; /* 🔹 Asegura que el input se ajuste al ancho del formulario */
+  box-sizing: border-box;
+  position: relative;
+  outline: none;
+}
+
+/* 🔹 Estilos mejorados para el botón de carga */
+.incident-form input[type="file"]::file-selector-button {
+  border-radius: 4px;
+  padding: 6px 16px;
+  height: 40px;
+  cursor: pointer;
+  background-color: white;
+  border: 1px solid rgba(0, 0, 0, 0.16);
+  box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.05);
+  margin-right: 16px;
+  color: #259073;
+  font-weight: bold;
+}
+
+.incident-form input[type="file"]::file-selector-button:hover {
+  background-color: #f3f4f6;
+}
+
+.incident-form input[type="file"]::file-selector-button:active {
+  background-color: #e5e7eb;
+}
+
+.incident-form__buttons {
+  display: flex;
+  flex-direction: column; /* 🔹 Botones en columna */
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.incident-form__cancel {
+  color: #041122 !important;
+  background: transparent;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  text-transform: lowercase; /* 🔹 Todo en minúscula */
+}
+
+.incident-form__cancel:hover {
+  text-decoration: underline;
+}
+
+.incident-form__submit {
+  background: #259073;
+  color: white;
+  font-weight: bold;
+  border-radius: 6px;
+  padding: 8px 12px;
+  cursor: pointer;
+  text-transform: lowercase; /* 🔹 Todo en minúscula */
+}
+
+.incident-form__submit:hover {
+  background: #1e7a5d;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
   }
-  
-  .incident-form {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    width: 350px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  
-    h2 {
-      margin-bottom: 15px;
-      text-align: center;
-    }
-  
-    .incident-form__buttons {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 15px;
-    }
-  
-    .incident-form__cancel {
-      color: #d32f2f !important;
-    }
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: scale(0.95);
-    }
-    to {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-  
-  .incident-form__modal {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .incident-form {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    width: 350px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    animation: fadeIn 0.3s ease-out; // 🔹 Animación al abrir el modal
-  
-    h2 {
-      margin-bottom: 15px;
-      text-align: center;
-    }
-  
-    .incident-form__buttons {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 15px;
-    }
-  
-    .incident-form__cancel {
-      color: #d32f2f !important;
-    }
-  }
-    
+}
