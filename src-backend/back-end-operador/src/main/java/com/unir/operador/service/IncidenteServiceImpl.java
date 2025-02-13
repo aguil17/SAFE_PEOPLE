@@ -5,6 +5,8 @@ import com.unir.operador.model.request.*;
 import com.unir.operador.model.response.CreateIncidenteResponse;
 import com.unir.operador.model.response.DeleteIncidenteResponse;
 import com.unir.operador.util.ResponseMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.unir.operador.model.pojo.*;
@@ -42,6 +44,8 @@ public class IncidenteServiceImpl implements IncidenteService {
 
     @Autowired
     private IUsuarioRepository usuarioRepository;
+
+    private static final Logger logger = LoggerFactory.getLogger(IncidenteServiceImpl.class);
 
     public CreateIncidenteResponse crearIncidente(CreateIncidenteRequest request)
     {
@@ -265,6 +269,9 @@ public class IncidenteServiceImpl implements IncidenteService {
         result.setError(false);
         result.setData(incidenteSaved);
         result.setCode("201");
+
+        logger.info("El incidente fue registrado correctamente. Incidente Id:",incidenteSaved.getId());
+
         return result;
     }
 
@@ -277,7 +284,9 @@ public class IncidenteServiceImpl implements IncidenteService {
         {
             result.setError(true);
             result.setCode("404");
-            result.setMessage("El incidente no existe");
+            result.setMessage(ResponseMessage.INCIDENTE_NOT_FOUND);
+
+            logger.warn("El incidente no existe. Incidente Id:",incidenteId);
             return result;
         }
 

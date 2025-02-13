@@ -46,4 +46,7 @@ incidentesBuscador:
   urlRegistro: http://ms-buscador/incidente
 ##urlRegistro: http://localhost:8080/incidente
 
-
+loggingMySql:
+  url: jdbc:mysql://${MYSQL_LOGS:localhost}:3306/safepeople_logs
+  username: ${USER_LOGS:root}
+  password: ${PASSWORD_LOGS:Server01$}
