@@ -8,6 +8,7 @@ import com.unir.operador.model.pojo.RoleType;
 import com.unir.operador.model.pojo.Usuario;
 import com.unir.operador.model.request.CreateUserRequest;
 import com.unir.operador.model.response.CreateUserResponse;
+import com.unir.operador.util.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,9 +36,12 @@ public class UserServiceImplementation implements UserService {
 
         if (personaPorEmail.isPresent())
         {
+            var persona = personaPorEmail.get();
+
             response.setError(true);
             response.setCode("409");
-            response.setMessage("Ya existe un usuario con ese correo");
+            response.setPersona(persona);
+            response.setMessage(ResponseMessage.USUARIO_ALREADY_EXISTS);
 
             return response;
         }
