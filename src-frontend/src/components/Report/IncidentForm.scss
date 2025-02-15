@@ -1,0 +1,69 @@
+.incident-form__modal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .incident-form {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 350px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  
+    h2 {
+      margin-bottom: 15px;
+      text-align: center;
+    }
+  
+    .incident-form__buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 15px;
+    }
+  
+    .incident-form__cancel {
+      color: #d32f2f !important;
+    }
+  }
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  .incident-form__modal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .incident-form {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 350px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.3s ease-out; // 🔹 Animación al abrir el modal
+  
+    h2 {
+      margin-bottom: 15px;
+      text-align: center;
+    }
+  
+    .incident-form__buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 15px;
+    }
+  
+    .incident-form__cancel {
+      color: #d32f2f !important;
+    }
+  }
+    

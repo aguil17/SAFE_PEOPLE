@@ -1,0 +1,76 @@
+.navbar {
+  background-color: #041122;
+  box-shadow: 0 4px 6px rgb(0 0 0 / 10%);
+  border-radius: 0 0 10px 10px;
+
+  .navbar__toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__logo-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  &__logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  &__buttons {
+    display: flex;
+    gap: 10px;
+  }
+
+  &__button {
+    color: white !important;
+    text-transform: none !important;
+    transition: background-color 0.3s ease-in-out;
+
+    &:hover {
+      background-color: #259073 !important;
+    }
+  }
+
+  // 🔹 Estilos para el menú hamburguesa en pantallas pequeñas
+  &__menu-icon {
+    display: none; // Ocultamos en pantallas grandes
+  }
+
+  &__drawer {
+    width: 250px;
+    background-color: #041122;
+    color: white;
+    height: 100%;
+  }
+
+  // 🔹 Responsive: Ocultar botones y mostrar hamburguesa en móviles
+  @media (width <= 768px) {
+    .navbar__buttons {
+      display: none; // Oculta los botones en móviles
+    }
+
+    .navbar__menu-icon {
+      display: block; // Muestra el icono de menú hamburguesa
+    }
+  }
+
+  .navbar__menu-icon {
+    display: none; // Ocultar por defecto
+
+    @media (width <= 768px) {
+      display: block; // Solo mostrar en móviles
+    }
+  }
+
+  .navbar__drawer {
+    width: 250px;
+    background-color: #041122;
+    color: white !important;
+  }
+}
