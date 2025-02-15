@@ -38,9 +38,17 @@ public class UserServiceImplementation implements UserService {
         {
             var persona = personaPorEmail.get();
 
+            var usuario = usuarioRepository.findByIdPerson(persona.getId());
+
             response.setError(true);
             response.setCode("409");
             response.setPersona(persona);
+
+            if (usuario.isPresent())
+            {
+                response.setUsuario(usuario.get());
+            }
+
             response.setMessage(ResponseMessage.USUARIO_ALREADY_EXISTS);
 
             return response;
