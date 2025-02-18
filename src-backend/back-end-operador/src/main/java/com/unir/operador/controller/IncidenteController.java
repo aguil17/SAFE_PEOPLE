@@ -3,8 +3,10 @@ package com.unir.operador.controller;
 import com.unir.operador.model.request.CreateIncidenteRequest;
 import com.unir.operador.model.response.CreateIncidenteResponse;
 import com.unir.operador.model.response.DeleteIncidenteResponse;
+import com.unir.operador.model.response.GetIncidenteResponse;
 import com.unir.operador.service.IncidenteService;
 import com.unir.operador.util.ResponseMessage;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -56,7 +58,6 @@ public class IncidenteController {
     }
 
 
-
     @DeleteMapping("/{incidenteId}")
     @Operation(
             operationId = "incidente-delete",
@@ -71,6 +72,36 @@ public class IncidenteController {
     public ResponseEntity<DeleteIncidenteResponse> eliminarIncidente(@PathVariable String incidenteId)
     {
         var serviceResult = accidenteService.eliminarIncidente(incidenteId);
+
+        if (serviceResult.isError() && serviceResult.getCode() == "404")
+        {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(serviceResult);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(serviceResult);
+    }
+
+    @GetMapping("/fechaCreacionInicial/{fechaCreacionInicial}/fechaCreacionFinal/{fechaCreacionFinal}")
+    @Operation(
+            operationId = "incidente-get",
+            description = "Operación de lectura para devolver los incidentes",
+            summary = "Se devuelve una lista de los incidentes almacenados.")
+    @ApiResponse(
+            responseCode = "200",
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = GetIncidenteResponse.class)))
+    @ApiResponse(
+            responseCode = "404",
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = GetIncidenteResponse.class)),
+            description = ResponseMessage.INCIDENTES_NOT_FOUND)
+    public ResponseEntity<GetIncidenteResponse> getIncidentes(
+            @Parameter(name = "fechaCreacionInicial",
+                    description = "fecha de creación inicial", example = "2025-01-01", required = true)
+            @PathVariable String fechaCreacionInicial,
+            @Parameter(name = "fechaCreacionFinal",
+                    description = "fecha de creación final", example = "2025-01-01", required = true)
+            @PathVariable String fechaCreacionFinal) {
+
+        var serviceResult = accidenteService.getIncidentes(fechaCreacionInicial,fechaCreacionFinal);
 
         if (serviceResult.isError() && serviceResult.getCode() == "404")
         {

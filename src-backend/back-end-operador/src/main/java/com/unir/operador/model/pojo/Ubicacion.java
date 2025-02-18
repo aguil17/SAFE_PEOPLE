@@ -9,6 +9,7 @@ import lombok.*;
 
 
 import java.sql.Timestamp;
+import java.time.Instant;
 
 import jakarta.persistence.*;
 
@@ -55,7 +56,7 @@ public class Ubicacion {
 
     @Column(name = "creation_date")
     @NotNull(message = "fechaCreacion no puede ser nula")
-    private Timestamp creationDate;
+    private Instant creationDate;
 
     public Ubicacion () {
 

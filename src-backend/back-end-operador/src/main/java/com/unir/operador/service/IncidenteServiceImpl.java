@@ -4,7 +4,10 @@ import com.unir.operador.facade.IncidentesFacade;
 import com.unir.operador.model.request.*;
 import com.unir.operador.model.response.CreateIncidenteResponse;
 import com.unir.operador.model.response.DeleteIncidenteResponse;
+import com.unir.operador.model.response.GetIncidenteResponse;
 import com.unir.operador.util.ResponseMessage;
+import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.Predicate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +17,8 @@ import com.unir.operador.model.pojo.*;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
+import java.util.*;
 import java.sql.Timestamp;
-import java.util.Optional;
 
 @Service
 public class IncidenteServiceImpl implements IncidenteService {
@@ -51,7 +53,7 @@ public class IncidenteServiceImpl implements IncidenteService {
     {
         var result = new CreateIncidenteResponse();
 
-        Timestamp fechaActual = Timestamp.from(Instant.now());
+        var fechaActual = Instant.now();
 
         var requestUbicacion = request.getUbicacion();
 
@@ -110,7 +112,7 @@ public class IncidenteServiceImpl implements IncidenteService {
                         .quantity(Integer.parseInt(material.getCantidad()))
                         .materialCondition(material.getCondicionMaterial())
                         .creationDate(fechaActual)
-                        .idIncident(incidenteSaved.getId()).build();
+                        .incidente(incidenteSaved).build();
 
                 materialRepository.save(materialEntity);
             }
@@ -138,7 +140,7 @@ public class IncidenteServiceImpl implements IncidenteService {
                         .typeEnjury(herido.getTipoHerida())
                         .creationDate(fechaActual)
                         .descriptionEnjury(herido.getDescripcionHerida())
-                        .idIncident(incidenteSaved.getId())
+                        .incidente(incidenteSaved)
                         .build();
 
                 heridoRepository.save(heridoEntity);
@@ -290,7 +292,7 @@ public class IncidenteServiceImpl implements IncidenteService {
             return result;
         }
 
-        var fechaActual = Timestamp.from(Instant.now());
+        var fechaActual = Instant.now();
 
         var incidenteToDelete = incidente.get();
         incidenteToDelete.setDeleteAt(fechaActual);
@@ -300,6 +302,48 @@ public class IncidenteServiceImpl implements IncidenteService {
         result.setError(false);
         result.setData(incidenteToDelete);
         result.setCode("200");
+        return result;
+    }
+
+    public List<Incidente> buscarPorRangoDeFechas(LocalDate fechaInicio, LocalDate fechaFin)
+    {
+        return incidenteRepository.findAll((root, query, criteriaBuilder) -> {
+            // Convertir LocalDate a Timestamp
+            Timestamp timestampInicio = Timestamp.valueOf(fechaInicio.atStartOfDay());
+            Timestamp timestampFin = Timestamp.valueOf(fechaFin.atTime(23, 59, 59));
+
+            root.fetch("heridos", JoinType.LEFT);
+
+            //root.fetch("materiales", JoinType.LEFT);
+
+            // Aplicar los predicados
+            Predicate fechaInicioPredicate = criteriaBuilder.greaterThanOrEqualTo(root.get("creationDate"), timestampInicio);
+            Predicate fechaFinPredicate = criteriaBuilder.lessThanOrEqualTo(root.get("creationDate"), timestampFin);
+            return criteriaBuilder.and(fechaInicioPredicate, fechaFinPredicate);
+        });
+    }
+
+    public GetIncidenteResponse getIncidentes(String fechaCreacionInicial, String fechaCreacionFinal) {
+
+        var result = new GetIncidenteResponse();
+
+        var fechaInicio = LocalDate.parse(fechaCreacionInicial);
+        var fechaFin = LocalDate.parse(fechaCreacionFinal);
+
+        var resultado = buscarPorRangoDeFechas(fechaInicio,fechaFin);
+
+        if (resultado.isEmpty()) {
+            result.setError(true);
+            result.setMessage("No hay incidentes respecto a los criterios elegidos");
+            result.setCode("404");
+            return  result;
+        }
+
+        result.setIncidentes(resultado);
+        result.setCode("200");
+        result.setMessage("OK");
+        result.setError(false);
+
         return result;
     }
 }

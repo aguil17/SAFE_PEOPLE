@@ -1,5 +1,6 @@
 package com.unir.operador.model.pojo;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -7,10 +8,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Set;
 
 import jakarta.persistence.*;
 
@@ -55,15 +57,23 @@ public class Incidente {
     private Integer idUser;
 
     @Column(name = "deleteAt")
-    private Timestamp deleteAt;
+    private Instant deleteAt;
 
     @Column(name = "creation_date")
     @NotNull(message = "fechaCreacion no puede ser nula")
-    private Timestamp creationDate;
+    private Instant creationDate;
 
     @Column(name = "id_location")
     @NotNull(message = "Location no puede ser nulo")
     private Integer idLocation;
+
+    @OneToMany(mappedBy = "incidente", fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private Set<Herido> heridos;
+
+    @OneToMany(mappedBy = "incidente", fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private Set<Material> materiales;
 
     public Incidente() {
 
