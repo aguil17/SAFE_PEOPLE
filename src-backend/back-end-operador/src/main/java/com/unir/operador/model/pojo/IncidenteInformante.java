@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Timestamp;
+import java.time.Instant;
 
 @Data
 @Getter
@@ -26,7 +27,7 @@ public class IncidenteInformante {
     private Integer idInformant;
 
     @Column(name = "assignment_date")
-    private Timestamp assignmentDate;
+    private Instant assignmentDate;
 
     public IncidenteInformante() {
 

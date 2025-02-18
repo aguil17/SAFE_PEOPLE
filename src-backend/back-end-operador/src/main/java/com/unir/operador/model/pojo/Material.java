@@ -1,11 +1,13 @@
 package com.unir.operador.model.pojo;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.sql.Timestamp;
+import java.time.Instant;
 
 @Data
 @Getter
@@ -39,10 +41,12 @@ public class Material {
 
     @Column(name = "creation_date")
     @NotNull(message = "fechaCreacion no puede ser nula")
-    private Timestamp creationDate;
+    private Instant creationDate;
 
-    @Column(name = "id_incident")
-    private Integer idIncident;
+    @ManyToOne
+    @JoinColumn(name = "id_incident")
+    @JsonBackReference
+    private Incidente incidente;
 
     public Material() {
 
