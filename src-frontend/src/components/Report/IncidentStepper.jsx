@@ -1,30 +1,40 @@
 import { useEffect, useState } from "react";
-import { Stepper, Step, StepLabel, StepContent, Button, Box, Modal } from "@mui/material";
+import { useSelector } from "react-redux";
+import { Stepper, Step, StepLabel, StepContent, Button, Box, Modal, CircularProgress } from "@mui/material";
 import StepIncidentDetails from "./StepIncidentDetails";
-import StepLocation from "./StepLocation";
 import StepAdditionalInfo from "./StepAdditionalInfo";
 import "./IncidentStepper.scss";
+import { reportIncident } from "../../services/incidentService";
 
 const steps = [
   { label: "Detalles del Incidente", component: StepIncidentDetails },
-  { label: "Ubicación", component: StepLocation },
-  { label: "Información Adicional", component: StepAdditionalInfo }
+  { label: "Información Adicional", component: StepAdditionalInfo },
 ];
 
 const IncidentStepper = ({ open, onClose, onSubmit, incidentType, markerPosition }) => {
   const [activeStep, setActiveStep] = useState(0);
   const [description, setDescription] = useState("");
   const [photo, setPhoto] = useState(null);
-  const [city, setCity] = useState("");
-  const [district, setDistrict] = useState("");
-  const [informant, setInformant] = useState({ name: "", lastName: "", cellphone: "", email: "" });
-  const [wounded, setWounded] = useState({ quantity: "", name: "", lastName: "" });
-  const [materials, setMaterials] = useState({ type: "", description: "", quantity: "" });
+  const [woundedList, setWoundedList] = useState([]);
+  const [materialsList, setMaterialsList] = useState([]);
+  const [nombreCiudad, setNombreCiudad] = useState("No especificado");
+  const [nombreDistrito, setNombreDistrito] = useState("No especificado");
+  const [loading, setLoading] = useState(false);
 
-  const latitude = markerPosition?.[0] || ""; // Extraer latitud
-  const longitude = markerPosition?.[1] || ""; // Extraer longitud
+  const user = useSelector((state) => state.auth.user);
 
-  // 🔹 Función para obtener la ciudad y distrito por coordenadas
+  // 🔹 Datos del informante desde Redux
+  const informant = {
+    nombre: user?.persona?.name || "",
+    apellidos: user?.persona?.lastName || "",
+    correoElectronico: user?.persona?.email || "",
+    celular: user?.persona?.cellphone || "",
+  };
+
+  const latitude = markerPosition?.[0] || "";
+  const longitude = markerPosition?.[1] || "";
+
+  // 📌 Función para obtener la ciudad y distrito por coordenadas
   const fetchLocationDetails = async (lat, lng) => {
     try {
       const response = await fetch(
@@ -33,67 +43,129 @@ const IncidentStepper = ({ open, onClose, onSubmit, incidentType, markerPosition
       const data = await response.json();
 
       if (data.address) {
-        setCity(data.address.city || data.address.town || data.address.village || "No especificado");
-        setDistrict(data.address.suburb || "No especificado");
+        setNombreCiudad(
+          data.address.city || data.address.town || data.address.village || "No especificado"
+        );
+        setNombreDistrito(data.address.suburb || "No especificado");
       }
     } catch (error) {
       console.error("Error obteniendo la ubicación:", error);
     }
   };
 
-  // 🔹 Obtener ciudad automáticamente cuando cambia la ubicación
+  // 📌 Obtener ciudad automáticamente cuando cambia la ubicación
   useEffect(() => {
     if (latitude && longitude) {
       fetchLocationDetails(latitude, longitude);
     }
   }, [latitude, longitude]);
 
-  const handleFinish = () => {
-    const incidentData = {
-      type: incidentType, // Asegurar que se envíe el tipo de incidente
-      description,
-      photo,
-      city,
-      district,
-      latitude,
-      longitude,
-      informant,
-      wounded,
-      materials
+  // 📌 Enviar datos al backend al finalizar
+  const handleFinish = async () => {
+    const typeMapping = {
+      Incendio: "fire",
+      Robo: "robbery",
+      Accidente: "accident",
     };
-
-    console.log("Datos enviados al finalizar:", incidentData); // 🔹 Para verificar en consola
-    onSubmit(incidentData); // Enviar los datos al MapComponent
-    onClose(); // Cerrar el modal
-
+  
+    console.log("photo", photo);
+    
+    const incidentData = {
+      descripcion: description,
+      fecha: new Date().toISOString().split("T")[0],
+      hora: new Date().toLocaleTimeString(),
+      idUsuario: user?.usuario?.id || 0,
+      foto: photo || "No disponible",
+      tipoIncidente: typeMapping[incidentType] || "unknown",
+  
+      ubicacion: {
+        nombreCiudad,
+        nombreDistrito,
+        longitud: markerPosition[1].toString(),
+        referencia: "Ubicación seleccionada en el mapa",
+        descripcion: "Ubicación ingresada automáticamente",
+        latitud: markerPosition[0].toString(),
+      },
+  
+      heridos: woundedList.map(w => ({
+        nombre: w.nombre,
+        apellidos: w.apellidos,
+        cantidad: w.cantidad,
+        estadoSalud: "stable",
+        estadoVital: "alive",
+        tipoHerida: "Desconocido",
+        tipoHerido: "Desconocido",
+        descripcionHerida: "No especificado",
+        edad: w.edad ? w.edad.toString() : "0",
+        genero: w.genero === "masculino" ? "male" : w.genero === "femenino" ? "female" : "male",
+      })),
+  
+      informantes: [informant],
+  
+      materiales: materialsList.map(m => ({
+        tipoMaterial: m.tipoMaterial,
+        cantidad: m.cantidad,
+        condicionMaterial: "new",
+        descripcion: m.descripcion || "No especificado",
+      })),
+    };
+  
+    try {
+      setLoading(true);
+      const response = await reportIncident(incidentData);
+  
+      if (response.success) {
+        alert("¡Incidente reportado con éxito! 🎉");
+  
+        // 🔹 Pasamos el incidente reportado al mapa
+        onSubmit({
+          ...incidentData,
+          ubicacion: {
+            latitud: markerPosition[0],
+            longitud: markerPosition[1],
+          },
+        });
+  
+        setActiveStep(0);
+        setDescription("");
+        setPhoto(null);
+        setWoundedList([]);
+        setMaterialsList([]);
+        onClose();
+      } else {
+        alert(`Error al reportar el incidente: ${response.message || "Intenta de nuevo"}`);
+      }
+    } catch (error) {
+      console.error("Error al enviar el incidente:", error);
+      alert("Hubo un problema al conectar con el servidor.");
+    } finally {
+      setLoading(false);
+    }
   };
+  
 
   useEffect(() => {
     if (open) {
       setActiveStep(0);
       setDescription("");
       setPhoto(null);
-      setInformant({ name: "", lastName: "", cellphone: "", email: "" });
-      setWounded({ quantity: "", name: "", lastName: "" });
-      setMaterials({ type: "", description: "", quantity: "" });
-  
-      // 🔹 Volver a obtener la ciudad y distrito
+      setWoundedList([]);
+      setMaterialsList([]);
+
       if (latitude && longitude) {
         fetchLocationDetails(latitude, longitude);
       }
     }
   }, [open]);
-  
-
 
   return (
     <Modal open={open} onClose={onClose} className="incident-stepper__modal">
       <Box
         className="incident-stepper"
         sx={{
-          maxHeight: "90vh",  // 🔹 Altura máxima del modal
-          overflow: "auto",   // 🔹 Habilita el scroll si hay demasiados elementos
-          p: 3
+          maxHeight: "90vh",
+          overflow: "auto",
+          p: 3,
         }}
       >
         <Stepper activeStep={activeStep} orientation="vertical">
@@ -108,24 +180,30 @@ const IncidentStepper = ({ open, onClose, onSubmit, incidentType, markerPosition
                     setDescription={setDescription}
                     photo={photo}
                     setPhoto={setPhoto}
-                    city={city}
-                    setCity={setCity}
-                    district={district}
-                    setDistrict={setDistrict}
-                    informant={informant}
-                    setInformant={setInformant}
-                    wounded={wounded}
-                    setWounded={setWounded}
-                    materials={materials}
-                    setMaterials={setMaterials}
+                    wounded={woundedList}
+                    setWounded={setWoundedList}
+                    materials={materialsList}
+                    setMaterials={setMaterialsList}
                     incidentType={incidentType}
                     latitude={latitude}
                     longitude={longitude}
                   />
                   <Box className="incident-stepper__buttons">
-                    {index > 0 && <Button onClick={() => setActiveStep(index - 1)}>Atrás</Button>}
-                    <Button onClick={() => (index === steps.length - 1 ? handleFinish() : setActiveStep(index + 1))}>
-                      {index === steps.length - 1 ? "Finalizar" : "Siguiente"}
+                    {index > 0 && (
+                      <Button
+                        onClick={() => setActiveStep(index - 1)}
+                        className="incident-stepper__button"
+                        disabled={loading}
+                      >
+                        Atrás
+                      </Button>
+                    )}
+                    <Button
+                      onClick={() => (index === steps.length - 1 ? handleFinish() : setActiveStep(index + 1))}
+                      className="incident-stepper__button"
+                      disabled={loading}
+                    >
+                      {loading ? <CircularProgress size={24} color="inherit" /> : index === steps.length - 1 ? "Finalizar" : "Siguiente"}
                     </Button>
                   </Box>
                 </StepContent>

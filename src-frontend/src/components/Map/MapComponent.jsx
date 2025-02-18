@@ -14,20 +14,20 @@ import aloneIcon from "../../assets/icons/point_alone.png";
 const icons = {
   accident: new Icon({
     iconUrl: crashIcon,
-    iconSize: [40]
+    iconSize: [40],
   }),
   fire: new Icon({
     iconUrl: fireIcon,
-    iconSize: [40]
+    iconSize: [40],
   }),
   robbery: new Icon({
     iconUrl: thiefIcon,
-    iconSize: [40]
+    iconSize: [40],
   }),
   default: new Icon({
     iconUrl: aloneIcon,
-    iconSize: [50]
-  })
+    iconSize: [55],
+  }),
 };
 
 const MapComponent = () => {
@@ -38,9 +38,9 @@ const MapComponent = () => {
   const [userLocation, setUserLocation] = useState(null);
 
   const typeMapping = {
-    Incendio: "fire",
-    Robo: "robbery",
-    Accidente: "accident"
+    fire: "fire",
+    robbery: "robbery",
+    accident: "accident",
   };
 
   // 📌 Hook para centrar el mapa en la ubicación del usuario
@@ -73,23 +73,24 @@ const MapComponent = () => {
 
   // 📌 Manejar el reporte de incidentes
   const handleReport = (incident) => {
-    const validType = typeMapping[incident.type] || "default";
+    if (!incident || !incident.ubicacion) {
+      console.error("❌ Error: El incidente no tiene ubicación definida.");
+      return;
+    }
+    console.log("incident", incident);
 
-    setIncidents((prevIncidents) => {
-      const updatedIncidents = [
-        ...prevIncidents,
-        {
-          ...incident,
-          location: markerPosition,
-          type: validType, // 🔹 Asegura que solo use los tipos permitidos
-        }
-      ];
+    const validType = typeMapping[incident.tipoIncidente] || "default";
 
-      return updatedIncidents;
-    });
+    const newIncident = {
+      ...incident,
+      location: [incident.ubicacion.latitud, incident.ubicacion.longitud], // 🔹 Asegurar coordenadas
+      type: validType,
+    };
 
-    setMarkerPosition(userLocation || [4.711, -74.0721]); // 🔹 Reinicia la posición
-    setFormOpen(false); // 🔹 Cierra el formulario después de reportar
+    setIncidents((prevIncidents) => [...prevIncidents, newIncident]);
+
+    setMarkerPosition(userLocation || [4.711, -74.0721]); // 🔹 Resetear marcador a la ubicación inicial
+    setFormOpen(false); // 🔹 Cerrar formulario después de reportar
   };
 
   return (
@@ -107,7 +108,9 @@ const MapComponent = () => {
             position={incident.location}
             icon={icons[incident.type] || icons.default}
           >
-            <Popup>{incident.type}: {incident.description}</Popup>
+            <Popup>
+              {incident.type}: {incident.description}
+            </Popup>
           </Marker>
         ))}
 
@@ -118,10 +121,10 @@ const MapComponent = () => {
           eventHandlers={{
             dragend: (event) => {
               setMarkerPosition([
-                event.target.getLatLng().lat,
+                event.target.getLatLng().lat, 
                 event.target.getLatLng().lng
               ]);
-            }
+            },
           }}
           icon={icons.default} // 🔹 Ícono de selección antes de reportar
         >

@@ -1,111 +1,141 @@
-import { TextField, Box, Typography, Grid } from "@mui/material";
+import { TextField, Box, Typography, Button, Grid } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
 
+const StepAdditionalInfo = ({ wounded, setWounded, materials, setMaterials }) => {
+  // 📌 Agregar un nuevo herido
+  const addWounded = () => {
+    setWounded([...wounded, { nombre: "", apellidos: "", cantidad: "1" }]);
+  };
 
-const StepAdditionalInfo = ({ informant, setInformant, wounded, setWounded, materials, setMaterials }) => {
+  // 📌 Eliminar un herido
+  const removeWounded = (index) => {
+    setWounded(wounded.filter((_, i) => i !== index));
+  };
+
+  // 📌 Agregar un nuevo material
+  const addMaterial = () => {
+    setMaterials([...materials, { tipoMaterial: "", cantidad: "1", descripcion: "" }]);
+  };
+
+  // 📌 Eliminar un material
+  const removeMaterial = (index) => {
+    setMaterials(materials.filter((_, i) => i !== index));
+  };
+
   return (
     <Box>
-      {/* 🔹 INFORMANTE */}
-      <Typography variant="h6" sx={{ mb: 2, fontWeight: "bold" }}>
-        Informante (Opcional)
+      {/* 🔹 Sección de Heridos */}
+      <Typography variant="h6" sx={{ mt: 2, fontWeight: "bold" }}>
+        Heridos
       </Typography>
       <Grid container spacing={2}>
-        <Grid item xs={6}>
-          <TextField
-            label="Nombre"
-            fullWidth
-            value={informant.name}
-            onChange={(e) => setInformant({ ...informant, name: e.target.value })}
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <TextField
-            label="Apellidos"
-            fullWidth
-            value={informant.lastName}
-            onChange={(e) => setInformant({ ...informant, lastName: e.target.value })}
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <TextField
-            label="Celular"
-            fullWidth
-            value={informant.cellphone}
-            onChange={(e) => setInformant({ ...informant, cellphone: e.target.value })}
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <TextField
-            label="Correo Electrónico"
-            fullWidth
-            value={informant.email}
-            onChange={(e) => setInformant({ ...informant, email: e.target.value })}
-          />
-        </Grid>
+        {wounded.map((w, index) => (
+          <Grid container item xs={12} spacing={2} key={index} alignItems="center">
+            <Grid item xs={12} md={4}>
+              <TextField
+                label="Nombre"
+                fullWidth
+                value={w.nombre}
+                onChange={(e) => {
+                  const updated = [...wounded];
+                  updated[index].nombre = e.target.value;
+                  setWounded(updated);
+                }}
+              />
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <TextField
+                label="Apellidos"
+                fullWidth
+                value={w.apellidos}
+                onChange={(e) => {
+                  const updated = [...wounded];
+                  updated[index].apellidos = e.target.value;
+                  setWounded(updated);
+                }}
+              />
+            </Grid>
+            <Grid item xs={6} md={2}>
+              <TextField
+                label="Cantidad"
+                type="number"
+                fullWidth
+                value={w.cantidad}
+                onChange={(e) => {
+                  const updated = [...wounded];
+                  updated[index].cantidad = e.target.value;
+                  setWounded(updated);
+                }}
+              />
+            </Grid>
+            <Grid item xs={6} md={2} display="flex" justifyContent="center">
+              <Button onClick={() => removeWounded(index)} color="error">
+                <RemoveIcon />
+              </Button>
+            </Grid>
+          </Grid>
+        ))}
       </Grid>
+      <Button onClick={addWounded} sx={{ mt: 2 }}>
+        <AddIcon /> Agregar Herido
+      </Button>
 
-      {/* 🔹 HERIDOS */}
-      <Typography variant="h6" sx={{ mt: 4, mb: 2, fontWeight: "bold" }}>
-        Heridos (Opcional)
+      {/* 🔹 Sección de Materiales */}
+      <Typography variant="h6" sx={{ mt: 3, fontWeight: "bold" }}>
+        Materiales
       </Typography>
       <Grid container spacing={2}>
-        <Grid item xs={4}>
-          <TextField
-            label="Cantidad"
-            fullWidth
-            value={wounded.quantity}
-            onChange={(e) => setWounded({ ...wounded, quantity: e.target.value })}
-          />
-        </Grid>
-        <Grid item xs={4}>
-          <TextField
-            label="Nombre"
-            fullWidth
-            value={wounded.name}
-            onChange={(e) => setWounded({ ...wounded, name: e.target.value })}
-          />
-        </Grid>
-        <Grid item xs={4}>
-          <TextField
-            label="Apellidos"
-            fullWidth
-            value={wounded.lastName}
-            onChange={(e) => setWounded({ ...wounded, lastName: e.target.value })}
-          />
-        </Grid>
+        {materials.map((m, index) => (
+          <Grid container item xs={12} spacing={2} key={index} alignItems="center">
+            <Grid item xs={12} md={4}>
+              <TextField
+                label="Tipo de Material"
+                fullWidth
+                value={m.tipoMaterial}
+                onChange={(e) => {
+                  const updated = [...materials];
+                  updated[index].tipoMaterial = e.target.value;
+                  setMaterials(updated);
+                }}
+              />
+            </Grid>
+            <Grid item xs={6} md={2}>
+              <TextField
+                label="Cantidad"
+                type="number"
+                fullWidth
+                value={m.cantidad}
+                onChange={(e) => {
+                  const updated = [...materials];
+                  updated[index].cantidad = e.target.value;
+                  setMaterials(updated);
+                }}
+              />
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <TextField
+                label="Descripción"
+                fullWidth
+                value={m.descripcion}
+                onChange={(e) => {
+                  const updated = [...materials];
+                  updated[index].descripcion = e.target.value;
+                  setMaterials(updated);
+                }}
+              />
+            </Grid>
+            <Grid item xs={6} md={2} display="flex" justifyContent="center">
+              <Button onClick={() => removeMaterial(index)} color="error">
+                <RemoveIcon />
+              </Button>
+            </Grid>
+          </Grid>
+        ))}
       </Grid>
-
-      {/* 🔹 MATERIALES */}
-      <Typography variant="h6" sx={{ mt: 4, mb: 2, fontWeight: "bold" }}>
-        Materiales (Opcional)
-      </Typography>
-      <Grid container spacing={2}>
-        <Grid item xs={6}>
-          <TextField
-            label="Tipo"
-            fullWidth
-            value={materials.type}
-            onChange={(e) => setMaterials({ ...materials, type: e.target.value })}
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <TextField
-            label="Cantidad"
-            fullWidth
-            value={materials.quantity}
-            onChange={(e) => setMaterials({ ...materials, quantity: e.target.value })}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            label="Descripción"
-            fullWidth
-            multiline
-            rows={2}
-            value={materials.description}
-            onChange={(e) => setMaterials({ ...materials, description: e.target.value })}
-          />
-        </Grid>
-      </Grid>
+      <Button onClick={addMaterial} sx={{ mt: 2 }}>
+        <AddIcon /> Agregar Material
+      </Button>
     </Box>
   );
 };

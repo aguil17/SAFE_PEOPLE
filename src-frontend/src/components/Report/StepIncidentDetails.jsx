@@ -1,18 +1,47 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { TextField, Box, Typography, Button } from "@mui/material";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
+import imageCompression from "browser-image-compression";
 
 const StepIncidentDetails = ({ description, setDescription, photo, setPhoto, incidentType }) => {
   const [error, setError] = useState(false);
+  const [compressedPhoto, setCompressedPhoto] = useState(photo || null); // 🔹 Inicializar con photo si ya existe
 
-  const handlePhotoChange = (event) => {
-    setPhoto(event.target.files[0]);
+  useEffect(() => {
+    if (photo) {
+      setCompressedPhoto(photo); // 🔹 Restaurar la imagen cuando regresas al paso anterior
+    }
+  }, [photo]);
+
+  const handlePhotoChange = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+  
+    try {
+      const options = {
+        maxSizeMB: 0.2, 
+        maxWidthOrHeight: 50,
+        useWebWorker: true, 
+      };
+  
+      const compressedFile = await imageCompression(file, options);
+      setPhoto(compressedFile);  
+      // Convertir a Base64
+      const reader = new FileReader();
+      reader.readAsDataURL(compressedFile);
+      reader.onloadend = () => {
+        setPhoto(reader.result); // 🔹 Ahora photo contiene la imagen en Base64
+        setCompressedPhoto(reader.result);
+      };
+    } catch (error) {
+      console.error("Error comprimiendo la imagen:", error);
+    }
   };
 
   const handleDescriptionChange = (e) => {
     const value = e.target.value;
     setDescription(value);
-    setError(value.trim() === ""); // 🔹 Si está vacío, muestra error
+    setError(value.trim() === "");
   };
 
   return (
@@ -24,7 +53,7 @@ const StepIncidentDetails = ({ description, setDescription, photo, setPhoto, inc
 
       {/* 🔹 Campo de descripción */}
       <TextField
-        label="Descripción del incidente *"
+        label="Descripción del incidente"
         multiline
         rows={3}
         fullWidth
@@ -42,9 +71,17 @@ const StepIncidentDetails = ({ description, setDescription, photo, setPhoto, inc
         sx={{ marginTop: 2, display: "flex", alignItems: "center", gap: 1 }}
       >
         <UploadFileIcon />
-        {photo ? photo.name : "Subir una imagen"}
+        {photo ? "Imagen seleccionada" : "Subir una imagen"}
         <input type="file" accept="image/*" hidden onChange={handlePhotoChange} />
       </Button>
+
+      {/* 🔹 Vista previa de la imagen comprimida */}
+      {compressedPhoto && (
+        <Box sx={{ marginTop: 2 }}>
+          <Typography variant="body2">Vista previa:</Typography>
+          <img src={compressedPhoto} alt="Vista previa" style={{ maxWidth: "50%" }} />
+        </Box>
+      )}
     </Box>
   );
 };
