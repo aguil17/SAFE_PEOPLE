@@ -79,12 +79,9 @@ const StepAdditionalInfo = ({ wounded, setWounded, materials, setMaterials, woun
                 value={w.edad}
                 onChange={(e) => {
                   let value = parseInt(e.target.value, 10);
-
-                  // ✅ Evitar valores negativos
                   if (isNaN(value) || value < 0) {
                     value = 0;
                   }
-
                   const updated = [...wounded];
                   updated[index].edad = value.toString();
                   setWounded(updated);
