@@ -16,25 +16,25 @@ export const loadIncidents = createAsyncThunk("incidents/loadIncidents", async (
   return await fetchIncidents(startDate, endDate);
 });
 
-// 🆕 AsyncThunk para reportar un incidente y actualizar la lista
+// 🆕 AsyncThunk para reportar un incidente y agregarlo a la lista sin recargar todo
 export const addIncident = createAsyncThunk(
   "incidents/addIncident",
   async (incidentData, { dispatch }) => {
     const response = await reportIncident(incidentData);
     if (response.success) {
-      await dispatch(loadIncidents()); // 🔹 Recargar la lista de incidentes
+      dispatch(addIncidentToState(response.data)); // 🆕 Agregar directamente a Redux sin recargar todo
     }
     return response;
   }
 );
 
-// 🗑 AsyncThunk para eliminar un incidente en el backend y en Redux
+// 🗑 AsyncThunk para eliminar un incidente y actualizar Redux
 export const removeIncidentAsync = createAsyncThunk(
   "incidents/removeIncidentAsync",
   async (incidentId, { dispatch }) => {
     const response = await deleteIncident(incidentId);
     if (response.success) {
-      dispatch(removeIncident(incidentId)); // 🔹 Remover de Redux si se eliminó correctamente
+      dispatch(removeIncident(incidentId)); // ✅ Remover del Redux state si el backend confirma
     }
     return response;
   }
@@ -48,7 +48,11 @@ const incidentsSlice = createSlice({
     error: null,
   },
   reducers: {
-    // 🔥 Acción síncrona para eliminar un incidente del Redux State
+    // 🆕 Acción síncrona para agregar un nuevo incidente al inicio
+    addIncidentToState: (state, action) => {
+      state.list.unshift(action.payload); // ✅ Agregar al inicio para mantener el orden descendente
+    },
+    // 🗑 Remover un incidente del Redux state
     removeIncident: (state, action) => {
       state.list = state.list.filter((incident) => incident.id !== action.payload);
     },
@@ -61,7 +65,10 @@ const incidentsSlice = createSlice({
       })
       .addCase(loadIncidents.fulfilled, (state, action) => {
         state.loading = false;
-        state.list = action.payload;
+        state.list = action.payload.sort((a, b) => {
+          // ✅ Ordenamos por fecha y hora en orden descendente (más recientes primero)
+          return new Date(b.date + " " + b.time) - new Date(a.date + " " + a.time);
+        });
       })
       .addCase(loadIncidents.rejected, (state, action) => {
         state.loading = false;
@@ -90,5 +97,5 @@ const incidentsSlice = createSlice({
   },
 });
 
-export const { removeIncident } = incidentsSlice.actions;
+export const { removeIncident, addIncidentToState } = incidentsSlice.actions;
 export default incidentsSlice.reducer;

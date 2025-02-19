@@ -1,32 +1,40 @@
 import { useSelector, useDispatch } from "react-redux";
-import { Box, Typography } from "@mui/material";
-import { deleteIncident } from "../services/incidentService";
-import { removeIncident } from "../redux/incidentsSlice";
+import { Box, Typography, CircularProgress } from "@mui/material";
+import { loadIncidents, removeIncidentAsync } from "../redux/incidentsSlice";
 import ReportList from "../components/Report/ReportList";
+import { useEffect, useState } from "react";
 
 const Reports = () => {
   const dispatch = useDispatch();
-  // Obtener usuario autenticado
   const user = useSelector((state) => state.auth.user);
-  // Obtener todos los reportes desde Redux
   const incidents = useSelector((state) => state.incidents.list);
+  const loading = useSelector((state) => state.incidents.loading);
 
-  // Filtrar solo los reportes del usuario autenticado
+  // Estado para manejar la eliminación individual de reportes
+  const [deleting, setDeleting] = useState(null);
+
+  useEffect(() => {
+    if (incidents.length === 0) {
+      dispatch(loadIncidents());
+    }
+  }, [dispatch, incidents.length]);
+
+  // Filtrar reportes del usuario autenticado
   const userIncidents = incidents.filter(
     (incident) => incident.incidenteInformantes[0].email === user?.usuario?.username
   );
 
-  // 📌 Función para eliminar un reporte
+  // 📌 Manejar la eliminación de incidentes
   const handleDelete = async (incidentId) => {
     const confirmDelete = window.confirm("¿Estás seguro de eliminar este reporte?");
     if (!confirmDelete) return;
 
-    const response = await deleteIncident(incidentId);
-    if (response.success) {
-      alert("Reporte eliminado exitosamente.");
-      dispatch(removeIncident(incidentId)); // 🔹 Actualizar Redux
-    } else {
-      alert(`Error eliminando el reporte: ${response.message}`);
+    setDeleting(incidentId); // Mostrar loader en el botón específico
+    const response = await dispatch(removeIncidentAsync(incidentId));
+    setDeleting(null); // Ocultar loader tras la eliminación
+
+    if (!response.payload.success) {
+      alert(`Error eliminando el reporte: ${response.payload.message}`);
     }
   };
 
@@ -36,13 +44,16 @@ const Reports = () => {
         📋 Mis Reportes
       </Typography>
 
-      {/* Si el usuario no tiene reportes, mostramos un mensaje */}
-      {userIncidents.length === 0 ? (
+      {loading ? (
+        <Box display="flex" justifyContent="center" mt={3}>
+          <CircularProgress />
+        </Box>
+      ) : userIncidents.length === 0 ? (
         <Typography variant="h6" color="textSecondary">
           No tienes reportes registrados.
         </Typography>
       ) : (
-        <ReportList incidents={userIncidents} onDelete={handleDelete} />
+        <ReportList incidents={userIncidents} onDelete={handleDelete} deleting={deleting} />
       )}
     </Box>
   );

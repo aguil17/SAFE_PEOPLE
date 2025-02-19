@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { Box, Card, CardContent, CardMedia, Typography, Button } from "@mui/material";
+import { Box, Card, CardContent, CardMedia, Typography, Button, CircularProgress } from "@mui/material";
 import fireIcon from "../../assets/icons/point_fire.png";
 import crashIcon from "../../assets/icons/point_crash.png";
 import thiefIcon from "../../assets/icons/point_thief.png";
@@ -14,8 +14,7 @@ const incidentImages = {
   default: aloneIcon,
 };
 
-const ReportList = ({ incidents, onDelete }) => {
-  console.log("incidents: jajaj: ", incidents);
+const ReportList = ({ incidents, onDelete, deleting }) => {
   return (
     <Box className="report-list">
       {incidents.map((incident) => {
@@ -27,23 +26,16 @@ const ReportList = ({ incidents, onDelete }) => {
 
         return (
           <Card key={incident.id} className="report-list__card">
-            {/* 📌 Imagen del incidente */}
-            <CardMedia
-              component="img"
-              height="140"
-              image={imageUrl}
-              alt={incident.incidentType}
-              className="report-list__image"
-            />
+            <CardMedia component="img" height="140" image={imageUrl} alt={incident.incidentType} className="report-list__image" />
             <CardContent>
               <Typography variant="h6" className="report-list__title">
                 {incident.incidentType === "fire"
                   ? "🔥 Incendio"
                   : incident.incidentType === "robbery"
-                    ? "🦹‍♂️ Robo"
-                    : incident.incidentType === "accident"
-                      ? "🚗 Accidente"
-                      : "📍 Otro"}
+                  ? "🦹‍♂️ Robo"
+                  : incident.incidentType === "accident"
+                  ? "🚗 Accidente"
+                  : "📍 Otro"}
               </Typography>
               <Typography variant="body2">
                 <strong>📅 Fecha:</strong> {new Date(incident.date).toLocaleDateString()}
@@ -62,8 +54,9 @@ const ReportList = ({ incidents, onDelete }) => {
                 color="error"
                 className="report-list__delete-button"
                 onClick={() => onDelete(incident.id)}
+                disabled={deleting === incident.id}
               >
-                🗑 Eliminar
+                {deleting === incident.id ? <CircularProgress size={24} color="inherit" /> : "🗑 Eliminar"}
               </Button>
             </CardContent>
           </Card>
@@ -74,10 +67,20 @@ const ReportList = ({ incidents, onDelete }) => {
 };
 
 ReportList.propTypes = {
-  incidents: PropTypes.shape({
-    map: PropTypes.func,
-  }),
-  onDelete: PropTypes.func,
+  incidents: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      incidentType: PropTypes.string.isRequired,
+      date: PropTypes.string.isRequired,
+      time: PropTypes.string.isRequired,
+      cityName: PropTypes.string.isRequired,
+      districtName: PropTypes.string.isRequired,
+      descriptionIncident: PropTypes.string,
+      photo: PropTypes.string,
+    })
+  ).isRequired,
+  onDelete: PropTypes.func.isRequired,
+  deleting: PropTypes.number, // Nuevo prop para mostrar el loader
 };
 
 export default ReportList;
