@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS incident (
                                         description VARCHAR(600) NOT NULL,
                                         date DATE NOT NULL,
                                         time TIME NOT NULL,
-                                        photo VARCHAR(90000) NOT NULL,
+                                        photo LONGTEXT NOT NULL,
                                         id_user INT,
                                         delete_at TIMESTAMP NULL DEFAULT NULL,
                                         creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
