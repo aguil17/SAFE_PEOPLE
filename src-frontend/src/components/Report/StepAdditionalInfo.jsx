@@ -47,7 +47,7 @@ const StepAdditionalInfo = ({ wounded, setWounded, materials, setMaterials, woun
       <Grid container spacing={2}>
         {wounded.map((w, index) => (
           <Grid container item xs={12} spacing={2} key={index} alignItems="center">
-            <Grid item xs={12} md={3}>
+            <Grid item xs={12} md={12}>
               <TextField
                 label="Nombre"
                 fullWidth
@@ -59,7 +59,7 @@ const StepAdditionalInfo = ({ wounded, setWounded, materials, setMaterials, woun
                 }}
               />
             </Grid>
-            <Grid item xs={12} md={3}>
+            <Grid item xs={12} md={12}>
               <TextField
                 label="Apellidos"
                 fullWidth
@@ -71,7 +71,7 @@ const StepAdditionalInfo = ({ wounded, setWounded, materials, setMaterials, woun
                 }}
               />
             </Grid>
-            <Grid item xs={6} md={2}>
+            <Grid item xs={12} md={6}>
               <TextField
                 label="Edad"
                 type="number"
@@ -88,7 +88,7 @@ const StepAdditionalInfo = ({ wounded, setWounded, materials, setMaterials, woun
                 }}
               />
             </Grid>
-            <Grid item xs={6} md={2}>
+            <Grid item xs={12} md={6}>
               <FormControl fullWidth>
                 <InputLabel id="wounded__select-label--genero">Género</InputLabel>
                 <Select
@@ -107,7 +107,7 @@ const StepAdditionalInfo = ({ wounded, setWounded, materials, setMaterials, woun
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item xs={6} md={3}>
+            <Grid item xs={12} md={12}>
               <FormControl fullWidth error={woundedErrors[index]?.estadoSalud}>
                 <InputLabel id={`wounded__select-label--estadoSalud-${index}`}>Estado Salud</InputLabel>
                 <Select
@@ -137,7 +137,7 @@ const StepAdditionalInfo = ({ wounded, setWounded, materials, setMaterials, woun
               )}
             </Grid>
 
-            <Grid item xs={6} md={3}>
+            <Grid item xs={12} md={12}>
               <FormControl fullWidth error={woundedErrors[index]?.estadoVital}>
                 <InputLabel id={`wounded__select-label--estadoVital-${index}`}>Estado Vital</InputLabel>
                 <Select
@@ -163,7 +163,7 @@ const StepAdditionalInfo = ({ wounded, setWounded, materials, setMaterials, woun
                 </Typography>
               )}
             </Grid>
-            <Grid item xs={6} md={3}>
+            <Grid item xs={12}>
               <FormControl fullWidth>
                 <InputLabel id="wounded__select-label--tipoHerida">Tipo de Herida</InputLabel>
                 <Select
@@ -218,7 +218,7 @@ const StepAdditionalInfo = ({ wounded, setWounded, materials, setMaterials, woun
       <Grid container spacing={2}>
         {materials.map((m, index) => (
           <Grid container item xs={12} spacing={2} key={index} alignItems="center">
-            <Grid item xs={12} md={3}>
+            <Grid item xs={12} md={12}>
               <TextField
                 label="Tipo de Material"
                 fullWidth
@@ -230,7 +230,7 @@ const StepAdditionalInfo = ({ wounded, setWounded, materials, setMaterials, woun
                 }}
               />
             </Grid>
-            <Grid item xs={6} md={2}>
+            <Grid item xs={12} md={6}>
               <TextField
                 label="Cantidad"
                 type="number"
@@ -243,7 +243,7 @@ const StepAdditionalInfo = ({ wounded, setWounded, materials, setMaterials, woun
                 }}
               />
             </Grid>
-            <Grid item xs={6} md={3}>
+            <Grid item xs={12} md={6}>
               <FormControl fullWidth>
                 <InputLabel id="materials__select-label--material_condition">Condición</InputLabel>
                 <Select
@@ -262,7 +262,7 @@ const StepAdditionalInfo = ({ wounded, setWounded, materials, setMaterials, woun
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={12}>
               <TextField
                 label="Descripción"
                 fullWidth
@@ -274,7 +274,7 @@ const StepAdditionalInfo = ({ wounded, setWounded, materials, setMaterials, woun
                 }}
               />
             </Grid>
-            <Grid item xs={6} md={2} display="flex" justifyContent="center">
+            <Grid item xs={12} display="flex" justifyContent="center">
               <Button onClick={() => removeMaterial(index)} color="error">
                 <RemoveIcon /> Eliminar
               </Button>

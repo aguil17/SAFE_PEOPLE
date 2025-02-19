@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchIncidents, reportIncident } from "../services/incidentService";
+import { fetchIncidents, reportIncident, deleteIncident } from "../services/incidentService";
 
 // 🕐 Obtener la fecha actual y hace 24 horas en formato YYYY-MM-DD
 const getDateRange = () => {
@@ -31,6 +31,18 @@ export const addIncident = createAsyncThunk(
   }
 );
 
+// 🗑 AsyncThunk para eliminar un incidente en el backend y en Redux
+export const removeIncidentAsync = createAsyncThunk(
+  "incidents/removeIncidentAsync",
+  async (incidentId, { dispatch }) => {
+    const response = await deleteIncident(incidentId);
+    if (response.success) {
+      dispatch(removeIncident(incidentId)); // 🔹 Remover de Redux si se eliminó correctamente
+    }
+    return response;
+  }
+);
+
 const incidentsSlice = createSlice({
   name: "incidents",
   initialState: {
@@ -38,7 +50,12 @@ const incidentsSlice = createSlice({
     loading: false,
     error: null,
   },
-  reducers: {},
+  reducers: {
+    // 🔥 Acción síncrona para eliminar un incidente del Redux State
+    removeIncident: (state, action) => {
+      state.list = state.list.filter((incident) => incident.id !== action.payload);
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(loadIncidents.pending, (state) => {
@@ -62,8 +79,19 @@ const incidentsSlice = createSlice({
       .addCase(addIncident.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
+      })
+      .addCase(removeIncidentAsync.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(removeIncidentAsync.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(removeIncidentAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
       });
   },
 });
 
+export const { removeIncident } = incidentsSlice.actions;
 export default incidentsSlice.reducer;

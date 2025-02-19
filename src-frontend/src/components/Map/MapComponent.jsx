@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import { Icon } from "leaflet";
@@ -37,21 +37,23 @@ const MapComponent = () => {
   const incidents = useSelector((state) => state.incidents?.list || []);
   const [selectedIncident, setSelectedIncident] = useState(null);
   const [formOpen, setFormOpen] = useState(false);
-  const [markerPosition, setMarkerPosition] = useState([4.711, -74.0721]);
+  const [markerPosition, setMarkerPosition] = useState([4.711, -74.0721]); // Posición inicial
   const [userLocation, setUserLocation] = useState(null);
-  
+  const mapRef = useRef(null); // Referencia al mapa para centrarlo solo cuando sea necesario
+
   const typeMapping = {
     fire: "fire",
     robbery: "robbery",
     accident: "accident",
   };
 
-  // 📌 Hook para centrar el mapa en la ubicación del usuario
+  // 📌 Hook para centrar el mapa manualmente
   const MapCenter = ({ position }) => {
     const map = useMap();
     useEffect(() => {
-      if (position) {
+      if (position && !mapRef.current) {
         map.setView(position, 15);
+        mapRef.current = map; // Guardar referencia al mapa para evitar re-centrado innecesario
       }
     }, [position, map]);
     return null;
@@ -103,7 +105,7 @@ const MapComponent = () => {
       <MapContainer center={markerPosition} zoom={13} className="map">
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
-        {/* 📌 Centra el mapa en la ubicación del usuario */}
+        {/* 📌 Centrar el mapa en la ubicación del usuario SOLO la primera vez */}
         {userLocation && <MapCenter position={userLocation} />}
 
         {/* 📌 Pintar incidentes desde Redux */}
@@ -114,10 +116,23 @@ const MapComponent = () => {
             icon={icons[incident.incidentType] || icons.default}
           >
             <Popup>
-              <strong>{incident.incidentType}</strong><br />
-              {incident.descriptionIncident}<br />
+              <strong>
+                {incident.incidentType === "fire" ? "Incendio" :
+                  incident.incidentType === "robbery" ? "Robo" :
+                    incident.incidentType === "accident" ? "Accidente" :
+                      "Otro"}
+              </strong>
+              <br />
+              {new Date(incident.creationDate).toLocaleDateString("es-ES", {
+                weekday: "long", year: "numeric", month: "long", day: "numeric",
+              })} -
+              {new Date(incident.creationDate).toLocaleTimeString("es-ES", {
+                hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: true
+              })}
+              <br />
               <small>{incident.cityName}, {incident.districtName}</small>
             </Popup>
+
           </Marker>
         ))}
 
@@ -127,10 +142,16 @@ const MapComponent = () => {
           draggable={true}
           eventHandlers={{
             dragend: (event) => {
-              setMarkerPosition([
+              const newPos = [
                 event.target.getLatLng().lat,
                 event.target.getLatLng().lng,
-              ]);
+              ];
+              setMarkerPosition(newPos);
+
+              // 📌 Centrar el mapa en la nueva posición del marcador
+              if (mapRef.current) {
+                mapRef.current.setView(newPos, 15);
+              }
             },
           }}
           icon={icons.default}

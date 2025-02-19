@@ -12,6 +12,12 @@ const steps = [
   { label: "Información Adicional", component: StepAdditionalInfo },
 ];
 
+const typeMapping = {
+  Incendio: "fire",
+  Robo: "robbery",
+  Accidente: "accident",
+};
+
 const IncidentStepper = ({ open, onClose, onSubmit, incidentType, markerPosition }) => {
   const dispatch = useDispatch();
   const [activeStep, setActiveStep] = useState(0);
@@ -67,15 +73,16 @@ const IncidentStepper = ({ open, onClose, onSubmit, incidentType, markerPosition
 
   // 📌 Enviar datos al backend al finalizar
   const handleFinish = async () => {
-    const typeMapping = {
-      Incendio: "fire",
-      Robo: "robbery",
-      Accidente: "accident",
-    };
+    const now = new Date();
+    const formattedHour = now.getHours().toString().padStart(2, "0");
+    const formattedMinutes = now.getMinutes().toString().padStart(2, "0");
+    const formattedSeconds = now.getSeconds().toString().padStart(2, "0");
+    const formattedTime = `${formattedHour}:${formattedMinutes}:${formattedSeconds}`;
+
     const incidentData = {
       descripcion: description,
       fecha: new Date().toISOString().split("T")[0],
-      hora: new Date().toLocaleTimeString(),
+      hora: formattedTime,
       idUsuario: user?.usuario?.id || 0,
       foto: photo || "No disponible",
       tipoIncidente: typeMapping[incidentType] || "unknown",

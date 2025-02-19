@@ -70,3 +70,38 @@ export const fetchIncidents = async (startDate, endDate) => {
     return [];
   }
 };
+
+const DELETE_API_URL = "http://34.198.223.16:8762/ms-operator/incidente";
+
+/**
+ * Elimina un incidente por ID.
+ * @param {number} incidentId - ID del incidente a eliminar.
+ * @returns {Promise<Object>} Respuesta del backend.
+ */
+export const deleteIncident = async (incidentId) => {
+  try {
+    const payload = {
+      targetMethod: "DELETE",
+    };
+
+    const response = await fetch(`${DELETE_API_URL}/${incidentId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    const result = await response.json();
+
+    if (!response.ok || result.error) {
+      throw new Error(result.message || "Error eliminando el incidente");
+    }
+
+    return { success: true, data: result };
+  } catch (error) {
+    console.error("Error eliminando el incidente:", error);
+    return { success: false, message: error.message };
+  }
+};
+
