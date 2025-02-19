@@ -60,7 +60,6 @@ const AuthModal = ({ open, onClose }) => {
 
     try {
       let userData = form;
-      console.log("userData 1:", userData);
       if (tab === 1) {
         // Si está en "Iniciar sesión", solo enviamos el correo con datos dummy
         userData = {
@@ -75,7 +74,6 @@ const AuthModal = ({ open, onClose }) => {
           password: "dummy",
           role: "user",
         };
-        console.log("userData:", userData);
       }
       if(tab === 0) {
         userData.nombreUsuario = form.correo;

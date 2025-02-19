@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Stepper, Step, StepLabel, StepContent, Button, Box, Modal, CircularProgress } from "@mui/material";
 import StepIncidentDetails from "./StepIncidentDetails";
 import StepAdditionalInfo from "./StepAdditionalInfo";
 import "./IncidentStepper.scss";
 import { reportIncident } from "../../services/incidentService";
+import { addIncident } from "../../redux/incidentsSlice";
 
 const steps = [
   { label: "Detalles del Incidente", component: StepIncidentDetails },
@@ -12,6 +13,7 @@ const steps = [
 ];
 
 const IncidentStepper = ({ open, onClose, onSubmit, incidentType, markerPosition }) => {
+  const dispatch = useDispatch();
   const [activeStep, setActiveStep] = useState(0);
   const [description, setDescription] = useState("");
   const [photo, setPhoto] = useState(null);
@@ -70,8 +72,6 @@ const IncidentStepper = ({ open, onClose, onSubmit, incidentType, markerPosition
       Robo: "robbery",
       Accidente: "accident",
     };
-
-    console.log("photo", photo);
     const incidentData = {
       descripcion: description,
       fecha: new Date().toISOString().split("T")[0],
@@ -118,9 +118,8 @@ const IncidentStepper = ({ open, onClose, onSubmit, incidentType, markerPosition
 
     try {
       setLoading(true);
-      const response = await reportIncident(incidentData);
-
-      if (response.success) {
+      const response = await dispatch(addIncident(incidentData));
+      if (response?.payload?.success) {
         alert("¡Incidente reportado con éxito! 🎉");
 
         // 🔹 Pasamos el incidente reportado al mapa
@@ -215,6 +214,7 @@ const IncidentStepper = ({ open, onClose, onSubmit, incidentType, markerPosition
                     wounded={woundedList}
                     setWounded={setWoundedList}
                     woundedErrors={woundedErrors}
+                    setWoundedErrors={setWoundedErrors}
                     materials={materialsList}
                     setMaterials={setMaterialsList}
                     incidentType={incidentType}

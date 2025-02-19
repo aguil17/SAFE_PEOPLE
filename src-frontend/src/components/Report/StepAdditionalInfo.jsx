@@ -2,7 +2,7 @@ import { TextField, Box, Typography, Button, Grid, MenuItem, Select, FormControl
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 
-const StepAdditionalInfo = ({ wounded, setWounded, materials, setMaterials, woundedErrors }) => {
+const StepAdditionalInfo = ({ wounded, setWounded, materials, setMaterials, woundedErrors, setWoundedErrors }) => {
   // 📌 Agregar un nuevo herido con valores por defecto
   const addWounded = () => {
     setWounded([...wounded, {

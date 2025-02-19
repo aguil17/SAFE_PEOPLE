@@ -32,3 +32,41 @@ export const reportIncident = async (incidentData) => {
     return { success: false, message: error.message };
   }
 };
+
+const INCIDENT_API_URL = "http://34.198.223.16:8762/ms-buscador/incidente";
+
+/**
+ * Obtiene la lista de incidentes en un rango de fechas.
+ * @param {string} startDate - Fecha inicial en formato YYYY-MM-DD.
+ * @param {string} endDate - Fecha final en formato YYYY-MM-DD.
+ * @returns {Promise<Object[]>} Lista de incidentes.
+ */
+export const fetchIncidents = async (startDate, endDate) => {
+  try {
+    const payload = {
+      targetMethod: "GET",
+    };
+
+    const response = await fetch(
+      `${INCIDENT_API_URL}/fechaCreacionInicial/${startDate}/fechaCreacionFinal/${endDate}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      }
+    );
+
+    const result = await response.json();
+
+    if (!response.ok || result.error) {
+      throw new Error(result.message || "Error obteniendo los incidentes");
+    }
+
+    return result.incidentes; // Retorna la lista de incidentes
+  } catch (error) {
+    console.error("Error obteniendo los incidentes:", error);
+    return [];
+  }
+};

@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import { Icon } from "leaflet";
 import ReportButton from "./ReportButton";
-import IncidentStepper from "../Report/IncidentStepper"; // 🔹 Nuevo Stepper
+import IncidentStepper from "../Report/IncidentStepper";
+import { loadIncidents } from "../../redux/incidentsSlice";
 import "leaflet/dist/leaflet.css";
 import "./MapComponent.scss";
 import fireIcon from "../../assets/icons/point_fire.png";
@@ -10,7 +12,7 @@ import crashIcon from "../../assets/icons/point_crash.png";
 import thiefIcon from "../../assets/icons/point_thief.png";
 import aloneIcon from "../../assets/icons/point_alone.png";
 
-// 🔹 Íconos personalizados para los marcadores
+// 🔹 Íconos personalizados
 const icons = {
   accident: new Icon({
     iconUrl: crashIcon,
@@ -31,12 +33,13 @@ const icons = {
 };
 
 const MapComponent = () => {
+  const dispatch = useDispatch();
+  const incidents = useSelector((state) => state.incidents?.list || []);
   const [selectedIncident, setSelectedIncident] = useState(null);
   const [formOpen, setFormOpen] = useState(false);
-  const [incidents, setIncidents] = useState([]);
-  const [markerPosition, setMarkerPosition] = useState([4.711, -74.0721]); // 🔹 Ubicación inicial (Bogotá)
+  const [markerPosition, setMarkerPosition] = useState([4.711, -74.0721]);
   const [userLocation, setUserLocation] = useState(null);
-
+  
   const typeMapping = {
     fire: "fire",
     robbery: "robbery",
@@ -71,13 +74,17 @@ const MapComponent = () => {
     }
   }, []);
 
+  // 📌 Cargar incidentes al montar el componente
+  useEffect(() => {
+    dispatch(loadIncidents());
+  }, [dispatch]);
+
   // 📌 Manejar el reporte de incidentes
   const handleReport = (incident) => {
     if (!incident || !incident.ubicacion) {
       console.error("❌ Error: El incidente no tiene ubicación definida.");
       return;
     }
-    console.log("incident", incident);
 
     const validType = typeMapping[incident.tipoIncidente] || "default";
 
@@ -86,8 +93,6 @@ const MapComponent = () => {
       location: [incident.ubicacion.latitud, incident.ubicacion.longitud], // 🔹 Asegurar coordenadas
       type: validType,
     };
-
-    setIncidents((prevIncidents) => [...prevIncidents, newIncident]);
 
     setMarkerPosition(userLocation || [4.711, -74.0721]); // 🔹 Resetear marcador a la ubicación inicial
     setFormOpen(false); // 🔹 Cerrar formulario después de reportar
@@ -101,41 +106,42 @@ const MapComponent = () => {
         {/* 📌 Centra el mapa en la ubicación del usuario */}
         {userLocation && <MapCenter position={userLocation} />}
 
-        {/* 📌 Muestra todos los incidentes reportados */}
-        {incidents.map((incident, index) => (
+        {/* 📌 Pintar incidentes desde Redux */}
+        {incidents.map((incident) => (
           <Marker
-            key={index}
-            position={incident.location}
-            icon={icons[incident.type] || icons.default}
+            key={incident.id}
+            position={[incident.latitude, incident.longitude]}
+            icon={icons[incident.incidentType] || icons.default}
           >
             <Popup>
-              {incident.type}: {incident.description}
+              <strong>{incident.incidentType}</strong><br />
+              {incident.descriptionIncident}<br />
+              <small>{incident.cityName}, {incident.districtName}</small>
             </Popup>
           </Marker>
         ))}
 
-        {/* 📌 Marcador arrastrable antes de reportar */}
+        {/* 📌 Marcador arrastrable */}
         <Marker
           position={markerPosition}
           draggable={true}
           eventHandlers={{
             dragend: (event) => {
               setMarkerPosition([
-                event.target.getLatLng().lat, 
-                event.target.getLatLng().lng
+                event.target.getLatLng().lat,
+                event.target.getLatLng().lng,
               ]);
             },
           }}
-          icon={icons.default} // 🔹 Ícono de selección antes de reportar
+          icon={icons.default}
         >
-          <Popup>{userLocation ? "Ubicación seleccionada" : "Mueve este marcador"}</Popup>
+          <Popup>Ubicación seleccionada</Popup>
         </Marker>
       </MapContainer>
 
       {/* 📌 Botón de reporte */}
       <ReportButton
         onSelectIncidentType={(type) => {
-          console.log("Botón de reporte presionado, tipo de incidente:", type);
           setSelectedIncident(type);
           setFormOpen(true);
         }}

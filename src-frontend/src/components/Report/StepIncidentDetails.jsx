@@ -20,7 +20,7 @@ const StepIncidentDetails = ({ description, setDescription, setIsDescriptionVali
     try {
       const options = {
         maxSizeMB: 0.2, 
-        maxWidthOrHeight: 50,
+        maxWidthOrHeight: 100,
         useWebWorker: true, 
       };
   
