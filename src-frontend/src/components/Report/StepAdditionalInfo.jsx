@@ -1,11 +1,21 @@
-import { TextField, Box, Typography, Button, Grid } from "@mui/material";
+import { TextField, Box, Typography, Button, Grid, MenuItem, Select, FormControl, InputLabel } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 
-const StepAdditionalInfo = ({ wounded, setWounded, materials, setMaterials }) => {
-  // 📌 Agregar un nuevo herido
+const StepAdditionalInfo = ({ wounded, setWounded, materials, setMaterials, woundedErrors }) => {
+  // 📌 Agregar un nuevo herido con valores por defecto
   const addWounded = () => {
-    setWounded([...wounded, { nombre: "", apellidos: "", cantidad: "1" }]);
+    setWounded([...wounded, {
+      nombre: "",
+      apellidos: "",
+      cantidad: "1",
+      estadoSalud: "",
+      estadoVital: "",
+      tipoHerida: "Desconocido",
+      descripcionHerida: "No especificado",
+      edad: "0",
+      genero: "undefined"
+    }]);
   };
 
   // 📌 Eliminar un herido
@@ -13,9 +23,14 @@ const StepAdditionalInfo = ({ wounded, setWounded, materials, setMaterials }) =>
     setWounded(wounded.filter((_, i) => i !== index));
   };
 
-  // 📌 Agregar un nuevo material
+  // 📌 Agregar un nuevo material con valores por defecto
   const addMaterial = () => {
-    setMaterials([...materials, { tipoMaterial: "", cantidad: "1", descripcion: "" }]);
+    setMaterials([...materials, {
+      tipoMaterial: "",
+      cantidad: "1",
+      condicionMaterial: "new",
+      descripcion: ""
+    }]);
   };
 
   // 📌 Eliminar un material
@@ -32,7 +47,7 @@ const StepAdditionalInfo = ({ wounded, setWounded, materials, setMaterials }) =>
       <Grid container spacing={2}>
         {wounded.map((w, index) => (
           <Grid container item xs={12} spacing={2} key={index} alignItems="center">
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={3}>
               <TextField
                 label="Nombre"
                 fullWidth
@@ -44,7 +59,7 @@ const StepAdditionalInfo = ({ wounded, setWounded, materials, setMaterials }) =>
                 }}
               />
             </Grid>
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={3}>
               <TextField
                 label="Apellidos"
                 fullWidth
@@ -58,20 +73,138 @@ const StepAdditionalInfo = ({ wounded, setWounded, materials, setMaterials }) =>
             </Grid>
             <Grid item xs={6} md={2}>
               <TextField
-                label="Cantidad"
+                label="Edad"
                 type="number"
                 fullWidth
-                value={w.cantidad}
+                value={w.edad}
                 onChange={(e) => {
+                  let value = parseInt(e.target.value, 10);
+
+                  // ✅ Evitar valores negativos
+                  if (isNaN(value) || value < 0) {
+                    value = 0;
+                  }
+
                   const updated = [...wounded];
-                  updated[index].cantidad = e.target.value;
+                  updated[index].edad = value.toString();
                   setWounded(updated);
                 }}
               />
             </Grid>
-            <Grid item xs={6} md={2} display="flex" justifyContent="center">
+            <Grid item xs={6} md={2}>
+              <FormControl fullWidth>
+                <InputLabel id="wounded__select-label--genero">Género</InputLabel>
+                <Select
+                  labelId="wounded__select-label--genero"
+                  label="Género"
+                  value={w.genero}
+                  onChange={(e) => {
+                    const updated = [...wounded];
+                    updated[index].genero = e.target.value;
+                    setWounded(updated);
+                  }}
+                >
+                  <MenuItem value="male">Masculino</MenuItem>
+                  <MenuItem value="female">Femenino</MenuItem>
+                  <MenuItem value="undefined">Otro</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={6} md={3}>
+              <FormControl fullWidth error={woundedErrors[index]?.estadoSalud}>
+                <InputLabel id={`wounded__select-label--estadoSalud-${index}`}>Estado Salud</InputLabel>
+                <Select
+                  labelId={`wounded__select-label--estadoSalud-${index}`}
+                  label="Estado Salud"
+                  value={w.estadoSalud}
+                  onChange={(e) => {
+                    const updated = [...wounded];
+                    updated[index].estadoSalud = e.target.value;
+                    setWounded(updated);
+                    const errorsUpdated = [...woundedErrors];
+                    errorsUpdated[index].estadoSalud = !e.target.value;
+                    setWoundedErrors(errorsUpdated);
+                  }}
+                >
+                  <MenuItem value="stable">Estable</MenuItem>
+                  <MenuItem value="serious_stable">Grave Estable</MenuItem>
+                  <MenuItem value="serious_unstable">Grave Inestable</MenuItem>
+                  <MenuItem value="extremely_serious">Extremadamente Grave</MenuItem>
+                  <MenuItem value="unknown">Desconocido</MenuItem>
+                </Select>
+              </FormControl>
+              {woundedErrors[index]?.estadoSalud && (
+                <Typography color="error" variant="caption">
+                  Estado de salud es obligatorio.
+                </Typography>
+              )}
+            </Grid>
+
+            <Grid item xs={6} md={3}>
+              <FormControl fullWidth error={woundedErrors[index]?.estadoVital}>
+                <InputLabel id={`wounded__select-label--estadoVital-${index}`}>Estado Vital</InputLabel>
+                <Select
+                  labelId={`wounded__select-label--estadoVital-${index}`}
+                  label="Estado Vital"
+                  value={w.estadoVital}
+                  onChange={(e) => {
+                    const updated = [...wounded];
+                    updated[index].estadoVital = e.target.value;
+                    setWounded(updated);
+                    const errorsUpdated = [...woundedErrors];
+                    errorsUpdated[index].estadoVital = !e.target.value;
+                    setWoundedErrors(errorsUpdated);
+                  }}
+                >
+                  <MenuItem value="alive">Vivo</MenuItem>
+                  <MenuItem value="deceased">Fallecido</MenuItem>
+                </Select>
+              </FormControl>
+              {woundedErrors[index]?.estadoVital && (
+                <Typography color="error" variant="caption">
+                  Estado vital es obligatorio.
+                </Typography>
+              )}
+            </Grid>
+            <Grid item xs={6} md={3}>
+              <FormControl fullWidth>
+                <InputLabel id="wounded__select-label--tipoHerida">Tipo de Herida</InputLabel>
+                <Select
+                  labelId="wounded__select-label--tipoHerida"
+                  label="Tipo de Herida"
+                  value={w.tipoHerida}
+                  onChange={(e) => {
+                    const updated = [...wounded];
+                    updated[index].tipoHerida = e.target.value;
+                    setWounded(updated);
+                  }}
+                >
+                  <MenuItem value="fracture">Fractura</MenuItem>
+                  <MenuItem value="burn">Quemadura</MenuItem>
+                  <MenuItem value="cut">Corte</MenuItem>
+                  <MenuItem value="contusion">Contusión</MenuItem>
+                  <MenuItem value="hemorrhage">Hemorragia</MenuItem>
+                  <MenuItem value="unknown">Desconocido</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                label="Descripción de la herida"
+                fullWidth
+                multiline
+                rows={2}
+                value={w.descripcionHerida}
+                onChange={(e) => {
+                  const updated = [...wounded];
+                  updated[index].descripcionHerida = e.target.value;
+                  setWounded(updated);
+                }}
+              />
+            </Grid>
+            <Grid item xs={12} display="flex" justifyContent="center">
               <Button onClick={() => removeWounded(index)} color="error">
-                <RemoveIcon />
+                <RemoveIcon /> Eliminar
               </Button>
             </Grid>
           </Grid>
@@ -88,7 +221,7 @@ const StepAdditionalInfo = ({ wounded, setWounded, materials, setMaterials }) =>
       <Grid container spacing={2}>
         {materials.map((m, index) => (
           <Grid container item xs={12} spacing={2} key={index} alignItems="center">
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={3}>
               <TextField
                 label="Tipo de Material"
                 fullWidth
@@ -113,6 +246,25 @@ const StepAdditionalInfo = ({ wounded, setWounded, materials, setMaterials }) =>
                 }}
               />
             </Grid>
+            <Grid item xs={6} md={3}>
+              <FormControl fullWidth>
+                <InputLabel id="materials__select-label--material_condition">Condición</InputLabel>
+                <Select
+                  labelId="materials__select-label--material_condition"
+                  label="Condición"
+                  value={m.condicionMaterial}
+                  onChange={(e) => {
+                    const updated = [...materials];
+                    updated[index].condicionMaterial = e.target.value;
+                    setMaterials(updated);
+                  }}
+                >
+                  <MenuItem value="new">Nuevo</MenuItem>
+                  <MenuItem value="used">Usado</MenuItem>
+                  <MenuItem value="damaged">Dañado</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
             <Grid item xs={12} md={4}>
               <TextField
                 label="Descripción"
@@ -127,7 +279,7 @@ const StepAdditionalInfo = ({ wounded, setWounded, materials, setMaterials }) =>
             </Grid>
             <Grid item xs={6} md={2} display="flex" justifyContent="center">
               <Button onClick={() => removeMaterial(index)} color="error">
-                <RemoveIcon />
+                <RemoveIcon /> Eliminar
               </Button>
             </Grid>
           </Grid>

@@ -20,6 +20,9 @@ const IncidentStepper = ({ open, onClose, onSubmit, incidentType, markerPosition
   const [nombreCiudad, setNombreCiudad] = useState("No especificado");
   const [nombreDistrito, setNombreDistrito] = useState("No especificado");
   const [loading, setLoading] = useState(false);
+  const [isDescriptionValid, setIsDescriptionValid] = useState(false);
+  const [isWoundedValid, setIsWoundedValid] = useState(null);
+  const [woundedErrors, setWoundedErrors] = useState([]);
 
   const user = useSelector((state) => state.auth.user);
 
@@ -67,9 +70,8 @@ const IncidentStepper = ({ open, onClose, onSubmit, incidentType, markerPosition
       Robo: "robbery",
       Accidente: "accident",
     };
-  
+
     console.log("photo", photo);
-    
     const incidentData = {
       descripcion: description,
       fecha: new Date().toISOString().split("T")[0],
@@ -77,7 +79,7 @@ const IncidentStepper = ({ open, onClose, onSubmit, incidentType, markerPosition
       idUsuario: user?.usuario?.id || 0,
       foto: photo || "No disponible",
       tipoIncidente: typeMapping[incidentType] || "unknown",
-  
+
       ubicacion: {
         nombreCiudad,
         nombreDistrito,
@@ -86,37 +88,41 @@ const IncidentStepper = ({ open, onClose, onSubmit, incidentType, markerPosition
         descripcion: "Ubicación ingresada automáticamente",
         latitud: markerPosition[0].toString(),
       },
-  
       heridos: woundedList.map(w => ({
         nombre: w.nombre,
         apellidos: w.apellidos,
         cantidad: w.cantidad,
-        estadoSalud: "stable",
-        estadoVital: "alive",
-        tipoHerida: "Desconocido",
-        tipoHerido: "Desconocido",
-        descripcionHerida: "No especificado",
+        estadoSalud: w.estadoSalud || "stable",
+        estadoVital: w.estadoVital || "alive",
+        tipoHerida: w.tipoHerida || "Desconocido",
+        tipoHerido: w.tipoHerido || "Desconocido",
+        descripcionHerida: w.descripcionHerida || "No especificado",
         edad: w.edad ? w.edad.toString() : "0",
-        genero: w.genero === "masculino" ? "male" : w.genero === "femenino" ? "female" : "male",
+        genero: w.genero === "masculino" ? "male" : w.genero === "femenino" ? "female" : "undefined",
       })),
-  
+
       informantes: [informant],
-  
-      materiales: materialsList.map(m => ({
-        tipoMaterial: m.tipoMaterial,
-        cantidad: m.cantidad,
-        condicionMaterial: "new",
-        descripcion: m.descripcion || "No especificado",
-      })),
+
+      materiales: materialsList.length > 0 ? materialsList.map(m => ({
+        tipoMaterial: m.tipoMaterial || "N/A",
+        cantidad: m.cantidad || "0",
+        condicionMaterial: m.condicionMaterial || "damaged",
+        descripcion: m.descripcion || "N/A",
+      })) : [{
+        tipoMaterial: "N/A",
+        cantidad: "0",
+        condicionMaterial: "damaged",
+        descripcion: "N/A",
+      }],
     };
-  
+
     try {
       setLoading(true);
       const response = await reportIncident(incidentData);
-  
+
       if (response.success) {
         alert("¡Incidente reportado con éxito! 🎉");
-  
+
         // 🔹 Pasamos el incidente reportado al mapa
         onSubmit({
           ...incidentData,
@@ -125,7 +131,7 @@ const IncidentStepper = ({ open, onClose, onSubmit, incidentType, markerPosition
             longitud: markerPosition[1],
           },
         });
-  
+
         setActiveStep(0);
         setDescription("");
         setPhoto(null);
@@ -142,11 +148,12 @@ const IncidentStepper = ({ open, onClose, onSubmit, incidentType, markerPosition
       setLoading(false);
     }
   };
-  
+
 
   useEffect(() => {
     if (open) {
       setActiveStep(0);
+      setIsDescriptionValid(false);
       setDescription("");
       setPhoto(null);
       setWoundedList([]);
@@ -157,6 +164,30 @@ const IncidentStepper = ({ open, onClose, onSubmit, incidentType, markerPosition
       }
     }
   }, [open]);
+
+  const validateWoundedList = () => {
+    if (woundedList.length === 0) {
+      setWoundedErrors([]);
+      return true;
+    }
+
+    let hasErrors = false;
+    const errors = woundedList.map((w) => {
+      const error = {
+        estadoSalud: !w.estadoSalud || w.estadoSalud === "",
+        estadoVital: !w.estadoVital || w.estadoVital === "",
+      };
+      if (error.estadoSalud || error.estadoVital) hasErrors = true;
+      return error;
+    });
+
+    setWoundedErrors(errors);
+    return !hasErrors;
+  };
+
+  useEffect(() => {
+    setIsWoundedValid(validateWoundedList());
+  }, [woundedList]);
 
   return (
     <Modal open={open} onClose={onClose} className="incident-stepper__modal">
@@ -178,10 +209,12 @@ const IncidentStepper = ({ open, onClose, onSubmit, incidentType, markerPosition
                   <StepComponent
                     description={description}
                     setDescription={setDescription}
+                    setIsDescriptionValid={setIsDescriptionValid}
                     photo={photo}
                     setPhoto={setPhoto}
                     wounded={woundedList}
                     setWounded={setWoundedList}
+                    woundedErrors={woundedErrors}
                     materials={materialsList}
                     setMaterials={setMaterialsList}
                     incidentType={incidentType}
@@ -201,7 +234,7 @@ const IncidentStepper = ({ open, onClose, onSubmit, incidentType, markerPosition
                     <Button
                       onClick={() => (index === steps.length - 1 ? handleFinish() : setActiveStep(index + 1))}
                       className="incident-stepper__button"
-                      disabled={loading}
+                      disabled={loading || (index === 0 && !isDescriptionValid) || (index === steps.length - 1 && isWoundedValid === false)}
                     >
                       {loading ? <CircularProgress size={24} color="inherit" /> : index === steps.length - 1 ? "Finalizar" : "Siguiente"}
                     </Button>

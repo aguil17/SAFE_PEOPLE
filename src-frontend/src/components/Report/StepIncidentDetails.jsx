@@ -3,7 +3,7 @@ import { TextField, Box, Typography, Button } from "@mui/material";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import imageCompression from "browser-image-compression";
 
-const StepIncidentDetails = ({ description, setDescription, photo, setPhoto, incidentType }) => {
+const StepIncidentDetails = ({ description, setDescription, setIsDescriptionValid, photo, setPhoto, incidentType }) => {
   const [error, setError] = useState(false);
   const [compressedPhoto, setCompressedPhoto] = useState(photo || null); // 🔹 Inicializar con photo si ya existe
 
@@ -41,6 +41,7 @@ const StepIncidentDetails = ({ description, setDescription, photo, setPhoto, inc
   const handleDescriptionChange = (e) => {
     const value = e.target.value;
     setDescription(value);
+    setIsDescriptionValid(value.trim() !== "");
     setError(value.trim() === "");
   };
 

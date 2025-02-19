@@ -31,7 +31,9 @@
   }
 
   &:disabled {
-    background-color: #65708b;
-    cursor: not-allowed;
+    background-color: #B0B8C4; // 🔹 Color gris claro cuando está deshabilitado
+    color: #ffffff; // 🔹 Texto más apagado
+    cursor: not-allowed; // 🔹 Evita interacción
+    opacity: 0.6; // 🔹 Reduce la opacidad para que se note la diferencia
   }
 }
