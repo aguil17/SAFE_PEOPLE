@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { useState } from "react";
 import { Fab, Box, Button } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
@@ -34,6 +35,10 @@ const ReportButton = ({ onSelectIncidentType }) => {
       )}
     </Box>
   );
+};
+
+ReportButton.propTypes = {
+  onSelectIncidentType: PropTypes.func,
 };
 
 export default ReportButton;

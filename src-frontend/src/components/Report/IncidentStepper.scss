@@ -1,0 +1,39 @@
+.incident-stepper__modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.incident-stepper {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 400px;
+  box-shadow: 0 4px 10px rgb(0 0 0 / 30%);
+}
+
+.incident-stepper__buttons {
+  display: flex;
+  justify-content: space-between; // 🔹 Espaciado uniforme
+  margin-top: 20px; // 🔹 Separación del contenido
+}
+
+.incident-stepper__button {
+  background-color: #041122 !important; // 🔹 Fondo oscuro
+  color: white !important; // 🔹 Texto blanco
+  padding: 10px 20px; // 🔹 Más espacio en los botones
+  border-radius: 5px; // 🔹 Bordes redondeados
+  font-weight: bold;
+  transition: background 0.3s ease-in-out;
+
+  &:hover {
+    background-color: #052345; // 🔹 Color más claro al pasar el mouse
+  }
+
+  &:disabled {
+    background-color: #b0b8c4; // 🔹 Color gris claro cuando está deshabilitado
+    color: #fff; // 🔹 Texto más apagado
+    cursor: not-allowed; // 🔹 Evita interacción
+    opacity: 0.6; // 🔹 Reduce la opacidad para que se note la diferencia
+  }
+}

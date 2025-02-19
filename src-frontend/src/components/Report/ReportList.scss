@@ -1,0 +1,35 @@
+.report-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+  padding: 16px;
+}
+
+.report-list__card {
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgb(0 0 0 / 15%);
+  overflow: hidden;
+  transition: transform 0.2s ease-in-out;
+
+  &:hover {
+    transform: scale(1.02);
+  }
+}
+
+.report-list__image {
+  object-fit: cover;
+}
+
+.report-list__title {
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.report-list__delete-button {
+  margin-top: 12px;
+  background-color: #d32f2f;
+
+  &:hover {
+    background-color: #b71c1c;
+  }
+}

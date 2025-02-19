@@ -19,8 +19,6 @@ import "./Navbar.scss";
 const menuItems = [
   { id: "home", text: "🏠 Inicio", path: "/" },
   { id: "reports", text: "📜 Reportes", path: "/reports" },
-  { id: "statistics", text: "📊 Estadísticas", path: "/statistics" },
-  { id: "contacts", text: "🚨 Emergencia", path: "/contacts" },
   { id: "profile", text: "👤 Perfil", path: "/profile" },
 ];
 
