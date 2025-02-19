@@ -1,5 +1,13 @@
 import PropTypes from "prop-types";
-import { Box, Card, CardContent, CardMedia, Typography, Button, CircularProgress } from "@mui/material";
+import {
+  Box,
+  Card,
+  CardContent,
+  CardMedia,
+  Typography,
+  Button,
+  CircularProgress,
+} from "@mui/material";
 import fireIcon from "../../assets/icons/point_fire.png";
 import crashIcon from "../../assets/icons/point_crash.png";
 import thiefIcon from "../../assets/icons/point_thief.png";
@@ -26,16 +34,22 @@ const ReportList = ({ incidents, onDelete, deleting }) => {
 
         return (
           <Card key={incident.id} className="report-list__card">
-            <CardMedia component="img" height="140" image={imageUrl} alt={incident.incidentType} className="report-list__image" />
+            <CardMedia
+              component="img"
+              height="140"
+              image={imageUrl}
+              alt={incident.incidentType}
+              className="report-list__image"
+            />
             <CardContent>
               <Typography variant="h6" className="report-list__title">
                 {incident.incidentType === "fire"
                   ? "🔥 Incendio"
                   : incident.incidentType === "robbery"
-                  ? "🦹‍♂️ Robo"
-                  : incident.incidentType === "accident"
-                  ? "🚗 Accidente"
-                  : "📍 Otro"}
+                    ? "🦹‍♂️ Robo"
+                    : incident.incidentType === "accident"
+                      ? "🚗 Accidente"
+                      : "📍 Otro"}
               </Typography>
               <Typography variant="body2">
                 <strong>📅 Fecha:</strong> {new Date(incident.date).toLocaleDateString()}
@@ -56,7 +70,11 @@ const ReportList = ({ incidents, onDelete, deleting }) => {
                 onClick={() => onDelete(incident.id)}
                 disabled={deleting === incident.id}
               >
-                {deleting === incident.id ? <CircularProgress size={24} color="inherit" /> : "🗑 Eliminar"}
+                {deleting === incident.id ? (
+                  <CircularProgress size={24} color="inherit" />
+                ) : (
+                  "🗑 Eliminar"
+                )}
               </Button>
             </CardContent>
           </Card>
