@@ -28,7 +28,7 @@ const StepIncidentDetails = ({
     try {
       const options = {
         maxSizeMB: 0.2,
-        maxWidthOrHeight: 500,
+        maxWidthOrHeight: 400,
         useWebWorker: true,
       };
 

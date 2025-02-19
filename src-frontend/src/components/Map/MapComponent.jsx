@@ -81,8 +81,9 @@ const MapComponent = () => {
       console.error("❌ Error: El incidente no tiene ubicación definida.");
       return;
     }
-    setMarkerPosition(userLocation || [4.711, -74.0721]); // 🔹 Resetear marcador a la ubicación inicial
+    //setMarkerPosition(userLocation || [4.711, -74.0721]); // 🔹 Resetear marcador a la ubicación inicial
     setFormOpen(false); // 🔹 Cerrar formulario después de reportar
+    dispatch(loadIncidents());
   };
 
   return (
@@ -93,44 +94,52 @@ const MapComponent = () => {
         {/* 📌 Centrar el mapa en la ubicación del usuario SOLO la primera vez */}
         {userLocation && <MapCenter position={userLocation} />}
 
-        {/* 📌 Pintar incidentes desde Redux */}
-        {incidents.map((incident) => (
-          <Marker
-            key={incident.id}
-            position={[incident.latitude, incident.longitude]}
-            icon={icons[incident.incidentType] || icons.default}
-          >
-            <Popup>
-              <strong>
-                {incident.incidentType === "fire"
-                  ? "Incendio"
-                  : incident.incidentType === "robbery"
-                    ? "Robo"
-                    : incident.incidentType === "accident"
-                      ? "Accidente"
-                      : "Otro"}
-              </strong>
-              <br />
-              {new Date(incident.creationDate).toLocaleDateString("es-ES", {
-                weekday: "long",
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}{" "}
-              -
-              {new Date(incident.creationDate).toLocaleTimeString("es-ES", {
-                hour: "2-digit",
-                minute: "2-digit",
-                second: "2-digit",
-                hour12: true,
-              })}
-              <br />
-              <small>
-                {incident.cityName}, {incident.districtName}
-              </small>
-            </Popup>
-          </Marker>
-        ))}
+        {/* 📌 Pintar incidentes desde Redux, validando coordenadas */}
+        {incidents.map((incident) => {
+          if (!incident.latitude || !incident.longitude) {
+            console.warn(`⚠️ Incidente ${incident.id} no tiene coordenadas válidas.`);
+            return null;
+          }
+
+          return (
+            <Marker
+              key={incident.id}
+              position={[incident.latitude, incident.longitude]}
+              icon={icons[incident.incidentType] || icons.default}
+            >
+              <Popup>
+                <strong>
+                  {incident.incidentType === "fire"
+                    ? "🔥 Incendio"
+                    : incident.incidentType === "robbery"
+                      ? "🦹‍♂️ Robo"
+                      : incident.incidentType === "accident"
+                        ? "🚗 Accidente"
+                        : "📍 Otro"}
+                </strong>
+                <br />
+                {new Date(incident.creationDate).toLocaleDateString("es-ES", {
+                  weekday: "long",
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}{" "}
+                -
+                {new Date(incident.creationDate).toLocaleTimeString("es-ES", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  second: "2-digit",
+                  hour12: true,
+                })}
+                <br />
+                <small>
+                  {incident.cityName || "Ubicación desconocida"},{" "}
+                  {incident.districtName || "Ubicación desconocida"}
+                </small>
+              </Popup>
+            </Marker>
+          );
+        })}
 
         {/* 📌 Marcador arrastrable */}
         <Marker
