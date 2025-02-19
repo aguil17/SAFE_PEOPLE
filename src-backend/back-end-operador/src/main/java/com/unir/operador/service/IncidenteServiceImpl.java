@@ -314,7 +314,7 @@ public class IncidenteServiceImpl implements IncidenteService {
 
             root.fetch("heridos", JoinType.LEFT);
 
-            //root.fetch("materiales", JoinType.LEFT);
+            root.fetch("materiales", JoinType.LEFT);
 
             // Aplicar los predicados
             Predicate fechaInicioPredicate = criteriaBuilder.greaterThanOrEqualTo(root.get("creationDate"), timestampInicio);

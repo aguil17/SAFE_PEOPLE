@@ -12,6 +12,7 @@ import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Objects;
 import java.util.Set;
 
 import jakarta.persistence.*;
@@ -71,9 +72,15 @@ public class Incidente {
     @JsonManagedReference
     private Set<Herido> heridos;
 
+
     @OneToMany(mappedBy = "incidente", fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<Material> materiales;
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);  // Solo utilizar el campo único
+    }
 
     public Incidente() {
 
