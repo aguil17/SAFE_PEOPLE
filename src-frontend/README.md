@@ -43,7 +43,7 @@
 3. **Configurar las variables de entorno:**
    - Crear un archivo `.env` en la raíz con las siguientes variables:
 ```env
-REACT_APP_API_BASE_URL=http://34.198.223.16:8762/ms-operator
+REACT_APP_API_BASE_URL=http://1.1.1.11.1:8762/ms-operator
 REACT_APP_MAP_TILE_URL=https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png
 ```
 
