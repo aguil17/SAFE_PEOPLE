@@ -1,9 +1,17 @@
+import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
 import { TextField, Box, Typography, Button } from "@mui/material";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import imageCompression from "browser-image-compression";
 
-const StepIncidentDetails = ({ description, setDescription, setIsDescriptionValid, photo, setPhoto, incidentType }) => {
+const StepIncidentDetails = ({
+  description,
+  setDescription,
+  setIsDescriptionValid,
+  photo,
+  setPhoto,
+  incidentType,
+}) => {
   const [error, setError] = useState(false);
   const [compressedPhoto, setCompressedPhoto] = useState(photo || null); // 🔹 Inicializar con photo si ya existe
 
@@ -16,16 +24,16 @@ const StepIncidentDetails = ({ description, setDescription, setIsDescriptionVali
   const handlePhotoChange = async (event) => {
     const file = event.target.files[0];
     if (!file) return;
-  
+
     try {
       const options = {
-        maxSizeMB: 0.2, 
+        maxSizeMB: 0.2,
         maxWidthOrHeight: 500,
-        useWebWorker: true, 
+        useWebWorker: true,
       };
-  
+
       const compressedFile = await imageCompression(file, options);
-      setPhoto(compressedFile);  
+      setPhoto(compressedFile);
       // Convertir a Base64
       const reader = new FileReader();
       reader.readAsDataURL(compressedFile);
@@ -85,6 +93,15 @@ const StepIncidentDetails = ({ description, setDescription, setIsDescriptionVali
       )}
     </Box>
   );
+};
+
+StepIncidentDetails.propTypes = {
+  description: PropTypes.any,
+  incidentType: PropTypes.string,
+  photo: PropTypes.any,
+  setDescription: PropTypes.func,
+  setIsDescriptionValid: PropTypes.func,
+  setPhoto: PropTypes.func,
 };
 
 export default StepIncidentDetails;

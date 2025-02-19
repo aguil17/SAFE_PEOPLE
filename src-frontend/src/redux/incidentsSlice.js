@@ -11,13 +11,10 @@ const getDateRange = () => {
 };
 
 // 🛠 AsyncThunk para obtener incidentes desde el backend
-export const loadIncidents = createAsyncThunk(
-  "incidents/loadIncidents",
-  async () => {
-    const { startDate, endDate } = getDateRange();
-    return await fetchIncidents(startDate, endDate);
-  }
-);
+export const loadIncidents = createAsyncThunk("incidents/loadIncidents", async () => {
+  const { startDate, endDate } = getDateRange();
+  return await fetchIncidents(startDate, endDate);
+});
 
 // 🆕 AsyncThunk para reportar un incidente y actualizar la lista
 export const addIncident = createAsyncThunk(

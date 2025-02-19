@@ -104,4 +104,3 @@ export const deleteIncident = async (incidentId) => {
     return { success: false, message: error.message };
   }
 };
-

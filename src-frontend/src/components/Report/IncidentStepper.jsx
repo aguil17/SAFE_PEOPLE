@@ -1,10 +1,19 @@
+import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Stepper, Step, StepLabel, StepContent, Button, Box, Modal, CircularProgress } from "@mui/material";
+import {
+  Stepper,
+  Step,
+  StepLabel,
+  StepContent,
+  Button,
+  Box,
+  Modal,
+  CircularProgress,
+} from "@mui/material";
 import StepIncidentDetails from "./StepIncidentDetails";
 import StepAdditionalInfo from "./StepAdditionalInfo";
 import "./IncidentStepper.scss";
-import { reportIncident } from "../../services/incidentService";
 import { addIncident } from "../../redux/incidentsSlice";
 
 const steps = [
@@ -95,7 +104,7 @@ const IncidentStepper = ({ open, onClose, onSubmit, incidentType, markerPosition
         descripcion: "Ubicación ingresada automáticamente",
         latitud: markerPosition[0].toString(),
       },
-      heridos: woundedList.map(w => ({
+      heridos: woundedList.map((w) => ({
         nombre: w.nombre,
         apellidos: w.apellidos,
         cantidad: w.cantidad,
@@ -105,22 +114,28 @@ const IncidentStepper = ({ open, onClose, onSubmit, incidentType, markerPosition
         tipoHerido: w.tipoHerido || "Desconocido",
         descripcionHerida: w.descripcionHerida || "No especificado",
         edad: w.edad ? w.edad.toString() : "0",
-        genero: w.genero === "masculino" ? "male" : w.genero === "femenino" ? "female" : "undefined",
+        genero:
+          w.genero === "masculino" ? "male" : w.genero === "femenino" ? "female" : "undefined",
       })),
 
       informantes: [informant],
 
-      materiales: materialsList.length > 0 ? materialsList.map(m => ({
-        tipoMaterial: m.tipoMaterial || "N/A",
-        cantidad: m.cantidad || "0",
-        condicionMaterial: m.condicionMaterial || "damaged",
-        descripcion: m.descripcion || "N/A",
-      })) : [{
-        tipoMaterial: "N/A",
-        cantidad: "0",
-        condicionMaterial: "damaged",
-        descripcion: "N/A",
-      }],
+      materiales:
+        materialsList.length > 0
+          ? materialsList.map((m) => ({
+              tipoMaterial: m.tipoMaterial || "N/A",
+              cantidad: m.cantidad || "0",
+              condicionMaterial: m.condicionMaterial || "damaged",
+              descripcion: m.descripcion || "N/A",
+            }))
+          : [
+              {
+                tipoMaterial: "N/A",
+                cantidad: "0",
+                condicionMaterial: "damaged",
+                descripcion: "N/A",
+              },
+            ],
     };
 
     try {
@@ -154,7 +169,6 @@ const IncidentStepper = ({ open, onClose, onSubmit, incidentType, markerPosition
       setLoading(false);
     }
   };
-
 
   useEffect(() => {
     if (open) {
@@ -239,11 +253,23 @@ const IncidentStepper = ({ open, onClose, onSubmit, incidentType, markerPosition
                       </Button>
                     )}
                     <Button
-                      onClick={() => (index === steps.length - 1 ? handleFinish() : setActiveStep(index + 1))}
+                      onClick={() =>
+                        index === steps.length - 1 ? handleFinish() : setActiveStep(index + 1)
+                      }
                       className="incident-stepper__button"
-                      disabled={loading || (index === 0 && !isDescriptionValid) || (index === steps.length - 1 && isWoundedValid === false)}
+                      disabled={
+                        loading ||
+                        (index === 0 && !isDescriptionValid) ||
+                        (index === steps.length - 1 && isWoundedValid === false)
+                      }
                     >
-                      {loading ? <CircularProgress size={24} color="inherit" /> : index === steps.length - 1 ? "Finalizar" : "Siguiente"}
+                      {loading ? (
+                        <CircularProgress size={24} color="inherit" />
+                      ) : index === steps.length - 1 ? (
+                        "Finalizar"
+                      ) : (
+                        "Siguiente"
+                      )}
                     </Button>
                   </Box>
                 </StepContent>
@@ -254,6 +280,14 @@ const IncidentStepper = ({ open, onClose, onSubmit, incidentType, markerPosition
       </Box>
     </Modal>
   );
+};
+
+IncidentStepper.propTypes = {
+  incidentType: PropTypes.any,
+  markerPosition: PropTypes.any,
+  onClose: PropTypes.func,
+  onSubmit: PropTypes.func,
+  open: PropTypes.any,
 };
 
 export default IncidentStepper;

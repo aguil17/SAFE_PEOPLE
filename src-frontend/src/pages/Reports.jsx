@@ -1,4 +1,3 @@
-import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Box, Typography } from "@mui/material";
 import { deleteIncident } from "../services/incidentService";
@@ -13,8 +12,8 @@ const Reports = () => {
   const incidents = useSelector((state) => state.incidents.list);
 
   // Filtrar solo los reportes del usuario autenticado
-  const userIncidents = incidents.filter((incident) => 
-    incident.incidenteInformantes[0].email === user?.usuario?.username
+  const userIncidents = incidents.filter(
+    (incident) => incident.incidenteInformantes[0].email === user?.usuario?.username
   );
 
   // 📌 Función para eliminar un reporte

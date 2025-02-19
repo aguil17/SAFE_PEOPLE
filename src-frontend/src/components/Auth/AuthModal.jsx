@@ -1,14 +1,8 @@
-import React, { useState } from "react";
+import PropTypes from "prop-types";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../redux/authSlice";
-import {
-  Modal,
-  Box,
-  TextField,
-  Button,
-  Tabs,
-  Tab,
-} from "@mui/material";
+import { Modal, Box, TextField, Button, Tabs, Tab } from "@mui/material";
 import authService from "../../services/authService";
 import "./AuthModal.scss";
 
@@ -47,7 +41,10 @@ const AuthModal = ({ open, onClose }) => {
 
   const handleSubmit = async () => {
     // Validar que los campos obligatorios no estén vacíos
-    if ((!form.nombre || !form.apellidos || !form.correo || !form.password || !form.celular) && tab === 0) {
+    if (
+      (!form.nombre || !form.apellidos || !form.correo || !form.password || !form.celular) &&
+      tab === 0
+    ) {
       alert("Todos los campos son obligatorios.");
       return;
     }
@@ -75,7 +72,7 @@ const AuthModal = ({ open, onClose }) => {
           role: "user",
         };
       }
-      if(tab === 0) {
+      if (tab === 0) {
         userData.nombreUsuario = form.correo;
         userData.dni = "00000000";
         userData.cumpleanios = "2000-01-01";
@@ -168,6 +165,11 @@ const AuthModal = ({ open, onClose }) => {
       </Box>
     </Modal>
   );
+};
+
+AuthModal.propTypes = {
+  onClose: PropTypes.func,
+  open: PropTypes.any,
 };
 
 export default AuthModal;

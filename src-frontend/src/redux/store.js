@@ -7,7 +7,8 @@ export const store = configureStore({
     auth: authReducer,
     incidents: incidentsReducer,
   },
-  devTools: process.env.NODE_ENV !== "production", // Habilita Redux DevTools solo en desarrollo
+  // eslint-disable-next-line no-undef
+  // devTools: process.env.NODE_ENV !== "production", // Habilita Redux DevTools solo en desarrollo
 });
 
 export default store;

@@ -1,4 +1,4 @@
-import React from "react";
+import PropTypes from "prop-types";
 import { Box, Card, CardContent, CardMedia, Typography, Button } from "@mui/material";
 import fireIcon from "../../assets/icons/point_fire.png";
 import crashIcon from "../../assets/icons/point_crash.png";
@@ -21,7 +21,9 @@ const ReportList = ({ incidents, onDelete }) => {
       {incidents.map((incident) => {
         // 📌 Verificamos si `photo` es una imagen en Base64 válida
         const isBase64 = incident.photo && incident.photo.startsWith("data:image");
-        const imageUrl = isBase64 ? incident.photo : incidentImages[incident.incidentType] || incidentImages.default;
+        const imageUrl = isBase64
+          ? incident.photo
+          : incidentImages[incident.incidentType] || incidentImages.default;
 
         return (
           <Card key={incident.id} className="report-list__card">
@@ -35,9 +37,13 @@ const ReportList = ({ incidents, onDelete }) => {
             />
             <CardContent>
               <Typography variant="h6" className="report-list__title">
-                {incident.incidentType === "fire" ? "🔥 Incendio" :
-                incident.incidentType === "robbery" ? "🦹‍♂️ Robo" :
-                incident.incidentType === "accident" ? "🚗 Accidente" : "📍 Otro"}
+                {incident.incidentType === "fire"
+                  ? "🔥 Incendio"
+                  : incident.incidentType === "robbery"
+                    ? "🦹‍♂️ Robo"
+                    : incident.incidentType === "accident"
+                      ? "🚗 Accidente"
+                      : "📍 Otro"}
               </Typography>
               <Typography variant="body2">
                 <strong>📅 Fecha:</strong> {new Date(incident.date).toLocaleDateString()}
@@ -51,9 +57,9 @@ const ReportList = ({ incidents, onDelete }) => {
               <Typography variant="body2">
                 <strong>📝 Descripción:</strong> {incident.descriptionIncident || "Sin descripción"}
               </Typography>
-              <Button 
-                variant="contained" 
-                color="error" 
+              <Button
+                variant="contained"
+                color="error"
                 className="report-list__delete-button"
                 onClick={() => onDelete(incident.id)}
               >
@@ -65,6 +71,13 @@ const ReportList = ({ incidents, onDelete }) => {
       })}
     </Box>
   );
+};
+
+ReportList.propTypes = {
+  incidents: PropTypes.shape({
+    map: PropTypes.func,
+  }),
+  onDelete: PropTypes.func,
 };
 
 export default ReportList;

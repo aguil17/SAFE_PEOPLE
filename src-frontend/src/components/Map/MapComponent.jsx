@@ -41,13 +41,7 @@ const MapComponent = () => {
   const [userLocation, setUserLocation] = useState(null);
   const mapRef = useRef(null); // Referencia al mapa para centrarlo solo cuando sea necesario
 
-  const typeMapping = {
-    fire: "fire",
-    robbery: "robbery",
-    accident: "accident",
-  };
-
-  // 📌 Hook para centrar el mapa manualmente
+  // eslint-disable-next-line react/prop-types
   const MapCenter = ({ position }) => {
     const map = useMap();
     useEffect(() => {
@@ -87,15 +81,6 @@ const MapComponent = () => {
       console.error("❌ Error: El incidente no tiene ubicación definida.");
       return;
     }
-
-    const validType = typeMapping[incident.tipoIncidente] || "default";
-
-    const newIncident = {
-      ...incident,
-      location: [incident.ubicacion.latitud, incident.ubicacion.longitud], // 🔹 Asegurar coordenadas
-      type: validType,
-    };
-
     setMarkerPosition(userLocation || [4.711, -74.0721]); // 🔹 Resetear marcador a la ubicación inicial
     setFormOpen(false); // 🔹 Cerrar formulario después de reportar
   };
@@ -117,22 +102,33 @@ const MapComponent = () => {
           >
             <Popup>
               <strong>
-                {incident.incidentType === "fire" ? "Incendio" :
-                  incident.incidentType === "robbery" ? "Robo" :
-                    incident.incidentType === "accident" ? "Accidente" :
-                      "Otro"}
+                {incident.incidentType === "fire"
+                  ? "Incendio"
+                  : incident.incidentType === "robbery"
+                    ? "Robo"
+                    : incident.incidentType === "accident"
+                      ? "Accidente"
+                      : "Otro"}
               </strong>
               <br />
               {new Date(incident.creationDate).toLocaleDateString("es-ES", {
-                weekday: "long", year: "numeric", month: "long", day: "numeric",
-              })} -
+                weekday: "long",
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}{" "}
+              -
               {new Date(incident.creationDate).toLocaleTimeString("es-ES", {
-                hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: true
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: true,
               })}
               <br />
-              <small>{incident.cityName}, {incident.districtName}</small>
+              <small>
+                {incident.cityName}, {incident.districtName}
+              </small>
             </Popup>
-
           </Marker>
         ))}
 
@@ -142,10 +138,7 @@ const MapComponent = () => {
           draggable={true}
           eventHandlers={{
             dragend: (event) => {
-              const newPos = [
-                event.target.getLatLng().lat,
-                event.target.getLatLng().lng,
-              ];
+              const newPos = [event.target.getLatLng().lat, event.target.getLatLng().lng];
               setMarkerPosition(newPos);
 
               // 📌 Centrar el mapa en la nueva posición del marcador

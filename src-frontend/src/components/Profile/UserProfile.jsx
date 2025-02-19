@@ -1,8 +1,8 @@
-import React from "react";
+import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 import { logout } from "../../redux/authSlice";
 import { useNavigate } from "react-router-dom";
-import { Box, Typography, Paper, Button } from "@mui/material";
+import { Typography, Paper, Button } from "@mui/material";
 import "./UserProfile.scss";
 
 const UserProfile = ({ user }) => {
@@ -44,11 +44,33 @@ const UserProfile = ({ user }) => {
         <strong>Rol:</strong> {user.usuario.role}
       </Typography>
 
-      <Button variant="contained" color="secondary" className="user-profile__logout" onClick={handleLogout}>
+      <Button
+        variant="contained"
+        color="secondary"
+        className="user-profile__logout"
+        onClick={handleLogout}
+      >
         Cerrar Sesión
       </Button>
     </Paper>
   );
+};
+
+UserProfile.propTypes = {
+  user: PropTypes.shape({
+    persona: PropTypes.shape({
+      birthdate: PropTypes.any,
+      cellphone: PropTypes.any,
+      dni: PropTypes.any,
+      email: PropTypes.any,
+      gender: PropTypes.any,
+      lastName: PropTypes.any,
+      name: PropTypes.any,
+    }),
+    usuario: PropTypes.shape({
+      role: PropTypes.any,
+    }),
+  }),
 };
 
 export default UserProfile;

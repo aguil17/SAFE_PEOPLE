@@ -1,21 +1,42 @@
-import { TextField, Box, Typography, Button, Grid, MenuItem, Select, FormControl, InputLabel } from "@mui/material";
+import PropTypes from "prop-types";
+import {
+  TextField,
+  Box,
+  Typography,
+  Button,
+  Grid,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
+} from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 
-const StepAdditionalInfo = ({ wounded, setWounded, materials, setMaterials, woundedErrors, setWoundedErrors }) => {
+const StepAdditionalInfo = ({
+  wounded,
+  setWounded,
+  materials,
+  setMaterials,
+  woundedErrors,
+  setWoundedErrors,
+}) => {
   // 📌 Agregar un nuevo herido con valores por defecto
   const addWounded = () => {
-    setWounded([...wounded, {
-      nombre: "",
-      apellidos: "",
-      cantidad: "1",
-      estadoSalud: "",
-      estadoVital: "",
-      tipoHerida: "Desconocido",
-      descripcionHerida: "No especificado",
-      edad: "0",
-      genero: "undefined"
-    }]);
+    setWounded([
+      ...wounded,
+      {
+        nombre: "",
+        apellidos: "",
+        cantidad: "1",
+        estadoSalud: "",
+        estadoVital: "",
+        tipoHerida: "Desconocido",
+        descripcionHerida: "No especificado",
+        edad: "0",
+        genero: "undefined",
+      },
+    ]);
   };
 
   // 📌 Eliminar un herido
@@ -25,12 +46,15 @@ const StepAdditionalInfo = ({ wounded, setWounded, materials, setMaterials, woun
 
   // 📌 Agregar un nuevo material con valores por defecto
   const addMaterial = () => {
-    setMaterials([...materials, {
-      tipoMaterial: "",
-      cantidad: "1",
-      condicionMaterial: "new",
-      descripcion: ""
-    }]);
+    setMaterials([
+      ...materials,
+      {
+        tipoMaterial: "",
+        cantidad: "1",
+        condicionMaterial: "new",
+        descripcion: "",
+      },
+    ]);
   };
 
   // 📌 Eliminar un material
@@ -109,7 +133,9 @@ const StepAdditionalInfo = ({ wounded, setWounded, materials, setMaterials, woun
             </Grid>
             <Grid item xs={12} md={12}>
               <FormControl fullWidth error={woundedErrors[index]?.estadoSalud}>
-                <InputLabel id={`wounded__select-label--estadoSalud-${index}`}>Estado Salud</InputLabel>
+                <InputLabel id={`wounded__select-label--estadoSalud-${index}`}>
+                  Estado Salud
+                </InputLabel>
                 <Select
                   labelId={`wounded__select-label--estadoSalud-${index}`}
                   label="Estado Salud"
@@ -139,7 +165,9 @@ const StepAdditionalInfo = ({ wounded, setWounded, materials, setMaterials, woun
 
             <Grid item xs={12} md={12}>
               <FormControl fullWidth error={woundedErrors[index]?.estadoVital}>
-                <InputLabel id={`wounded__select-label--estadoVital-${index}`}>Estado Vital</InputLabel>
+                <InputLabel id={`wounded__select-label--estadoVital-${index}`}>
+                  Estado Vital
+                </InputLabel>
                 <Select
                   labelId={`wounded__select-label--estadoVital-${index}`}
                   label="Estado Vital"
@@ -287,6 +315,21 @@ const StepAdditionalInfo = ({ wounded, setWounded, materials, setMaterials, woun
       </Button>
     </Box>
   );
+};
+
+StepAdditionalInfo.propTypes = {
+  materials: PropTypes.shape({
+    filter: PropTypes.func,
+    map: PropTypes.func,
+  }),
+  setMaterials: PropTypes.func,
+  setWounded: PropTypes.func,
+  setWoundedErrors: PropTypes.func,
+  wounded: PropTypes.shape({
+    filter: PropTypes.func,
+    map: PropTypes.func,
+  }),
+  woundedErrors: PropTypes.any,
 };
 
 export default StepAdditionalInfo;
