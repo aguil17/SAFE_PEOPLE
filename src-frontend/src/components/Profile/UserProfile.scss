@@ -1,0 +1,32 @@
+.user-profile {
+  padding: 20px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgb(0 0 0 / 20%);
+  width: 400px;
+  text-align: center;
+
+  &__card {
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgb(0 0 0 / 20%);
+    width: 400px;
+    text-align: center;
+  }
+
+  h4 {
+    margin-bottom: 15px;
+  }
+
+  h6 {
+    margin: 5px 0;
+  }
+
+  &__logout {
+    margin-top: 15px;
+    background-color: #d32f2f !important; // Rojo de Material UI
+    color: white !important;
+    width: 100%;
+  }
+}
