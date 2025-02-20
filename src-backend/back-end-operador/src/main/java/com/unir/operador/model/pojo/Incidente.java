@@ -1,5 +1,7 @@
 package com.unir.operador.model.pojo;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Entity;
@@ -64,9 +66,11 @@ public class Incidente {
     @NotNull(message = "fechaCreacion no puede ser nula")
     private Instant creationDate;
 
-    @Column(name = "id_location")
-    @NotNull(message = "Location no puede ser nulo")
-    private Integer idLocation;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_location", referencedColumnName = "id", unique = true)
+    @JsonIgnoreProperties("incidente") // Evita referencias cíclicas
+    private Ubicacion ubicacion;
+
 
     @OneToMany(mappedBy = "incidente", fetch = FetchType.LAZY)
     @JsonManagedReference

@@ -97,7 +97,7 @@ public class IncidenteServiceImpl implements IncidenteService {
                 .creationDate(fechaActual)
                 .deleteAt(null)
                 .idUser(idUsuario)
-                .idLocation(ubicacionSaved.getId()).build();
+                .ubicacion(ubicacionSaved).build();
 
 
         var incidenteSaved = incidenteRepository.save(incidente);
@@ -316,10 +316,15 @@ public class IncidenteServiceImpl implements IncidenteService {
 
             root.fetch("materiales", JoinType.LEFT);
 
+            root.fetch("ubicacion", JoinType.LEFT);
+
             // Aplicar los predicados
             Predicate fechaInicioPredicate = criteriaBuilder.greaterThanOrEqualTo(root.get("creationDate"), timestampInicio);
             Predicate fechaFinPredicate = criteriaBuilder.lessThanOrEqualTo(root.get("creationDate"), timestampFin);
-            return criteriaBuilder.and(fechaInicioPredicate, fechaFinPredicate);
+
+            Predicate deleteAtPredicate = criteriaBuilder.isNull(root.get("deleteAt"));
+
+            return criteriaBuilder.and(fechaInicioPredicate, fechaFinPredicate,deleteAtPredicate);
         });
     }
 

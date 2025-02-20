@@ -1,5 +1,7 @@
 package com.unir.operador.model.pojo;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,6 +12,7 @@ import lombok.*;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.Objects;
 
 import jakarta.persistence.*;
 
@@ -57,6 +60,12 @@ public class Ubicacion {
     @Column(name = "creation_date")
     @NotNull(message = "fechaCreacion no puede ser nula")
     private Instant creationDate;
+    
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);  // Solo utilizar el campo único
+    }
 
     public Ubicacion () {
 
