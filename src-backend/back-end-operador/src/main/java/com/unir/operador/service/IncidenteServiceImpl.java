@@ -72,7 +72,7 @@ public class IncidenteServiceImpl implements IncidenteService {
         IncidentType incidentType = IncidentType.valueOf(request.getTipoIncidente());
 
         Integer idUsuario = null;
-        Optional<Usuario> usuario = null;
+        Optional<Usuario> usuario = Optional.empty();
         if (request.getIdUsuario() != null)
         {
             idUsuario = Integer.parseInt(request.getIdUsuario());
