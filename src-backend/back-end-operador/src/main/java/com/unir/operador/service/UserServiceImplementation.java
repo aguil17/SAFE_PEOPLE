@@ -38,7 +38,7 @@ public class UserServiceImplementation implements UserService {
         {
             var persona = personaPorEmail.get();
 
-            var usuario = usuarioRepository.findByIdPerson(persona.getId());
+            var usuario = usuarioRepository.findByPersona_Id(persona.getId());
 
             response.setError(true);
             response.setCode("409");
@@ -73,7 +73,7 @@ public class UserServiceImplementation implements UserService {
                 .username(request.getNombreUsuario())
                 .password(request.getPassword())
                 .role(role)
-                .idPerson(personaEntity.getId())
+                .persona(personaEntity)
                 .creationDate(fechaActual).build();
 
         usuarioRepository.save(usuario);

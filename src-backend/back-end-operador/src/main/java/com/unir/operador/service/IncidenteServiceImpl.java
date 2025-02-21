@@ -72,11 +72,12 @@ public class IncidenteServiceImpl implements IncidenteService {
         IncidentType incidentType = IncidentType.valueOf(request.getTipoIncidente());
 
         Integer idUsuario = null;
+        Optional<Usuario> usuario = null;
         if (request.getIdUsuario() != null)
         {
             idUsuario = Integer.parseInt(request.getIdUsuario());
 
-            Optional<Usuario> usuario = usuarioRepository.findById(idUsuario);
+            usuario = usuarioRepository.findById(idUsuario);
 
             if (usuario.isEmpty())
             {
@@ -88,6 +89,12 @@ public class IncidenteServiceImpl implements IncidenteService {
             }
         }
 
+        Usuario newUsuario = null;
+        if (usuario.isPresent())
+        {
+            newUsuario = usuario.get();
+        }
+
         Incidente incidente = Incidente.builder()
                 .incidentType(incidentType)
                 .description(request.getDescripcion())
@@ -96,7 +103,7 @@ public class IncidenteServiceImpl implements IncidenteService {
                 .photo(request.getFoto())
                 .creationDate(fechaActual)
                 .deleteAt(null)
-                .idUser(idUsuario)
+                .usuario(newUsuario)
                 .ubicacion(ubicacionSaved).build();
 
 
@@ -317,6 +324,8 @@ public class IncidenteServiceImpl implements IncidenteService {
             root.fetch("materiales", JoinType.LEFT);
 
             root.fetch("ubicacion", JoinType.LEFT);
+
+            root.fetch("usuario", JoinType.LEFT);
 
             // Aplicar los predicados
             Predicate fechaInicioPredicate = criteriaBuilder.greaterThanOrEqualTo(root.get("creationDate"), timestampInicio);

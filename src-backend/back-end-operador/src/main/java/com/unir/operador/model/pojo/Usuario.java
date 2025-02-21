@@ -1,11 +1,15 @@
 package com.unir.operador.model.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.sql.Timestamp;
+import java.util.Objects;
+import java.util.Set;
 
 @Data
 @Getter
@@ -36,14 +40,26 @@ public class Usuario {
     @NotNull(message = "role no puede ser nulo")
     private RoleType role;
 
-    @Column(name = "id_person")
-    private int idPerson;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_person", referencedColumnName = "id", unique = true)
+    @JsonIgnoreProperties("usuario")
+    private Persona persona;
 
     @Column(name = "creation_date")
     private Timestamp creationDate;
 
     @Column(name = "update_date")
     private Timestamp updateDate;
+
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private Set<Incidente> incidentes;
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);  // Solo utilizar el campo único
+    }
+
 
     public Usuario() {
 

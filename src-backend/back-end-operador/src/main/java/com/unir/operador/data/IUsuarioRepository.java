@@ -8,6 +8,6 @@ import java.util.Optional;
 
 public interface IUsuarioRepository extends JpaRepository<Usuario,Integer>, JpaSpecificationExecutor<Usuario> {
 
-    Optional<Usuario> findByIdPerson(int idPerson);
+    Optional<Usuario> findByPersona_Id(int idPersona);
 
 }

@@ -56,8 +56,6 @@ public class Incidente {
     @Column(name = "photo")
     private String photo;
 
-    @Column(name = "id_user")
-    private Integer idUser;
 
     @Column(name = "deleteAt")
     private Instant deleteAt;
@@ -80,6 +78,11 @@ public class Incidente {
     @OneToMany(mappedBy = "incidente", fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<Material> materiales;
+
+    @ManyToOne
+    @JoinColumn(name = "id_user")
+    @JsonIgnoreProperties("incidentes")
+    private Usuario usuario;
 
     @Override
     public int hashCode() {
