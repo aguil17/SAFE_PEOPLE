@@ -3,12 +3,15 @@ import { Box, Typography, CircularProgress } from "@mui/material";
 import { loadIncidents, removeIncidentAsync } from "../redux/incidentsSlice";
 import ReportList from "../components/Report/ReportList";
 import { useEffect, useState } from "react";
+import "./Reports.scss"; // 👈 Importamos el nuevo SCSS
 
 const Reports = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
   const incidents = useSelector((state) => state.incidents.list);
   const loading = useSelector((state) => state.incidents.loading);
+
+  console.log("✅ Incidentes en Redux:", incidents);
 
   // Estado para manejar la eliminación individual de reportes
   const [deleting, setDeleting] = useState(null);
@@ -40,9 +43,11 @@ const Reports = () => {
 
   return (
     <Box className="reports">
-      <Typography variant="h4" sx={{ mb: 2 }}>
-        📋 Mis Reportes
-      </Typography>
+      <Box className="reports__header">
+        <Typography variant="h4" className="reports__title">
+          📋 Mis Reportes
+        </Typography>
+      </Box>
 
       {loading ? (
         <Box display="flex" justifyContent="center" mt={3}>
