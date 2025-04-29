@@ -1,85 +1,99 @@
 import PropTypes from "prop-types";
-import {
-  Box,
-  Card,
-  CardContent,
-  CardMedia,
-  Typography,
-  Button,
-  CircularProgress,
-} from "@mui/material";
-import fireIcon from "../../assets/icons/point_fire.png";
-import crashIcon from "../../assets/icons/point_crash.png";
-import thiefIcon from "../../assets/icons/point_thief.png";
-import aloneIcon from "../../assets/icons/point_alone.png";
+import { useState, useMemo } from "react";
+import { Box } from "@mui/material";
 import "./ReportList.scss";
-
-// 📌 Mapeo de imágenes de incidentes
-const incidentImages = {
-  fire: fireIcon,
-  robbery: thiefIcon,
-  accident: crashIcon,
-  default: aloneIcon,
-};
+import SearchBar from "./SearchBar";
+import FilterBar from "./components/FilterBar";
+import TimeFilter from "./components/TimeFilter";
+import IncidentCard from "./components/IncidentCard";
 
 const ReportList = ({ incidents, onDelete, deleting }) => {
-  return (
-    <Box className="report-list">
-      {incidents.map((incident) => {
-        // 📌 Verificamos si `photo` es una imagen en Base64 válida
-        const isBase64 = incident.photo && incident.photo.startsWith("data:image");
-        const imageUrl = isBase64
-          ? incident.photo
-          : incidentImages[incident.incidentType] || incidentImages.default;
+  const [expandedId, setExpandedId] = useState(null);
+  const [activeFilter, setActiveFilter] = useState(null);
+  const [timeRange, setTimeRange] = useState([0, 24]);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
-        return (
-          <Card key={incident.id} className="report-list__card">
-            <CardMedia
-              component="img"
-              height="140"
-              image={imageUrl}
-              alt={incident.incidentType}
-              className="report-list__image"
-            />
-            <CardContent>
-              <Typography variant="h6" className="report-list__title">
-                {incident.incidentType === "fire"
-                  ? "🔥 Incendio"
-                  : incident.incidentType === "robbery"
-                    ? "🦹‍♂️ Robo"
-                    : incident.incidentType === "accident"
-                      ? "🚗 Accidente"
-                      : "📍 Otro"}
-              </Typography>
-              <Typography variant="body2">
-                <strong>📅 Fecha:</strong> {new Date(incident.date).toLocaleDateString()}
-              </Typography>
-              <Typography variant="body2">
-                <strong>⏰ Hora:</strong> {incident.time}
-              </Typography>
-              <Typography variant="body2">
-                <strong>📍 Ubicación:</strong> {incident.cityName}, {incident.districtName}
-              </Typography>
-              <Typography variant="body2">
-                <strong>📝 Descripción:</strong> {incident.descriptionIncident || "Sin descripción"}
-              </Typography>
-              <Button
-                variant="contained"
-                color="error"
-                className="report-list__delete-button"
-                onClick={() => onDelete(incident.id)}
-                disabled={deleting === incident.id}
-              >
-                {deleting === incident.id ? (
-                  <CircularProgress size={24} color="inherit" />
-                ) : (
-                  "🗑 Eliminar"
-                )}
-              </Button>
-            </CardContent>
-          </Card>
-        );
-      })}
+  const handleExpandClick = (id) => {
+    setExpandedId(expandedId === id ? null : id);
+  };
+
+  const handleFilterClick = (filterValue) => {
+    setActiveFilter(activeFilter === filterValue ? null : filterValue);
+  };
+
+  const clearFilter = () => {
+    setActiveFilter(null);
+    setTimeRange([0, 24]);
+  };
+
+  const handleTimeFilterClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleTimeFilterClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleTimeRangeChange = (event, newValue) => {
+    setTimeRange(newValue);
+  };
+
+  // Convertir hora en formato "HH:mm:ss" a número decimal
+  const timeToDecimal = (timeStr) => {
+    const [hours, minutes] = timeStr.split(':').map(Number);
+    return hours + minutes / 60;
+  };
+
+  const formatTimeLabel = (value) => {
+    const hours = Math.floor(value);
+    const minutes = Math.round((value - hours) * 60);
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+  };
+
+  const filteredIncidents = useMemo(() => {
+    return incidents.filter((incident) => {
+      const matchesSearch = searchTerm === "" || 
+        incident.descriptionIncident?.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesFilter = !activeFilter || activeFilter === incident.incidentType;
+      const incidentTime = timeToDecimal(incident.time);
+      return matchesSearch && matchesFilter && incidentTime >= timeRange[0] && incidentTime <= timeRange[1];
+    });
+  }, [incidents, searchTerm, activeFilter, timeRange]);
+
+  return (
+    <Box>
+      <SearchBar onSearch={setSearchTerm} />
+      
+      <FilterBar
+        activeFilter={activeFilter}
+        timeRange={timeRange}
+        onFilterClick={handleFilterClick}
+        onClearFilter={clearFilter}
+        onTimeFilterClick={handleTimeFilterClick}
+      />
+
+      <TimeFilter
+        open={Boolean(anchorEl)}
+        anchorEl={anchorEl}
+        timeRange={timeRange}
+        onClose={handleTimeFilterClose}
+        onTimeRangeChange={handleTimeRangeChange}
+        formatTimeLabel={formatTimeLabel}
+      />
+
+      <Box className="report-list">
+        {filteredIncidents.map((incident) => (
+          <IncidentCard
+            key={incident.id}
+            incident={incident}
+            expanded={expandedId === incident.id}
+            onExpandClick={handleExpandClick}
+            onDelete={onDelete}
+            deleting={deleting}
+          />
+        ))}
+      </Box>
     </Box>
   );
 };
@@ -95,10 +109,12 @@ ReportList.propTypes = {
       districtName: PropTypes.string.isRequired,
       descriptionIncident: PropTypes.string,
       photo: PropTypes.string,
+      heridos: PropTypes.array,
+      materiales: PropTypes.array,
     })
   ).isRequired,
   onDelete: PropTypes.func.isRequired,
-  deleting: PropTypes.number, // Nuevo prop para mostrar el loader
+  deleting: PropTypes.number,
 };
 
 export default ReportList;

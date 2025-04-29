@@ -2,5 +2,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  padding-top: 90px; // Espacio para el navbar fijo
+  min-height: 100vh;
+  background-color: #F9FAFB;
 }

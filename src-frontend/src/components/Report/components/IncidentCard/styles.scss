@@ -1,0 +1,125 @@
+.report-list {
+  &__card {
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  &__content {
+    padding: 1rem;
+  }
+
+  &__image {
+    height: 200px;
+    object-fit: cover;
+    transition: height 0.3s ease-in-out;
+
+    &--expanded {
+      height: 300px;
+    }
+  }
+
+  &__title {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    
+    .icon {
+      margin-right: 0.5rem;
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  &__info {
+    display: grid;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  &__info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+
+    .MuiBox-root {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 40px;
+    }
+  }
+
+  &__info-icon {
+    color: #6B7280;
+    margin-top: 8px;
+  }
+
+  &__location, &__description {
+    &--truncate {
+      .MuiTypography-body2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+    }
+  }
+
+  &__buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  &__expand-button {
+    flex: 1;
+  }
+
+  &__delete-button {
+    background-color: #041122 !important;
+    color: white !important;
+    
+    &:hover {
+      background-color: #0c2547 !important;
+    }
+
+    &:disabled {
+      background-color: rgba(4, 17, 34, 0.5) !important;
+    }
+  }
+
+  &__details {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #E5E7EB;
+  }
+
+  &__details-section {
+    margin-bottom: 1rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__details-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    color: #374151;
+  }
+
+  &__details-icon {
+    color: #6B7280;
+  }
+
+  &__details-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
