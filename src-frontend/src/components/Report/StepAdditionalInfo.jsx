@@ -153,7 +153,6 @@ const StepAdditionalInfo = ({
                   <MenuItem value="serious_stable">Grave Estable</MenuItem>
                   <MenuItem value="serious_unstable">Grave Inestable</MenuItem>
                   <MenuItem value="extremely_serious">Extremadamente Grave</MenuItem>
-                  <MenuItem value="unknown">Desconocido</MenuItem>
                 </Select>
               </FormControl>
               {woundedErrors[index]?.estadoSalud && (

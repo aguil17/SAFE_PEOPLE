@@ -1,17 +1,20 @@
 import { useSelector, useDispatch } from "react-redux";
 import { Box, Typography, CircularProgress } from "@mui/material";
-import { loadIncidents, removeIncidentAsync } from "../redux/incidentsSlice";
+import { loadIncidents } from "../redux/incidentsSlice";
 import ReportList from "../components/Report/ReportList";
-import { useEffect, useState } from "react";
+import ReportsHeader from "../components/Reports/ReportsHeader";
+import { useIncidentDeletion } from "../hooks/useIncidentDeletion";
+import { useEffect } from "react";
+import "./Reports.scss";
 
 const Reports = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
   const incidents = useSelector((state) => state.incidents.list);
   const loading = useSelector((state) => state.incidents.loading);
+  const { deleting, handleDelete } = useIncidentDeletion();
 
-  // Estado para manejar la eliminación individual de reportes
-  const [deleting, setDeleting] = useState(null);
+  console.log("✅ Incidentes en Redux:", incidents);
 
   useEffect(() => {
     if (incidents.length === 0) {
@@ -19,42 +22,43 @@ const Reports = () => {
     }
   }, [dispatch, incidents.length]);
 
-  // Filtrar reportes del usuario autenticado
   const userIncidents = incidents.filter(
     (incident) => incident.incidenteInformantes[0].email === user?.usuario?.username
   );
 
-  // 📌 Manejar la eliminación de incidentes
-  const handleDelete = async (incidentId) => {
-    const confirmDelete = window.confirm("¿Estás seguro de eliminar este reporte?");
-    if (!confirmDelete) return;
-
-    setDeleting(incidentId); // Mostrar loader en el botón específico
-    const response = await dispatch(removeIncidentAsync(incidentId));
-    setDeleting(null); // Ocultar loader tras la eliminación
-
-    if (!response.payload.success) {
-      alert(`Error eliminando el reporte: ${response.payload.message}`);
+  const renderContent = () => {
+    if (loading) {
+      return (
+        <Box className="reports__loading">
+          <CircularProgress />
+        </Box>
+      );
     }
+
+    if (userIncidents.length === 0) {
+      return (
+        <Typography variant="h6" className="reports__empty-message">
+          No tienes reportes registrados.
+        </Typography>
+      );
+    }
+
+    return (
+      <ReportList 
+        incidents={userIncidents} 
+        onDelete={handleDelete} 
+        deleting={deleting} 
+      />
+    );
   };
 
   return (
     <Box className="reports">
-      <Typography variant="h4" sx={{ mb: 2 }}>
-        📋 Mis Reportes
-      </Typography>
-
-      {loading ? (
-        <Box display="flex" justifyContent="center" mt={3}>
-          <CircularProgress />
-        </Box>
-      ) : userIncidents.length === 0 ? (
-        <Typography variant="h6" color="textSecondary">
-          No tienes reportes registrados.
-        </Typography>
-      ) : (
-        <ReportList incidents={userIncidents} onDelete={handleDelete} deleting={deleting} />
-      )}
+      <ReportsHeader 
+        title="Mis Reportes"
+        subtitle="Gestiona y monitorea todos tus reportes de incidentes"
+      />
+      {renderContent()}
     </Box>
   );
 };

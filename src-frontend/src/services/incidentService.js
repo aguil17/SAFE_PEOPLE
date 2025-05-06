@@ -33,7 +33,69 @@ export const reportIncident = async (incidentData) => {
   }
 };
 
-const INCIDENT_API_URL = "http://34.198.223.16:8762/ms-buscador/incidente";
+/**
+ * Adapta la nueva estructura de incidente a la estructura anterior
+ * @param {Object} incident - Incidente con la nueva estructura
+ * @returns {Object} Incidente con la estructura anterior
+ */
+const adaptIncident = (incident) => {
+  if (!incident) return null;
+
+  // Extraer datos del usuario/informante
+  const informante = incident.usuario?.persona || {};
+  
+  return {
+    id: incident.id,
+    incidentType: incident.incidentType,
+    descriptionIncident: incident.description, // Adaptación del nombre del campo
+    date: incident.date,
+    time: incident.time,
+    photo: incident.photo,
+    deleteAt: incident.deleteAt,
+    creationDate: incident.creationDate,
+    
+    // Datos de ubicación
+    idLocation: incident.ubicacion?.id,
+    cityName: incident.ubicacion?.cityName,
+    districtName: incident.ubicacion?.districtName,
+    descriptionLocation: incident.ubicacion?.description,
+    reference: incident.ubicacion?.reference,
+    latitude: parseFloat(incident.ubicacion?.latitude),
+    longitude: parseFloat(incident.ubicacion?.longitude),
+    
+    // Datos de usuario
+    idUser: incident.usuario?.id || 0,
+    username: incident.usuario?.username,
+    passwordUser: incident.usuario?.password,
+    role: incident.usuario?.role,
+    
+    // Datos de persona
+    idPerson: informante.id || 0,
+    personName: informante.name,
+    personLastName: informante.lastName,
+    dni: informante.dni,
+    email: informante.email,
+    cellphone: informante.cellphone,
+    passwordPerson: null,
+    birthdate: informante.birthdate,
+    gender: informante.gender,
+    
+    // Arrays
+    heridos: incident.heridos || [],
+    materiales: incident.materiales || [],
+    
+    // Convertir los datos del informante al formato anterior
+    incidenteInformantes: [{
+      id: incident.id,
+      name: informante.name,
+      lastName: informante.lastName,
+      cellphone: informante.cellphone,
+      email: informante.email,
+      assignmentDate: incident.creationDate,
+      creationDate: incident.creationDate
+    }]
+  };
+};
 
 /**
  * Obtiene la lista de incidentes en un rango de fechas.
@@ -48,7 +110,7 @@ export const fetchIncidents = async (startDate, endDate) => {
     };
 
     const response = await fetch(
-      `${INCIDENT_API_URL}/fechaCreacionInicial/${startDate}/fechaCreacionFinal/${endDate}`,
+      `${API_URL}/fechaCreacionInicial/${startDate}/fechaCreacionFinal/${endDate}`,
       {
         method: "POST",
         headers: {
@@ -64,14 +126,14 @@ export const fetchIncidents = async (startDate, endDate) => {
       throw new Error(result.message || "Error obteniendo los incidentes");
     }
 
-    return result.incidentes; // Retorna la lista de incidentes
+    // Adaptar cada incidente a la estructura anterior
+    const adaptedIncidents = result.incidentes.map(adaptIncident);
+    return adaptedIncidents;
   } catch (error) {
     console.error("Error obteniendo los incidentes:", error);
     return [];
   }
 };
-
-const DELETE_API_URL = "http://34.198.223.16:8762/ms-operator/incidente";
 
 /**
  * Elimina un incidente por ID.
@@ -84,7 +146,7 @@ export const deleteIncident = async (incidentId) => {
       targetMethod: "DELETE",
     };
 
-    const response = await fetch(`${DELETE_API_URL}/${incidentId}`, {
+    const response = await fetch(`${API_URL}/${incidentId}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
